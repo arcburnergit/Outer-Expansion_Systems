@@ -1,0 +1,24 @@
+<FTL>
+<customTextStyle enabled="true" />
+<mod:findLike type="scripts" limit="1" reverse="false">
+  <mod-append:script>data/oe_scripts/core_systems.lua</mod-append:script>
+  <mod-append:script>data/oe_scripts/sys_aux_shields.lua</mod-append:script>
+  <mod-append:script>data/oe_scripts/sys_clone_crime.lua</mod-append:script>
+  <mod-append:script>data/oe_scripts/sys_clone_projector.lua</mod-append:script>
+  <mod-append:script>data/oe_scripts/sys_grease.lua</mod-append:script>
+  <mod-append:script>data/oe_scripts/sys_growth.lua</mod-append:script>
+  <mod-append:script>data/oe_scripts/sys_medusa.lua</mod-append:script>
+</mod:findLike>
+
+<mod:findLike type="ships" limit="1" reverse="false">
+</mod:findLike>
+
+<augments>
+</augments>
+
+<events>
+</events>
+
+<store>
+</store>
+</FTL>

@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FTL>
-
+<mod:findName type="event" name="BOON_SELECT">
+	<mod:findLike type="loadEventList">
+		<mod-append:event name="BOON_SELECT_OE_AUX_SHIELDS" req="prof_r_boon_oe_aux_shields" />
+	</mod:findLike>
+</mod:findName>
 </FTL>

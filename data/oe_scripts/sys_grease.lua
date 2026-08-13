@@ -1,0 +1,915 @@
+local time_increment = mods.multiverse.time_increment
+local vter = mods.multiverse.vter
+local userdata_table = mods.multiverse.userdata_table
+
+local node_child_iter = mods.multiverse.node_child_iter
+local node_get_bool_default = mods.multiverse.node_get_bool_default
+local node_get_number_default = mods.multiverse.node_get_number_default
+
+local get_room_at_location = mods.oe.get_room_at_location
+local xor = mods.oe.xor
+local isPointInEllipse = mods.oe.isPointInEllipse
+local worldToPlayerLocation = mods.oe.worldToPlayerLocation
+local worldToEnemyLocation = mods.oe.worldToEnemyLocation
+local get_distance = mods.oe.get_distance
+local offset_point_in_direction = mods.oe.offset_point_in_direction
+local get_point_local_offset = mods.oe.get_point_local_offset
+local get_random_point_in_radius = mods.oe.get_random_point_in_radius
+local normalise_angle = mods.oe.normalise_angle
+local angle_diff = mods.oe.angle_diff
+local get_angle_between_points = mods.oe.get_angle_between_points
+local find_closest_slot = mods.oe.find_closest_slot
+
+local systemIdName = "oe_grease"
+local systemChargesVariable = "oe_grease_charges"
+local systemFillingAmount = {[0] = 0, [1] = 0}
+local systemTypeVariable = "oe_grease_type"
+
+local greaseEffects = {
+	{name = "Fire", type = 1, colour = Graphics.GL_Color(253/255, 84/255, 70/255, 1), fill_rate = 0.075, desc = "Causes the last projectile in the volley to start a fire on hit."},
+	{name = "Frost", type = 1, colour = Graphics.GL_Color(171/255, 201/255, 202/255, 1), fill_rate = 0.05, desc = "Causes the last projectile in the volley to create a short lockdown on hit."},
+	{name = "Breach", type = 1, colour = Graphics.GL_Color(138/255, 150/255, 125/255, 1), fill_rate = 0.075, desc = "Causes the last projectile in the volley to open a breach on hit."},
+	{name = "Shock", req="OE_GREASE_EFFECT_SHOCK", type = 1, colour = Graphics.GL_Color(95/255, 205/255, 228/255, 1), fill_rate = 0.15, desc = "Causes the last projectile in the volley to break and stun all doors in the room."},
+	{name = "Shatter", req="OE_GREASE_EFFECT_SHATTER", type = 1, colour = Graphics.GL_Color(241/255, 241/255, 241/255, 1), fill_rate = 0.05, desc = "Causes the last projectile in the volley to create an extremely weak lockdown, the next hit to this room while the lockdown is active will do 2x damage."},
+	{name = "Acidic", req="OE_GREASE_EFFECT_ACID", type = 1, colour = Graphics.GL_Color(111/255, 236/255, 95/255, 1), fill_rate = 0.075, desc = "Causes the last projectile in the volley to create acidic that erodes the system on hit."},
+	{name = "Inculcation", req="OE_GREASE_EFFECT_SHLEG", type = 1, colour = Graphics.GL_Color(159/255, 228/255, 204/255, 1), fill_rate = 0.033, desc = "Causes the last projectile in the volley to create inculcation gas on hit."},
+	{name = "Marked", req="OE_GREASE_EFFECT_BIRD", type = 1, colour = Graphics.GL_Color(211/255, 133/255, 255/255, 1), fill_rate = 0.033, desc = "Causes the last projectile in the volley to target all friendly drones on hit."},
+	{name = "Resurrection", req="OE_GREASE_EFFECT_NECRO", type = 2, colour = Graphics.GL_Color(255/255, 201/255, 63/255, 1), fill_rate = 0.033, desc = "When a projectile kills a crewmember, temporarily resurrect that crewmember on your side."},
+	{name = "Cascade", req="OE_GREASE_EFFECT_CASCADE", type = 2, colour = Graphics.GL_Color(182/255, 182/255, 182/255, 1), fill_rate = 0.075, desc = "When a projectile full breaks a system, deal system damage to an adjacent room."},
+	{name = "Soulplagued", req="OE_GREASE_EFFECT_DD_SOULPLAGUE", type = 1, colour = Graphics.GL_Color(109/255, 75/255, 187/255, 1), fill_rate = 0.075, desc = "Causes the last projectile in the volley to inflict the Plagueridden effect."},
+	{name = "Darkness", req="OE_GREASE_EFFECT_DD_DARKNESS", type = 1, colour = Graphics.GL_Color(194/255, 51/255, 51/255, 1), fill_rate = 0.033, desc = "Causes the last projectile in the volley to inflict a chaotic, and potentially dark effect."},
+	{name = "Shadow-Frost", req="OE_GREASE_EFFECT_DD_SHADOW", type = 1, colour = Graphics.GL_Color(255/255, 129/255, 249/255, 1), fill_rate = 0.075, desc = "Causes the last projectile in the volley to inflict a series of Shadow-Crystal lockdowns, and potentially spawn a Hungering Shadow."},
+	{name = "Radiant", req="OE_GREASE_EFFECT_DD_RADIANT", type = 1, colour = Graphics.GL_Color(255/255, 255/255, 255/255, 1), fill_rate = 0.075, desc = "Causes the last projectile in the volley to inflict the Radiant Desecration effect, and spawn a random Lightborne."},
+	{name = "Chaos", req="OE_GREASE_EFFECT_CHAOS", type = 1, colour = Graphics.GL_Color(100/255, 50/255, 50/255, 1), fill_rate = 0.15, desc = "Causes the last projectile in the volley to trigger a random effect that you have available."},
+}
+greaseEffects[0] = {name = "PLACEHOLDER", type = 1, colour = Graphics.GL_Color(255/255, 255/255, 255/255, 1), fill_rate = 0.1, desc = "PLACEHOLDER"}
+
+effectImages = {}
+effectImages["PLACEHOLDER"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_fire.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+effectImages["Fire"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_fire.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+effectImages["Frost"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_frost.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+effectImages["Breach"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_breach.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+effectImages["Shock"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_shock.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+effectImages["Shatter"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_lockdown.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+effectImages["Acidic"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_acid.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+effectImages["Inculcation"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_inculcation.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+effectImages["Marked"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_marked.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+effectImages["Resurrection"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_resurrect.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+effectImages["Cascade"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_cascade.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+effectImages["Soulplagued"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_dd_soulplague.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+effectImages["Darkness"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_dd_darkness.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+effectImages["Shadow-Frost"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_dd_shadowfrost.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+effectImages["Radiant"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_dd_radiant.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+effectImages["Chaos"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_chaos.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+
+--Handles tooltips and mousever descriptions per level
+local function get_level_description_grease(systemId, level, tooltip)
+	if systemId == Hyperspace.ShipSystem.NameToSystemId(systemIdName) then
+		if level == 1 then
+			return string.format("%i charge", level)
+		else
+			return string.format("%i charges", level)
+		end
+	end
+end
+
+script.on_internal_event(Defines.InternalEvents.GET_LEVEL_DESCRIPTION, get_level_description_grease)
+
+--Utility function to check if the SystemBox instance is for our customs system
+local function is_grease(systemBox)
+	local systemName = Hyperspace.ShipSystem.SystemIdToName(systemBox.pSystem.iSystemType)
+	return systemName == systemIdName and systemBox.bPlayerUI
+end
+
+local function is_weapons(systemBox)
+	local systemName = Hyperspace.ShipSystem.SystemIdToName(systemBox.pSystem.iSystemType)
+	return systemName == "weapons" and systemBox.bPlayerUI
+end
+
+local function is_artillery(systemBox)
+	local systemName = Hyperspace.ShipSystem.SystemIdToName(systemBox.pSystem.iSystemType)
+	return systemName == "artillery" and systemBox.bPlayerUI
+end
+
+--Utility function to check if the SystemBox instance is for our customs system
+local function is_grease_enemy(systemBox)
+	local systemName = Hyperspace.ShipSystem.SystemIdToName(systemBox.pSystem.iSystemType)
+	return systemName == systemIdName and not systemBox.bPlayerUI
+end
+ 
+--Offsets of the button
+local greaseButtonOffset_x = 37
+local greaseButtonOffset_y = -50
+
+local enable_button = {
+	off = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_weapon_off.png", -10, -10, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	select_off = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_weapon_select_off.png" , -10, -10, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	on = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_weapon_on.png", -10, -10, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	select_on = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_weapon_select_on.png" , -10, -10, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+}
+local enable_button_artillery = {
+	off = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_artillery_off.png", -10, -10, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	select_off = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_artillery_select_off.png" , -10, -10, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	on = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_artillery_on.png", -10, -10, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	select_on = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_artillery_select_on.png" , -10, -10, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+}
+
+local enable_size = {
+	w = 19,
+	h = 11,
+	x_off = 27,
+	y_off = -46,
+	arty_x_off = 21,
+	arty_y_off = -5,
+	arty_y_off_power = 8,
+	arty_y_off_targeting = 19,
+}
+
+--Handles initialization of custom system box
+local function grease_construct_system_box(systemBox)
+	if is_grease(systemBox) then
+		systemBox.extend.xOffset = 54
+
+		local greaseButton = Hyperspace.Button()
+		greaseButton:OnInit("systemUI/button_oe_grease", Hyperspace.Point(greaseButtonOffset_x, greaseButtonOffset_y))
+		greaseButton.hitbox.x = 10
+		greaseButton.hitbox.y = 47
+		greaseButton.hitbox.w = 20
+		greaseButton.hitbox.h = 19
+		systemBox.table.greaseButton = greaseButton
+
+		local effectButtonTable = {}
+		for i = 1, #greaseEffects do
+			local effectButton = Hyperspace.Button()
+			effectButton:OnInit("systemUI/oe_grease_box_button_blank", Hyperspace.Point(0, 0))
+			effectButton.hitbox.x = 0
+			effectButton.hitbox.y = 0
+			effectButton.hitbox.w = 22
+			effectButton.hitbox.h = 22
+			table.insert(effectButtonTable, {b = effectButton, position = {x = 0, y = 0}})
+		end
+		systemBox.table.effectButtonTable = effectButtonTable
+
+		systemBox.pSystem.bNeedsPower = false
+		systemBox.pSystem.bBoostable = false -- make the system unmannable
+	elseif is_grease_enemy(systemBox) then
+		systemBox.pSystem.bNeedsPower = false
+		systemBox.pSystem.bBoostable = false
+	end
+end
+
+script.on_internal_event(Defines.InternalEvents.CONSTRUCT_SYSTEM_BOX, grease_construct_system_box)
+
+--Handles mouse movement
+local function grease_mouse_move(systemBox, x, y)
+	if is_grease(systemBox) then
+		local greaseButton = systemBox.table.greaseButton
+		greaseButton:MouseMove(x - greaseButtonOffset_x, y - greaseButtonOffset_y, false)
+		local effectButtonTable = systemBox.table.effectButtonTable
+		for _, effectButton in ipairs(effectButtonTable) do
+			effectButton.b:MouseMove(x - effectButton.position.x, y - effectButton.position.y, false)
+		end
+	end
+	if is_weapons(systemBox) and Hyperspace.ships.player:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemIdName)) then
+		local w_x = enable_size.x_off
+		local w_y = enable_size.y_off
+		for weapon in vter(Hyperspace.ships.player.weaponSystem.weapons) do
+			w_x = w_x + 97
+			--Graphics.CSurface.GL_DrawCircle(w_x, w_y, 5, Graphics.GL_Color(1, 0, 0, 0.5))
+			if x >= w_x and x <= w_x + enable_size.w and y >= w_y and y <= w_y + enable_size.h then
+				if userdata_table(weapon, "mods.oe.grease").disabled then
+					Hyperspace.Mouse.tooltip = "Enable consumption of Weapon Amplification charges for this weapon."
+				else
+					Hyperspace.Mouse.tooltip = "Disable consumption of Weapon Amplification charges for this weapon."
+				end
+				userdata_table(weapon, "mods.oe.grease").weaponHover = true
+			else
+				userdata_table(weapon, "mods.oe.grease").weaponHover = false
+			end
+		end
+	end
+	if is_artillery(systemBox) and Hyperspace.ships.player:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemIdName)) then
+		local w_x = enable_size.arty_x_off
+		local w_y = enable_size.arty_y_off - enable_size.arty_y_off_power * (systemBox.pSystem:GetMaxPower() - 1)
+		if Hyperspace.ships.player:HasAugmentation("ARTILLERY_ORDER") > 0 then w_y = w_y - enable_size.arty_y_off_targeting end
+		local weapon = systemBox.pSystem
+		if not weapon then 
+			return Defines.Chain.CONTINUE 
+		end
+		if x >= w_x and x <= w_x + enable_size.w and y >= w_y and y <= w_y + enable_size.h then
+			if userdata_table(weapon, "mods.oe.grease").disabled then
+				Hyperspace.Mouse.tooltip = "Enable consumption of Weapon Amplification charges for this weapon."
+			else
+				Hyperspace.Mouse.tooltip = "Disable consumption of Weapon Amplification charges for this weapon."
+			end
+			userdata_table(weapon, "mods.oe.grease").weaponHover = true
+		else
+			userdata_table(weapon, "mods.oe.grease").weaponHover = false
+		end
+	end
+	return Defines.Chain.CONTINUE
+end
+script.on_internal_event(Defines.InternalEvents.SYSTEM_BOX_MOUSE_MOVE, grease_mouse_move)
+
+---@param shipManager Hyperspace.ShipManager The ship to check for super shield.
+---@return boolean hasSuperShield If the ship has any super shield layers up.
+local function has_super_shield(shipManager)
+   return shipManager.shieldSystem ~= nil and shipManager.shieldSystem.shields.power.super.first > 0
+end
+
+local displayGreaseOptions = false
+--Handles click events 
+local function grease_click(systemBox, shift)
+	if is_grease(systemBox) then
+		local greaseButton = systemBox.table.greaseButton
+		if greaseButton.bHover and greaseButton.bActive then
+			displayGreaseOptions = not displayGreaseOptions
+		end
+		local effectButtonTable = systemBox.table.effectButtonTable
+		for i, effectButton in ipairs(effectButtonTable) do
+			if effectButton.b.bHover and effectButton.b.bActive then
+				if Hyperspace.ships.player:HasAugmentation("UPG_OE_GREASE_SWITCH") > 0 then
+					local prev_effect = greaseEffects[Hyperspace.playerVariables[systemTypeVariable]]
+					local seconds_per_charge = math.floor((1/prev_effect.fill_rate)+0.5)
+					local seconds = (Hyperspace.playerVariables[systemChargesVariable] + systemFillingAmount[0]) * seconds_per_charge
+					--print("charges:"..tostring(Hyperspace.playerVariables[systemChargesVariable] + systemFillingAmount[0]).." seconds:"..tostring(seconds))
+					local new_effect = greaseEffects[i]
+					local new_per_charge = math.floor((1/new_effect.fill_rate)+0.5)
+					local new_seconds = seconds/new_per_charge
+					--print("new charges:"..tostring(new_seconds).." fill:"..tostring(new_seconds%1))
+					Hyperspace.playerVariables[systemChargesVariable] = math.floor(new_seconds)
+					if Hyperspace.playerVariables[systemChargesVariable] >= systemBox.pSystem:GetEffectivePower() then
+						Hyperspace.playerVariables[systemChargesVariable] = systemBox.pSystem:GetEffectivePower()
+					else
+						systemFillingAmount[0] = new_seconds%1
+					end
+				else
+					Hyperspace.playerVariables[systemChargesVariable] = 0
+					systemFillingAmount[0] = 0
+				end
+
+				Hyperspace.playerVariables[systemTypeVariable] = i
+			end
+		end
+	end
+	if is_weapons(systemBox) and Hyperspace.ships.player:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemIdName)) then
+		for weapon in vter(Hyperspace.ships.player.weaponSystem.weapons) do
+			if userdata_table(weapon, "mods.oe.grease").weaponHover and userdata_table(weapon, "mods.oe.grease").disabled then
+				userdata_table(weapon, "mods.oe.grease").disabled = nil
+			elseif userdata_table(weapon, "mods.oe.grease").weaponHover then
+				userdata_table(weapon, "mods.oe.grease").disabled = true
+			end
+		end
+	end
+	if is_artillery(systemBox) and Hyperspace.ships.player:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemIdName)) then
+		local weapon = systemBox.pSystem
+		if not weapon then return Defines.Chain.CONTINUE end
+		if userdata_table(weapon, "mods.oe.grease").weaponHover and userdata_table(weapon, "mods.oe.grease").disabled then
+			userdata_table(weapon, "mods.oe.grease").disabled = nil
+		elseif userdata_table(weapon, "mods.oe.grease").weaponHover then
+			userdata_table(weapon, "mods.oe.grease").disabled = true
+		end
+	end
+	return Defines.Chain.CONTINUE
+end
+script.on_internal_event(Defines.InternalEvents.SYSTEM_BOX_MOUSE_CLICK, grease_click)
+
+local greaseImages = {
+	[1] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_1_base.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	[2] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_2_base.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	[3] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_3_base.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	gauge_outline = {
+		on = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_gauge_outer_on.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+		off = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_gauge_outer_off.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+		full = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_gauge_outer_full.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+	},
+	gauge = {
+		filling = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_gauge_filling.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+		full = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_gauge_full.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	}
+
+}
+
+local boxImages = {
+	arrow = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_arrow.png" , -7, 3, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	top = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_top.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	bottom = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_bottom.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	left = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_left.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	right = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_right.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	top_left = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_top_left.png" , 4, 4, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	top_right = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_top_right.png" , 0, 4, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	bottom_left = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_bottom_left.png" , 4, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	bottom_right = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_bottom_right.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	middle = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_middle.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+}
+
+local tempBoxImage = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_button_blank_off.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+
+local maxButtonWidth = 4
+local boxButton_w = 22
+local boxButton_h = 22
+local function renderGreaseOptions(originPos_x, originPos_y, effectButtonTable)
+	Graphics.CSurface.GL_PushMatrix()
+	Graphics.CSurface.GL_Translate(originPos_x, originPos_y, 0)
+
+	local activeEffectButtons = {}
+	for i, effectButton in ipairs(effectButtonTable) do
+		local currentEffect = greaseEffects[i]
+		if (currentEffect.req and Hyperspace.ships.player:HasEquipment(currentEffect.req) > 0) or not currentEffect.req then
+			table.insert(activeEffectButtons, effectButton)
+			effectButton.index = i
+			effectButton.b.bActive = true
+		else
+			effectButton.b.bActive = false
+		end
+	end
+	local boxNumber = #activeEffectButtons
+
+	local boxWidthNumber = math.min(maxButtonWidth, boxNumber)
+	local boxHeightNumber = math.ceil(boxNumber/maxButtonWidth)
+	local boxWidth = boxButton_w * boxWidthNumber
+	local boxHeight = boxButton_h * boxHeightNumber
+	Graphics.CSurface.GL_PushMatrix()
+	Graphics.CSurface.GL_Translate(-0.5 * boxWidth, -1 * boxHeight, 0)
+
+	--Render Corners
+	Graphics.CSurface.GL_PushMatrix()
+	Graphics.CSurface.GL_Translate(-(boxButton_w/2), -(boxButton_h/2), 0)
+	Graphics.CSurface.GL_RenderPrimitive(boxImages.top_left)
+	Graphics.CSurface.GL_PopMatrix()
+	Graphics.CSurface.GL_PushMatrix()
+	Graphics.CSurface.GL_Translate(boxWidth-(boxButton_w/2), -(boxButton_h/2), 0)
+	Graphics.CSurface.GL_RenderPrimitive(boxImages.top_right)
+	Graphics.CSurface.GL_PopMatrix()
+	Graphics.CSurface.GL_PushMatrix()
+	Graphics.CSurface.GL_Translate(-(boxButton_w/2), boxHeight-(boxButton_h/2), 0)
+	Graphics.CSurface.GL_RenderPrimitive(boxImages.bottom_left)
+	Graphics.CSurface.GL_PopMatrix()
+	Graphics.CSurface.GL_PushMatrix()
+	Graphics.CSurface.GL_Translate(boxWidth-(boxButton_w/2), boxHeight-(boxButton_h/2), 0)
+	Graphics.CSurface.GL_RenderPrimitive(boxImages.bottom_right)
+	Graphics.CSurface.GL_PopMatrix()
+
+	if boxWidthNumber > 1 then
+		for n = 1, boxWidthNumber - 1 do
+			Graphics.CSurface.GL_PushMatrix()
+			Graphics.CSurface.GL_Translate(-(boxButton_w/2)+boxButton_w*n, -(boxButton_h/2), 0)
+			Graphics.CSurface.GL_RenderPrimitive(boxImages.top)
+			Graphics.CSurface.GL_PopMatrix()
+			Graphics.CSurface.GL_PushMatrix()
+			Graphics.CSurface.GL_Translate(-(boxButton_w/2)+boxButton_w*n, boxHeight-(boxButton_h/2), 0)
+			Graphics.CSurface.GL_RenderPrimitive(boxImages.bottom)
+			Graphics.CSurface.GL_PopMatrix()
+			if boxHeightNumber > 1 then
+				for m = 1, boxHeightNumber - 1 do
+					Graphics.CSurface.GL_PushMatrix()
+					Graphics.CSurface.GL_Translate(-(boxButton_w/2)+boxButton_w*n, -(boxButton_h/2)+boxButton_h*m, 0)
+					Graphics.CSurface.GL_RenderPrimitive(boxImages.middle)
+					Graphics.CSurface.GL_PopMatrix()
+				end
+			end
+		end
+	end
+	if boxHeightNumber > 1 then
+		for m = 1, boxHeightNumber - 1 do
+			Graphics.CSurface.GL_PushMatrix()
+			Graphics.CSurface.GL_Translate(-(boxButton_w/2), -(boxButton_h/2)+boxButton_h*m, 0)
+			Graphics.CSurface.GL_RenderPrimitive(boxImages.left)
+			Graphics.CSurface.GL_PopMatrix()
+			Graphics.CSurface.GL_PushMatrix()
+			Graphics.CSurface.GL_Translate(boxWidth-(boxButton_w/2), -(boxButton_h/2)+boxButton_h*m, 0)
+			Graphics.CSurface.GL_RenderPrimitive(boxImages.right)
+			Graphics.CSurface.GL_PopMatrix()
+		end
+	end
+
+	Graphics.CSurface.GL_PopMatrix()
+	Graphics.CSurface.GL_RenderPrimitive(boxImages.arrow)
+	Graphics.CSurface.GL_PopMatrix()
+	for i = 1, boxNumber do
+		if activeEffectButtons[i] then
+			effectButton = activeEffectButtons[i]
+			local buttonX = originPos_x - 0.5 * boxWidth + ((i - 1) % maxButtonWidth) * boxButton_w
+			local buttonY = originPos_y - 1 * boxHeight + math.floor((i - 1) / maxButtonWidth) * boxButton_h
+			effectButton.position = {x = buttonX, y = buttonY}
+			Graphics.CSurface.GL_PushMatrix()
+			Graphics.CSurface.GL_Translate(effectButton.position.x, effectButton.position.y, 0)
+			effectButton.b:OnRender()
+			local effect = greaseEffects[effectButton.index]
+			local effectImage = effectImages[effect.name]
+			Graphics.CSurface.GL_RenderPrimitive(effectImage)
+			Graphics.CSurface.GL_PopMatrix()
+			if effectButton.b.bHover then
+				Hyperspace.Mouse.tooltip = effect.name.." ("..math.floor((1/effect.fill_rate)+0.5).."s): "..effect.desc
+			end
+		end
+	end
+end
+
+--Utility function to see if the system is ready for use
+local function grease_ready(shipSystem)
+   return not (shipSystem:GetLocked() and shipSystem.iLockCount ~= -1) and shipSystem:Functioning() and shipSystem.iHackEffect <= 1
+end
+--Utility function to see if the system is ready for use
+local function grease_ready_enemy(shipSystem)
+   local shield_blocking = has_super_shield(Hyperspace.ships.player) and shipSystem._shipObj:HasAugmentation("ZOLTAN_BYPASS") <= 0
+   return not (shipSystem:GetLocked() and shipSystem.iLockCount ~= -1) and shipSystem:Functioning() and shipSystem.iHackEffect <= 1 and Hyperspace.ships.enemy and Hyperspace.ships.enemy._targetable.hostile and not shield_blocking
+end
+
+local yOffset = 13
+--Handles custom rendering
+local function grease_render(systemBox, ignoreStatus)
+	if is_grease(systemBox) then
+		local system = systemBox.pSystem
+		local effectivePower = system:GetEffectivePower()
+		local maxPower = system:GetMaxPower()
+		local mousePos = Hyperspace.Mouse.position
+		local effect = greaseEffects[Hyperspace.playerVariables[systemTypeVariable]]
+
+		Graphics.CSurface.GL_PushMatrix()
+		Graphics.CSurface.GL_Translate(greaseButtonOffset_x, greaseButtonOffset_y, 0)
+		Graphics.CSurface.GL_RenderPrimitive(greaseImages[maxPower])
+
+		local systemReady = grease_ready(system)
+		local x = 10
+		local y = 55 - 21
+		for i = 1, maxPower do
+			Graphics.CSurface.GL_PushMatrix()
+			Graphics.CSurface.GL_Translate(x, y - yOffset * (i - 1), 0)
+			if i <= effectivePower and i <= Hyperspace.playerVariables[systemChargesVariable] then
+				Graphics.CSurface.GL_RenderPrimitiveWithColor(greaseImages.gauge.full, effect.colour)
+				Graphics.CSurface.GL_RenderPrimitive(greaseImages.gauge_outline.full)
+			elseif i <= effectivePower then
+				if i == Hyperspace.playerVariables[systemChargesVariable] + 1 then
+					local fill = systemFillingAmount[0]
+					Graphics.CSurface.GL_PushStencilMode()
+					Graphics.CSurface.GL_SetStencilMode(1,1,1)
+					Graphics.CSurface.GL_DrawRect(
+						1 + math.ceil(18 * (1 - fill)), 
+						0, 
+						math.ceil(18*fill), 
+						11, 
+						Graphics.GL_Color(1, 1, 1, 1)
+					)
+					Graphics.CSurface.GL_SetStencilMode(2,1,1)
+					Graphics.CSurface.GL_RenderPrimitiveWithColor(greaseImages.gauge.filling, effect.colour)
+					Graphics.CSurface.GL_SetStencilMode(0,1,1)
+					Graphics.CSurface.GL_PopStencilMode()
+				end
+				Graphics.CSurface.GL_RenderPrimitive(greaseImages.gauge_outline.on)
+			else
+				Graphics.CSurface.GL_RenderPrimitive(greaseImages.gauge_outline.off)
+			end
+			Graphics.CSurface.GL_PopMatrix()
+		end
+
+		Graphics.CSurface.GL_PopMatrix()
+
+		local greaseButton = systemBox.table.greaseButton
+		greaseButton:OnRender()
+		if greaseButton.bHover then
+			Hyperspace.Mouse.tooltip = "Current Enhancement: "..effect.name
+		end
+		local effectButtonTable = systemBox.table.effectButtonTable
+		if displayGreaseOptions then
+			renderGreaseOptions(greaseButtonOffset_x + 20, greaseButtonOffset_y + 7 + (2 - maxPower) * yOffset, effectButtonTable)
+		end
+	end
+	if is_weapons(systemBox) and Hyperspace.ships.player:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemIdName)) then
+		--print("WEAPONS ACTIVE")
+		local w_x = enable_size.x_off
+		local w_y = enable_size.y_off
+		for weapon in vter(Hyperspace.ships.player.weaponSystem.weapons) do
+			w_x = w_x + 97
+
+			--Graphics.CSurface.GL_DrawCircle(w_x, w_y, 5, Graphics.GL_Color(1, 0, 0, 0.5))
+			Graphics.CSurface.GL_PushMatrix()
+			Graphics.CSurface.GL_Translate(w_x, w_y, 0)
+			if userdata_table(weapon, "mods.oe.grease").disabled and userdata_table(weapon, "mods.oe.grease").weaponHover then
+				Graphics.CSurface.GL_RenderPrimitive(enable_button.select_off)
+			elseif userdata_table(weapon, "mods.oe.grease").disabled then
+				Graphics.CSurface.GL_RenderPrimitive(enable_button.off)
+			elseif userdata_table(weapon, "mods.oe.grease").weaponHover then
+				Graphics.CSurface.GL_RenderPrimitive(enable_button.select_on)
+			else
+				Graphics.CSurface.GL_RenderPrimitive(enable_button.on)
+			end
+			Graphics.CSurface.GL_PopMatrix()
+		end
+	end
+	if is_artillery(systemBox) and Hyperspace.ships.player:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemIdName)) then
+		local w_x = enable_size.arty_x_off
+		local w_y = enable_size.arty_y_off - enable_size.arty_y_off_power * (systemBox.pSystem:GetMaxPower() - 1)
+		if Hyperspace.ships.player:HasAugmentation("ARTILLERY_ORDER") > 0 then w_y = w_y - enable_size.arty_y_off_targeting end
+		local weapon = systemBox.pSystem
+
+		if not weapon then return Defines.Chain.CONTINUE end
+		--Graphics.CSurface.GL_DrawCircle(w_x, w_y, 25, Graphics.GL_Color(1, 0, 0, 0.5))
+		Graphics.CSurface.GL_PushMatrix()
+		Graphics.CSurface.GL_Translate(w_x, w_y, 0)
+		if userdata_table(weapon, "mods.oe.grease").disabled and userdata_table(weapon, "mods.oe.grease").weaponHover then
+			Graphics.CSurface.GL_RenderPrimitive(enable_button_artillery.select_off)
+		elseif userdata_table(weapon, "mods.oe.grease").disabled then
+			Graphics.CSurface.GL_RenderPrimitive(enable_button_artillery.off)
+		elseif userdata_table(weapon, "mods.oe.grease").weaponHover then
+			Graphics.CSurface.GL_RenderPrimitive(enable_button_artillery.select_on)
+		else
+			Graphics.CSurface.GL_RenderPrimitive(enable_button_artillery.on)
+		end
+		Graphics.CSurface.GL_PopMatrix()
+	end
+end
+script.on_render_event(Defines.RenderEvents.SYSTEM_BOX, 
+function(systemBox, ignoreStatus) 
+	return Defines.Chain.CONTINUE
+end, grease_render)
+
+script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
+	if shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemIdName)) then
+		local system = shipManager:GetSystem(Hyperspace.ShipSystem.NameToSystemId(systemIdName))
+		local chargeVar = (shipManager.iShipId == 0 and systemChargesVariable) or (systemChargesVariable.."_enemy")
+		local typeVar = (shipManager.iShipId == 0 and systemTypeVariable) or (systemTypeVariable.."_enemy")
+		if Hyperspace.playerVariables[typeVar] == 0 then Hyperspace.playerVariables[typeVar] = 1 end
+
+		local effectivePower = system:GetEffectivePower()
+		local maxPower = system:GetMaxPower()
+
+		local currentType = greaseEffects[Hyperspace.playerVariables[typeVar]]
+
+		local rateMult = currentType.fill_rate
+		local decayRate = 1
+		if Hyperspace.playerVariables[chargeVar] < effectivePower then
+			systemFillingAmount[shipManager.iShipId] = systemFillingAmount[shipManager.iShipId] + rateMult * Hyperspace.FPS.SpeedFactor/16
+			if systemFillingAmount[shipManager.iShipId] >= 1 then
+				systemFillingAmount[shipManager.iShipId] = 0
+				Hyperspace.playerVariables[chargeVar] = Hyperspace.playerVariables[chargeVar] + 1
+			end
+		elseif Hyperspace.playerVariables[chargeVar] > effectivePower or (Hyperspace.playerVariables[chargeVar] == effectivePower and systemFillingAmount[shipManager.iShipId] > 0) then
+			systemFillingAmount[shipManager.iShipId] = systemFillingAmount[shipManager.iShipId] - decayRate *  Hyperspace.FPS.SpeedFactor/16
+			if systemFillingAmount[shipManager.iShipId] <= 0 and Hyperspace.playerVariables[chargeVar] > 0 then
+				systemFillingAmount[shipManager.iShipId] = 1
+				Hyperspace.playerVariables[chargeVar] = Hyperspace.playerVariables[chargeVar] - 1
+			elseif systemFillingAmount[shipManager.iShipId] <= 0 then
+				systemFillingAmount[shipManager.iShipId] = 0
+			end
+		else
+			systemFillingAmount[shipManager.iShipId] = 0
+		end
+	end
+end)
+
+function mods.oe.spawn_fire(shipManager, projectile, location, damage, shipFriendlyFire)
+	local room = get_room_at_location(shipManager, location, true)
+	shipManager:StartFire(room)
+end
+local spawn_fire = mods.oe.spawn_fire
+
+local function spawn_lockdown(shipManager, projectile, location, damage, shipFriendlyFire)
+	local room = get_room_at_location(shipManager, location, true)
+	local shard = Hyperspace.CustomLockdownDefinition()
+	shard.duration = 6
+	shipManager.ship:LockdownRoom(room, location, shard)
+end
+
+function mods.oe.spawn_breach(shipManager, projectile, location, damage, shipFriendlyFire)
+	local room = get_room_at_location(shipManager, location, true)
+	shipManager.ship:BreachRandomHull(room)
+end
+local spawn_breach = mods.oe.spawn_breach
+
+local smashedRooms = mods.oe.smashedRooms
+local function spawn_shock(shipManager, projectile, location, damage, shipFriendlyFire)
+	local roomId = get_room_at_location(shipManager, location, false)
+	smashedRooms[shipManager.iShipId][roomId] = {time = 7}
+	local animationsTable = {}
+	for door in vter(shipManager.ship.vDoorList) do
+		if door.iRoom1 == roomId or door.iRoom2 == roomId then
+			door.forcedOpen:Start(0)
+
+			local name = "oe_door_sparks_hor"
+			if door.bVertical then name = "oe_door_sparks_ver" end
+
+			local anim = Hyperspace.Animations:GetAnimation(name)
+			anim.position.x = door.x - anim.info.frameWidth/2
+			anim.position.y = door.y - anim.info.frameHeight/2
+			anim.tracker.loop = true
+			anim:Start(true)
+			local randomFrame = math.random(15)
+			anim:SetCurrentFrame(randomFrame)
+			table.insert(animationsTable, anim)
+		end
+	end
+	smashedRooms[shipManager.iShipId][roomId].animations = animationsTable
+end
+
+local shatterName = "OE_GREASE_EFFECT_BOMB_SHATTER"
+local shatterBlueprint = Hyperspace.Blueprints:GetWeaponBlueprint(shatterName)
+local function spawn_shatter(shipManager, projectile, location, damage, shipFriendlyFire)
+	--[[local room = get_room_at_location(shipManager, location, true)
+	local shard = Hyperspace.CustomLockdownDefinition()
+	shard.health = 5
+	shard.anims:clear()
+	shard.anims:push_back("oe_shatter_shard_1")
+	shard.anims:push_back("oe_shatter_shard_2")
+	shipManager.ship:LockdownRoom(room, location, shard)
+	print("SHATTER")]]
+	local spaceManager = Hyperspace.App.world.space
+	spaceManager:CreateLaserBlast(
+		shatterBlueprint,
+		location,
+		projectile.currentSpace,
+		projectile.ownerId,
+		location,
+		projectile.destinationSpace,
+		projectile.heading)
+end
+
+local startAcid = mods.oe.startAcid
+local function spawn_acid(shipManager, projectile, location, damage, shipFriendlyFire)
+	local room = get_room_at_location(shipManager, location, true)
+	startAcid(shipManager.iShipId, room, 5)
+end
+
+local createGasInRoom = mods.oe.createGasInRoom
+local function spawn_inculcation(shipManager, projectile, location, damage, shipFriendlyFire)
+	createGasInRoom(shipManager, projectile, location, damage, 30)
+end
+
+local function spawn_marked(shipManager, projectile, location, damage, shipFriendlyFire)
+	local spaceManager = Hyperspace.App.world.space
+	for drone in vter(spaceManager.drones) do
+		if drone.currentSpace == shipManager.iShipId and drone.iShipId ~= shipManager.iShipId then
+			drone.targetLocation = location
+		end
+	end
+end
+
+local resurrectCrew = mods.oe.resurrectCrew
+local function spawn_resurrection(shipManager, projectile, location, damage, shipFriendlyFire)
+	local room = get_room_at_location(shipManager, location, true)
+	local chargeVar = (originShip == 0 and systemChargesVariable) or (systemChargesVariable.."_enemy")
+	local charges = Hyperspace.playerVariables[chargeVar]
+	for crewmem in vter(shipManager.vCrewList) do
+		if crewmem.iRoomId == room and crewmem:IsDead() and charges > 0 and not crewmem:IsDrone() then
+			resurrectCrew(crewmem)
+			Hyperspace.playerVariables[chargeVar] = Hyperspace.playerVariables[chargeVar] - 1
+		end
+	end
+end
+
+local function spawn_lightning(shipManager, projectile, location, damage, shipFriendlyFire)
+	local room = get_room_at_location(shipManager, location, true)
+	local sys = shipManager:GetSystemInRoom(room)
+	local originShip = projectile.ownerId
+	local chargeVar = (originShip == 0 and systemChargesVariable) or (systemChargesVariable.."_enemy")
+	local charges = Hyperspace.playerVariables[chargeVar]
+
+	if sys and sys.healthState.first == 0 and charges > 0 then
+		--print("LIGHTNING!!")
+		local adjacentSystems = {}
+		for roomId, roomPos in pairs(get_adjacent_rooms(shipManager.iShipId, get_room_at_location(shipManager, location, false), false)) do
+			if shipManager:GetSystemInRoom(roomId) then
+				table.insert(adjacentSystems, shipManager:GetSystemInRoom(roomId))
+			end
+		end
+		if #adjacentSystems > 0 then
+			local r = math.random(#adjacentSystems)
+			local damageSys = adjacentSystems[r]
+			damageSys:AddDamage(charges)
+			Hyperspace.playerVariables[chargeVar] = 0
+		end
+	end
+end
+
+local spawn_soulplague = mods.oe.spawn_soulplague
+local spawn_darkness = mods.oe.spawn_darkness
+local spawn_shadow = mods.oe.spawn_shadow
+local spawn_radiant = mods.oe.spawn_radiant
+
+
+local spawn_effect = {}
+spawn_effect["PLACEHOLDER"] = spawn_fire
+spawn_effect["Fire"] = spawn_fire
+spawn_effect["Frost"] = spawn_lockdown
+spawn_effect["Breach"] = spawn_breach
+spawn_effect["Shock"] = spawn_shock
+spawn_effect["Shatter"] = spawn_shatter
+spawn_effect["Acidic"] = spawn_acid
+spawn_effect["Inculcation"] = spawn_inculcation
+spawn_effect["Marked"] = spawn_marked
+spawn_effect["Resurrection"] = spawn_resurrection
+spawn_effect["Cascade"] = spawn_lightning
+spawn_effect["Soulplagued"] = spawn_soulplague
+spawn_effect["Darkness"] = spawn_darkness
+spawn_effect["Shadow-Frost"] = spawn_shadow
+spawn_effect["Radiant"] = spawn_radiant
+
+local function spawn_chaos(shipManager, projectile, location, damage, shipFriendlyFire)
+	local possibleEffects = {}
+	for i, effect in ipairs(greaseEffects) do
+		if effect.type == 1 and (effect.req and Hyperspace.ships.player:HasEquipment(effect.req) > 0) or not effect.req then
+			table.insert(possibleEffects, effect)
+		end
+	end
+	local random = math.random(#possibleEffects)
+	spawn_effect[possibleEffects[random].name](shipManager, projectile, location, damage, shipFriendlyFire)
+end
+spawn_effect["Chaos"] = spawn_chaos
+
+script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
+	if shipManager:HasSystem(11) then
+		for artillery in vter(shipManager.artillerySystems) do
+			local weapon = artillery.projectileFactory
+			if userdata_table(artillery, "mods.oe.grease").disabled then
+				userdata_table(weapon, "mods.oe.grease").disabled = true
+			else
+				userdata_table(weapon, "mods.oe.grease").disabled = nil
+			end
+		end
+	end
+end)
+
+script.on_internal_event(Defines.InternalEvents.PROJECTILE_FIRE, function(projectile, weapon)
+	local shipManager = Hyperspace.ships(weapon.iShipId)
+	if shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemIdName)) and not userdata_table(weapon, "mods.oe.grease").disabled then
+		local chargeVar = (shipManager.iShipId == 0 and systemChargesVariable) or (systemChargesVariable.."_enemy")
+		local typeVar = (shipManager.iShipId == 0 and systemTypeVariable) or (systemTypeVariable.."_enemy")
+
+		local currentTypeIndex = Hyperspace.playerVariables[typeVar]
+		local currentEffect = greaseEffects[currentTypeIndex]
+
+		if currentEffect.type == 1 and weapon.queuedProjectiles:empty() and Hyperspace.playerVariables[chargeVar] > 0  then
+			userdata_table(projectile, "mods.oe.oe_grease").greased = currentTypeIndex
+			Hyperspace.playerVariables[chargeVar] = Hyperspace.playerVariables[chargeVar] - 1
+		elseif currentEffect.type == 2 and Hyperspace.playerVariables[chargeVar] > 0 then
+			userdata_table(projectile, "mods.oe.oe_grease").greased = currentTypeIndex
+		end
+	end
+end)
+
+script.on_internal_event(Defines.InternalEvents.DAMAGE_AREA_HIT, function(shipManager, projectile, location, damage, shipFriendlyFire)
+	if projectile and userdata_table(projectile, "mods.oe.oe_grease").greased then
+		local effect = greaseEffects[userdata_table(projectile, "mods.oe.oe_grease").greased]
+		if spawn_effect[effect.name] then
+			spawn_effect[effect.name](shipManager, projectile, location, damage, shipFriendlyFire)
+		else
+			print("ERROR SPAWNING EFFECT:"..effect.name)
+		end
+		userdata_table(projectile, "mods.oe.oe_grease").greased = nil
+	end
+end)
+
+script.on_internal_event(Defines.InternalEvents.DAMAGE_BEAM, function(shipManager, projectile, location, damage, realNewTile, beamHitType)
+	if projectile and userdata_table(projectile, "mods.oe.oe_grease").greased and beamHitType == Defines.BeamHit.NEW_ROOM then
+		local effect = greaseEffects[userdata_table(projectile, "mods.oe.oe_grease").greased]
+		if spawn_effect[effect.name] then
+			spawn_effect[effect.name](shipManager, projectile, location, damage, false)
+		else
+			print("ERROR SPAWNING EFFECT BEAM:"..effect.name)
+		end
+		userdata_table(projectile, "mods.oe.oe_grease").greased = nil
+	end
+end)
+
+script.on_render_event(Defines.RenderEvents.SHIP, function(ship) end, function(ship)
+	local spaceManager = Hyperspace.App.world.space
+	for projectile in vter(spaceManager.projectiles) do
+		greaseTable = userdata_table(projectile, "mods.oe.oe_grease")
+		if projectile.currentSpace == ship.iShipId and greaseTable.greased then
+			local effect = greaseEffects[greaseTable.greased]
+			--[[--Graphics.CSurface.GL_PushStencilMode()
+			--Graphics.CSurface.GL_SetStencilMode(1,1,1)
+			Graphics.CSurface.GL_PushMatrix()
+			Graphics.CSurface.GL_Translate(projectile.position.x, projectile.position.y, 0)
+			--print(tostring(projectile.heading * 360).." angle to target:"..tostring(alpha))
+			if projectile.currentSpace == projectile.destinationSpace then
+				local alpha = math.atan((projectile.position.y-projectile.target.y), (projectile.position.x-projectile.target.x))
+				Graphics.CSurface.GL_Rotate(alpha*360, 0, 0, 1)
+			else
+				Graphics.CSurface.GL_Rotate(projectile.heading*360, 0, 0, 1)
+			end
+			projectile.flight_animation:OnRender(1, Graphics.GL_Color(0, 0, 1, 1), false)
+			Graphics.CSurface.GL_PopMatrix()]]
+			Graphics.CSurface.GL_PushMatrix()
+			Graphics.CSurface.GL_Translate(projectile.position.x - 11, projectile.position.y - 11, 0)
+			local effectImage = effectImages[effect.name]
+			Graphics.CSurface.GL_RenderPrimitive(effectImage)
+			Graphics.CSurface.GL_PopMatrix()
+			--Graphics.CSurface.GL_SetStencilMode(2,1,1)
+			--[[Graphics.CSurface.GL_DrawRect(
+				projectile.position.x - 25, 
+				projectile.position.y - 25, 
+				50, 
+				50, 
+				effect.colour
+			)]]
+			--Graphics.CSurface.GL_SetStencilMode(0,1,1)
+			--Graphics.CSurface.GL_PopStencilMode()
+
+			
+		end
+	end
+end)
+
+---@param room Hyperspace.Room The room to get the time dilation factor for.
+---@return number dilation multipier to the rate that time passes within the room.
+local function get_time_dilation(room)
+	return Hyperspace.TemporalSystemParser.GetDilationStrength(room.extend.timeDilation)
+end
+
+script.on_internal_event(Defines.InternalEvents.JUMP_ARRIVE, function(shipManager)
+	if shipManager.iShipId == 0 then
+		if (shipManager:HasAugmentation("UPG_OE_GREASE_IGNITER") > 0 or shipManager:HasAugmentation("EX_OE_GREASE_IGNITER") > 0) and shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemIdName)) then
+			local sys = shipManager:GetSystem(Hyperspace.ShipSystem.NameToSystemId(systemIdName))
+			Hyperspace.playerVariables[systemChargesVariable] = sys:GetEffectivePower()
+			systemFillingAmount[0] = 0
+		else
+			Hyperspace.playerVariables[systemChargesVariable] = 0
+			systemFillingAmount[0] = 0
+		end
+
+		Hyperspace.playerVariables[systemChargesVariable.."_enemy"] = 0
+		systemFillingAmount[1] = 0
+	end
+end)
+
+mods.multiverse.systemIcons[Hyperspace.ShipSystem.NameToSystemId(systemIdName)] = mods.multiverse.register_system_icon(systemIdName)
+
+local node_child_iter = mods.multiverse.node_child_iter
+local layoutRooms = {}
+do
+	local doc = RapidXML.xml_document("data/autoBlueprints.xml")
+	for node in node_child_iter(doc:first_node("FTL") or doc) do
+		if node:name() == "oe_layout" then
+			local layout = node:first_attribute("name"):value()
+			local rooms = {}
+			local s = layout.." rooms:"
+			for roomNode in node_child_iter(node) do
+				s = s.." "..roomNode:value()
+				table.insert(rooms, tonumber(roomNode:value()) )
+			end
+			layoutRooms[layout] = rooms
+			--print(s)
+		end
+	end
+	doc:clear()
+end
+
+local function findEmptyRoom(layout, bp)
+	if layoutRooms[layout] then
+		for _, id in ipairs(layoutRooms[layout]) do
+			local hasSystem = false
+			for systemId in vter(bp.systemInfo:keys()) do
+				local loc = bp.systemInfo[systemId].location[0]
+				--print(Hyperspace.ShipSystem.SystemIdToName(systemId).." loc:"..loc)
+				if loc == id then
+					hasSystem = true
+				end
+			end
+			if not hasSystem then
+				--print(layout.." found room:"..id)
+				return id
+			end
+		end
+	end
+	return nil
+end
+
+local tempBlueprint = Hyperspace.Blueprints:GetShipBlueprint("OE_GREASE_TEMP_SHIP", 1)
+local tempSystemTemplate = tempBlueprint.systemInfo[Hyperspace.ShipSystem.NameToSystemId(systemIdName)]
+
+local shipPrefix = {}
+shipPrefix["OE_OLD"] = 5
+shipPrefix["OE_SHARD"] = 5
+shipPrefix["OE_ACID"] = 6
+shipPrefix["OE_SHLEG"] = 7
+shipPrefix["OE_BIRD"] = 8
+shipPrefix["OE_NECRO"] = 9
+
+script.on_internal_event(Defines.InternalEvents.GENERATOR_CREATE_SHIP, function(name, sector, event, bp, shipManager)
+	local r = math.random()
+	--print(name)
+	Hyperspace.playerVariables[systemTypeVariable.."_enemy"] = math.random(3)
+	local isPrefix = false
+	for prefix, number in pairs(shipPrefix) do
+		local prefix_start, prefix_end = string.find(name, prefix)
+		if prefix_start then
+			Hyperspace.playerVariables[systemTypeVariable.."_enemy"] = number
+			isPrefix = true
+		end
+	end
+	--print(r)
+	if r > 0.4 or ((not isPrefix) and r > 0) then return Defines.Chain.CONTINUE, sector, event, bp, ret end
+	local empty = findEmptyRoom(bp.layoutFile, bp)
+	if empty then
+		local newSys = tempSystemTemplate
+		newSys.systemId = Hyperspace.ShipSystem.NameToSystemId(systemIdName)
+		newSys.location:clear()
+		newSys.location:push_back(empty)
+		newSys.powerLevel = 1
+		newSys.maxPower = 1
+		bp.systemInfo[Hyperspace.ShipSystem.NameToSystemId(systemIdName)] = newSys
+		bp.systems:push_back(Hyperspace.ShipSystem.NameToSystemId(systemIdName))
+	end
+	return Defines.Chain.CONTINUE, sector, event, bp, ret
+end)

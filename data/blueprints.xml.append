@@ -1,3 +1,697 @@
+<!--Aux Shields-->
 <FTL>
+<systemBlueprint name="oe_aux_shields">
+	<type>oe_aux_shields</type>
+	<title>Auxiliary Shields</title>
+	<desc>Passively Generates super shield layers every 8 seconds, can be boosted to temporarily charge layers every 0.5 seconds before going on cooldown. [Level 3 is installed in the storage menu]</desc>
+	<startPower>1</startPower>
+	<maxPower>3</maxPower>
+	<rarity>1</rarity>
+	<upgradeCost>
+		<level>40</level>
+		<level>9999</level>
+		<level>80</level>
+		<level>100</level>
+	</upgradeCost>
+	<cost>125</cost>
+</systemBlueprint>
 
+<augBlueprint name="UPG_OE_AUX_SHIELD_CAPACITY">
+	<title>Shield Capacitors</title>
+	<desc>YOU SHOULD NEVER SEE THIS</desc>
+	<cost>0</cost>
+	<rarity>0</rarity>
+	<stackable>false</stackable>
+</augBlueprint>
+<augBlueprint name="EX_OE_AUX_SHIELD_CAPACITY">
+	<title>Shield Capacitors [X]</title>
+	<desc>Removes the layer cap on the Auxiliary Shields system, allowing it to charge up to your super shield cap, or 5, whichever is higher.
+		
+	[X] - As an external system upgrade, this augment will provide its normal effect but take up an augment slot. Can be converted for free to the internal version under the internal upgrade menu if you have the Cloaking system.</desc>
+	<cost>60</cost>
+	<rarity>0</rarity>
+	<stackable>false</stackable>
+</augBlueprint>
+
+<augBlueprint name="UPG_OE_AUX_SHIELD_OVERCHARGER">
+	<title>Auxiliary Overcharger</title>
+	<desc>YOU SHOULD NEVER SEE THIS</desc>
+	<cost>0</cost>
+	<rarity>0</rarity>
+	<stackable>false</stackable>
+</augBlueprint>
+<augBlueprint name="EX_OE_AUX_SHIELD_OVERCHARGER">
+	<title>Auxiliary Overcharger [X]</title>
+	<desc>YOU SHOULD NEVER SEE THIS</desc>
+	<cost>0</cost>
+	<rarity>0</rarity>
+	<stackable>false</stackable>
+</augBlueprint>
+
+<augBlueprint name="UPG_OE_AUX_SHIELD_LINKER">
+	<title>Computer Synchronisation</title>
+	<desc>YOU SHOULD NEVER SEE THIS</desc>
+	<cost>0</cost>
+	<rarity>0</rarity>
+	<stackable>false</stackable>
+</augBlueprint>
+<augBlueprint name="EX_OE_AUX_SHIELD_LINKER">
+	<title>Computer Synchronisation [X]</title>
+	<desc>Manning in Auxiliary Shields also provides Shields with 50% of the bonus, Manning in Shields provides Auxiliary Shields with 50% of it's bonus.
+    
+		[X] - As an external system upgrade, this augment will provide its normal effect but take up an augment slot. Can be converted for free to the internal version under the internal upgrade menu, in the On-board Tech category.</desc>
+	<cost>0</cost>
+	<rarity>0</rarity>
+	<stackable>false</stackable>
+</augBlueprint>
+
+<augBlueprint name="BOON_OE_AUX_SHIELDS">
+	<title>Aux Shields boon</title>
+	<desc>YOU SHOULD NEVER SEE THIS</desc>
+	<cost>0</cost>
+	<rarity>0</rarity>
+	<stackable>false</stackable>
+</augBlueprint>
+</FTL>
+
+<!--Grease-->
+<FTL>
+	
+<systemBlueprint name="oe_grease">
+	<type>oe_grease</type>
+	<title>Weapons Amplifier</title>
+	<desc>Builds up charges which enhance your weapons, can be equipped with different enhancements depending on your equipment and crew. Can scan technology to add it to it's library of enhancements.</desc>
+	<startPower>1</startPower>
+	<maxPower>2</maxPower>
+	<rarity>0</rarity>
+	<upgradeCost>
+		<level>55</level> <!--level 2-->
+		<level>75</level> <!--level 3-->
+	</upgradeCost>
+	<cost>45</cost>
+</systemBlueprint>
+
+<weaponBlueprint name="OE_GREASE_EFFECT_BOMB_SHATTER">
+	<type>LASER</type>
+	<title>Bomb Launcher</title>
+	<short>Bomb</short>
+	<desc>YOU SHOULD NEVER SEE THIS</desc>
+	<damage>0</damage>
+	<sysDamage>0</sysDamage>
+	<persDamage>0</persDamage>
+	<accuracyMod>200</accuracyMod>
+	<missiles>0</missiles>
+	<shots>1</shots>
+	<sp>0</sp>
+	<fireChance>0</fireChance>
+	<breachChance>0</breachChance>
+	<cooldown>11</cooldown>
+	<power>1</power>
+	<cost>45</cost>
+	<rarity>0</rarity>
+	<image>oe_invisible</image>
+	<explosion>oe_invisible</explosion>
+	<weaponArt>bomblauncher_small</weaponArt>
+	<iconImage>bomb</iconImage>
+	<lockdown>true</lockdown>
+	<customLockdown>
+		<health>2</health>
+		<duration>12.0</duration>
+		<color r="255" g="255" b="255" a="1"/>
+		<anims>
+			<anim>oe_shatter_shard_1</anim>
+			<anim>oe_shatter_shard_2</anim>
+		</anims>
+		<canDilate>true</canDilate>
+	</customLockdown>
+</weaponBlueprint>
+<weaponBlueprint name="OE_GREASE_EFFECT_BOMB_DD_SOULPLAGUE">
+	<type>LASER</type>
+	<title>Bomb Launcher</title>
+	<short>Bomb</short>
+	<desc>YOU SHOULD NEVER SEE THIS</desc>
+	<damage>0</damage>
+	<sysDamage>0</sysDamage>
+	<persDamage>0</persDamage>
+	<accuracyMod>200</accuracyMod>
+	<missiles>0</missiles>
+	<shots>1</shots>
+	<sp>0</sp>
+	<fireChance>0</fireChance>
+	<breachChance>0</breachChance>
+	<cooldown>11</cooldown>
+	<power>1</power>
+	<cost>45</cost>
+	<rarity>0</rarity>
+	<image>oe_invisible</image>
+	<explosion>oe_invisible</explosion>
+	<weaponArt>bomblauncher_small</weaponArt>
+	<iconImage>bomb</iconImage>
+	<roomStatBoosts> <!-- SOULPLAGUE -->
+		<statBoost name="repairSpeed">
+			<boostType>MULT</boostType>
+			<amount>0.5</amount>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddPlagueriddenRepairDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<blackList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_DDNOFEAR"/>
+			<roomAnim renderLayer="3">                                                    
+				<anim animType="default" animBorder="2">ddinvisible_effect</anim>
+					<wallAnim>ddroom_plagueridden_effect</wallAnim>
+			</roomAnim>
+		</statBoost>
+		<statBoost name="trueHealAmount">
+			<boostType>FLAT</boostType>
+			<amount>-2.3</amount>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddPlagueriddenDOTDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<blackList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_DDNOFEAR"/>
+		</statBoost>
+		<statBoost name="deathEffect">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_CRYSTAL"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_CRYSTAL"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_DEEPONE"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_DEEPONES"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_ENGI"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ENGI"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_GHOST"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_GHOST"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_LANIUS"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_LANIUS"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_LEECH"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_LEECH"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_MANTIS"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_MANTIS"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_OBELISK"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ANCIENT"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_ORCHID"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ORCHID"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_ROCKMAN"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ROCK"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_SHELL"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_SHELL"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_SLUG"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_SLUG"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_ZOLTAN"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ZOLTAN"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_HUMAN"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<blackList>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_CRYSTAL"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_DEEPONES"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ENGI"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_GHOST"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_LANIUS"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_LEECH"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_MANTIS"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ANCIENT"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ORCHID"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ROCK"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_SHELL"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_SLUG"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ZOLTAN"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_DDNOFEAR"/>
+			</blackList>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+	</roomStatBoosts>
+	<roomStatBoostChance>10</roomStatBoostChance>
+</weaponBlueprint>
+
+<weaponBlueprint name="OE_GREASE_EFFECT_BOMB_DD_SHADOW">
+	<type>LASER</type>
+	<title>Bomb Launcher</title>
+	<short>Bomb</short>
+	<desc>YOU SHOULD NEVER SEE THIS</desc>
+	<damage>0</damage>
+	<sysDamage>0</sysDamage>
+	<persDamage>0</persDamage>
+	<accuracyMod>200</accuracyMod>
+	<missiles>0</missiles>
+	<shots>1</shots>
+	<sp>0</sp>
+	<fireChance>0</fireChance>
+	<breachChance>0</breachChance>
+	<cooldown>11</cooldown>
+	<power>1</power>
+	<cost>45</cost>
+	<rarity>0</rarity>
+	<image>oe_invisible</image>
+	<explosion>oe_invisible</explosion>
+	<weaponArt>bomblauncher_small</weaponArt>
+	<iconImage>bomb</iconImage>
+	<spawnCrew> <!-- SHADOW-FROST -->
+		<race>darkgodtendrils</race>
+		<name>Hungering Shadow</name>
+		<number>1</number>
+		<noSlot>true</noSlot>
+		<lifetime>21</lifetime>
+		<statBoosts>
+			<statBoost name="noClone">
+				<boostType>SET</boostType>
+				<value>true</value>
+				<shipTarget>ALL</shipTarget>
+				<crewTarget>ALL</crewTarget>
+				<priority>999999</priority>
+			</statBoost>
+		</statBoosts>
+	</spawnCrew>
+	<crewSpawnChance>5</crewSpawnChance>
+	<lockdown>true</lockdown>
+	<customLockdown>
+		<health>6</health>
+		<duration>30.0</duration>
+		<color r="255" g="255" b="255" a="1"/>
+		<anims>
+			<anim>dddisparity_lockdown_effect_1</anim>
+			<anim>dddisparity_lockdown_effect_2</anim>
+		</anims>
+		<canDilate>true</canDilate>
+	</customLockdown>
+</weaponBlueprint>
+
+<weaponBlueprint name="OE_GREASE_EFFECT_BOMB_DD_RADIANT">
+	<type>LASER</type>
+	<title>Bomb Launcher</title>
+	<short>Bomb</short>
+	<desc>YOU SHOULD NEVER SEE THIS</desc>
+	<damage>0</damage>
+	<sysDamage>0</sysDamage>
+	<persDamage>0</persDamage>
+	<accuracyMod>200</accuracyMod>
+	<missiles>0</missiles>
+	<shots>1</shots>
+	<sp>0</sp>
+	<fireChance>0</fireChance>
+	<breachChance>0</breachChance>
+	<cooldown>11</cooldown>
+	<power>1</power>
+	<cost>45</cost>
+	<rarity>0</rarity>
+	<image>oe_invisible</image>
+	<explosion>oe_invisible</explosion>
+	<weaponArt>bomblauncher_small</weaponArt>
+	<iconImage>bomb</iconImage>
+	<spawnCrew> <!-- RADIANT -->
+		<race>LIST_CREW_DDLIGHTBORNE</race>
+		<name>Lightborne</name>
+		<number>1</number>
+		<noSlot>true</noSlot>
+		<lifetime>120</lifetime>
+		<statBoosts>
+			<statBoost name="noClone">
+				<boostType>SET</boostType>
+				<value>true</value>
+				<shipTarget>ALL</shipTarget>
+				<crewTarget>ALL</crewTarget>
+				<priority>999999</priority>
+			</statBoost>
+		</statBoosts>
+	</spawnCrew>
+	<crewSpawnChance>10</crewSpawnChance>
+	<roomStatBoosts>
+		<statBoost name="trueHealAmount">
+			<boostType>FLAT</boostType>
+			<amount>4.0</amount>
+			<shipTarget>CURRENT_ROOM</shipTarget>
+			<crewTarget>ALLIES</crewTarget>
+			<droneTarget>ALL</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>25</duration>
+			<maxStacks id="ddRadiantDesecrationHealingBuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList>
+				<ddlightborne_slayling/>
+				<ddlightborne_prismling/>
+				<ddlightborne_cinderling/>
+				<ddlightborne_clusterular/>
+				<ddlightborne_cellular/>
+				<ddlightborne_devourlux/>
+				<ddlightborne_spiritling/>
+				<ddlightborne_commandlux/>
+				<ddlightborne_timelux/>
+				<ddlightborne_angelular/>
+				<ddlightborne_warlockular/>
+				<ddlightborne_breakling/>
+				<ddlightborne_tormentular/>
+			</whiteList>
+			<roomAnim renderLayer="3">                                                    
+				<anim animType="default" animBorder="2">ddinvisible_effect</anim>
+					<wallAnim>ddroom_radiantdesecration_effect</wallAnim>
+			</roomAnim>
+		</statBoost>
+		<statBoost name="damageMultiplier">
+			<boostType>MULT</boostType>
+			<amount>4</amount>
+			<shipTarget>CURRENT_ROOM</shipTarget>
+			<crewTarget>ALLIES</crewTarget>
+			<droneTarget>ALL</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>25</duration>
+			<maxStacks id="ddRadiantDesecrationDamageBuff">1</maxStacks>
+			<priority>-99999</priority>
+			<whiteList>
+				<ddlightborne_slayling/>
+				<ddlightborne_prismling/>
+				<ddlightborne_cinderling/>
+				<ddlightborne_clusterular/>
+				<ddlightborne_cellular/>
+				<ddlightborne_devourlux/>
+				<ddlightborne_spiritling/>
+				<ddlightborne_commandlux/>
+				<ddlightborne_timelux/>
+				<ddlightborne_angelular/>
+				<ddlightborne_warlockular/>
+				<ddlightborne_breakling/>
+				<ddlightborne_tormentular/>
+			</whiteList>
+		</statBoost>
+		<statBoost name="sabotageSpeedMultiplier">
+			<boostType>MULT</boostType>
+			<amount>4</amount>
+			<shipTarget>CURRENT_ROOM</shipTarget>
+			<crewTarget>ALLIES</crewTarget>
+			<droneTarget>ALL</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>25</duration>
+			<maxStacks id="ddRadiantDesecrationSabotageBuff">1</maxStacks>
+			<priority>-99999</priority>
+			<whiteList>
+				<ddlightborne_slayling/>
+				<ddlightborne_prismling/>
+				<ddlightborne_cinderling/>
+				<ddlightborne_clusterular/>
+				<ddlightborne_cellular/>
+				<ddlightborne_devourlux/>
+				<ddlightborne_spiritling/>
+				<ddlightborne_commandlux/>
+				<ddlightborne_timelux/>
+				<ddlightborne_angelular/>
+				<ddlightborne_warlockular/>
+				<ddlightborne_breakling/>
+				<ddlightborne_tormentular/>
+			</whiteList>
+		</statBoost>
+		<statBoost name="moveSpeedMultiplier">
+			<boostType>MULT</boostType>
+			<amount>4</amount>
+			<shipTarget>CURRENT_ROOM</shipTarget>
+			<crewTarget>ALLIES</crewTarget>
+			<droneTarget>ALL</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>25</duration>
+			<maxStacks id="ddRadiantDesecrationSpeedBuff">1</maxStacks>
+			<priority>-99999</priority>
+			<whiteList>
+				<ddlightborne_slayling/>
+				<ddlightborne_prismling/>
+				<ddlightborne_cinderling/>
+				<ddlightborne_clusterular/>
+				<ddlightborne_cellular/>
+				<ddlightborne_devourlux/>
+				<ddlightborne_spiritling/>
+				<ddlightborne_commandlux/>
+				<ddlightborne_timelux/>
+				<ddlightborne_angelular/>
+				<ddlightborne_warlockular/>
+				<ddlightborne_breakling/>
+				<ddlightborne_tormentular/>
+			</whiteList>
+		</statBoost>
+		<statBoost name="trueHealAmount">
+			<boostType>FLAT</boostType>
+			<amount>-1.0</amount>
+			<shipTarget>CURRENT_ROOM</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>ALL</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>25</duration>
+			<maxStacks id="ddRadiantDesecrationDOTDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<boostAnim>ddradiantdesecration_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="damageMultiplier">
+			<boostType>MULT</boostType>
+			<amount>0.8</amount>
+			<shipTarget>CURRENT_ROOM</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>ALL</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>25</duration>
+			<maxStacks id="ddRadiantDesecrationDamageDebuff">1</maxStacks>
+			<priority>10001</priority>
+		</statBoost>
+		<statBoost name="sabotageSpeedMultiplier">
+			<boostType>MULT</boostType>
+			<amount>0.8</amount>
+			<shipTarget>CURRENT_ROOM</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>ALL</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>25</duration>
+			<maxStacks id="ddRadiantDesecrationSabotageDebuff">1</maxStacks>
+			<priority>10001</priority>
+		</statBoost>
+		<statBoost name="moveSpeedMultiplier">
+			<boostType>MULT</boostType>
+			<amount>0.8</amount>
+			<shipTarget>CURRENT_ROOM</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>ALL</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>25</duration>
+			<maxStacks id="ddRadiantDesecrationSpeedDebuff">1</maxStacks>
+			<priority>10001</priority>
+		</statBoost>
+	</roomStatBoosts>
+</weaponBlueprint>
+
+<augBlueprint name="UPG_OE_GREASE_IGNITER">
+	<title>Pre-Ignited Canisters</title>
+	<desc>YOU SHOULD NEVER SEE THIS</desc>
+	<cost>0</cost>
+	<rarity>0</rarity>
+	<stackable>true</stackable>
+	<value>1</value>
+</augBlueprint>
+<augBlueprint name="EX_OE_GREASE_IGNITER">
+	<title>Pre-Ignited Canisters [X]</title>
+	<desc>System charges are refilled with each jump.
+    
+	[X] - As an external system upgrade, this augment will provide its normal effect but take up an augment slot. Can be converted for free to the internal version under the internal upgrade menu if you have the Modified Clone Bay system.</desc>
+	<cost>80</cost>
+	<rarity>0</rarity>
+	<stackable>true</stackable>
+	<value>1</value>
+</augBlueprint>
+<augBlueprint name="UPG_OE_GREASE_SWITCH">
+	<title>Fluid Recycler</title>
+	<desc>YOU SHOULD NEVER SEE THIS</desc>
+	<cost>0</cost>
+	<rarity>0</rarity>
+	<stackable>false</stackable>
+</augBlueprint>
+<augBlueprint name="EX_OE_GREASE_SWITCH">
+	<title>Fluid Recycler [X]</title>
+	<desc>Switching enhancements no longer resets system charges.
+    
+	[X] - As an external system upgrade, this augment will provide its normal effect but take up an augment slot. Can be converted for free to the internal version under the internal upgrade menu if you have the Modified Clone Bay system.</desc>
+	<cost>40</cost>
+	<rarity>0</rarity>
+	<stackable>false</stackable>
+</augBlueprint>
+<augBlueprint name="BOON_OE_GREASE">
+	<title>Weapons Amplifier</title>
+	<desc>YOU SHOULD NEVER SEE THIS</desc>
+	<cost>0</cost>
+	<rarity>0</rarity>
+	<stackable>false</stackable>
+</augBlueprint>
 </FTL>

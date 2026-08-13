@@ -1,3 +1,20 @@
 <FTL>
+<mod:findName name="OE_SHOP_ITEM_SYSTEMS_EXTRA" type="blueprintList">
+	<mod-append:name>oe_aux_shields</mod-append:name>
+	<mod-append:name>oe_grease</mod-append:name>
+</mod:findName>
 
+<shipBlueprint name="OE_GREASE_TEMP_SHIP" layout="mu_leech_battleship" img="mu_leech_battleship_elite">
+	<class>Ampere Battleship</class>
+	<systemList>
+		<oe_grease power="1" max="1" room="0" start="true" />
+	</systemList>
+	<weaponSlots>0</weaponSlots>
+	<droneSlots>0</droneSlots>
+	<weaponList missiles="10" count="06" />
+	<droneList drones="3" count="0" />
+	<health amount="12" />
+	<maxPower amount="10" />
+	<boardingAI>sabotage</boardingAI>
+</shipBlueprint>
 </FTL>

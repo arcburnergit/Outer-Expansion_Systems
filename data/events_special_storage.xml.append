@@ -1,4 +1,675 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FTL>
+<mod:findName type="event" name="STORAGE_CHECK_SYSTEM">
+	<mod-append:choice req="oe_aux_shields" blue="false" hidden="true">
+	  <text>Auxiliary Shields.</text>
+	  <event load="STORAGE_CHECK_SYSTEM_OE_AUX_SHIELDS" />
+	</mod-append:choice>
+	<mod-append:choice req="oe_grease" blue="false" hidden="true">
+	  <text>Weapons Amplifier.</text>
+	  <event load="STORAGE_CHECK_SYSTEM_OE_GREASE" />
+	</mod-append:choice>
+</mod:findName>
+</FTL>
 
+<!--Aux Shields-->
+<FTL>
+<event name="STORAGE_CHECK_SYSTEM_OE_AUX_SHIELDS">
+    <text>What upgrade do you want to install?</text>
+    <choice req="oe_aux_shields" lvl="0" max_lvl="1" max_group="0" blue="false" hidden="true">
+        <text>Level 3 Auxiliary Shields. [UNAVAILABLE: system is not level 2]</text>
+        <event load="OPTION_INVALID"/>
+    </choice>
+    <choice req="oe_aux_shields" lvl="2" max_group="0" blue="false" hidden="true">
+        <text>Level 3 Auxiliary Shields. [Cost: 65~, 3{, 1|]</text>
+        <event load="STORAGE_CHECK_SYSTEM_OE_AUX_SHIELDS_LEVEL3"/>
+    </choice>
+	<choice req="oe_aux_shields" lvl="3" max_group="0" blue="false" hidden="true">
+        <text>Level 3 Auxiliary Shields. [ALREADY INSTALLED]</text>
+        <event load="OPTION_INVALID"/>
+    </choice>
+    <choice req="UPG_OE_AUX_SHIELD_CAPACITY" lvl="1" max_group="1" blue="false" hidden="true">
+        <text>Shield Capacitors. [ALREADY INSTALLED]</text>
+        <event load="OPTION_INVALID"/>
+    </choice>
+    <choice req="UPG_OE_AUX_SHIELD_CAPACITY" lvl="0" max_group="1" blue="false" hidden="true">
+        <text>Shield Capacitors. [Cost: 55~, 2{, 4}]</text>
+        <event load="STORAGE_CHECK_SYSTEM_OE_AUX_SHIELD_CAPACITY"/>
+    </choice>
+    <choice req="UPG_OE_AUX_SHIELD_OVERCHARGER" lvl="1" max_group="2" blue="false" hidden="true">
+        <text>Auxiliary Overcharger. [ALREADY INSTALLED]</text>
+        <event load="OPTION_INVALID" />
+    </choice>
+    <choice req="UPG_OE_AUX_SHIELD_OVERCHARGER" lvl="0" max_group="2" blue="false" hidden="true">
+        <text>Auxiliary Overcharger. [Cost: 50~, 1{]</text>
+        <event load="STORAGE_CHECK_SYSTEM_OE_AUX_SHIELD_OVERCHARGER" />
+    </choice>
+    <choice req="UPG_OE_AUX_SHIELD_LINKER" lvl="1" max_group="3" blue="false" hidden="true">
+        <text>Computer Synchronisation. [ALREADY INSTALLED]</text>
+        <event load="OPTION_INVALID" />
+    </choice>
+    <choice req="UPG_OE_AUX_SHIELD_LINKER" lvl="0" max_group="3" blue="false" hidden="true">
+        <text>Computer Synchronisation. [Cost: 35~, 5|]</text>
+        <event load="STORAGE_CHECK_SYSTEM_OE_AUX_SHIELD_LINKER" />
+    </choice>
+    <choice>
+        <text>Nevermind.</text>
+        <event load="STORAGE_CHECK_SYSTEM_LOAD" />
+    </choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_AUX_SHIELDS_LEVEL3">
+	<text>You are about to upgrade the Auxiliary Shields to level 3.
+	[Effects: 15 second boost, is not compatible with Shield Capacitors]</text>
+	<choice req="UPG_OE_AUX_SHIELD_CAPACITY" lvl="0" max_group="0" blue="false" hidden="true">
+		<text>Perform the upgrade. [Cost: 65~, 3{, 1|]</text>
+		<event>
+			<text>You install the upgrade.</text>
+			<upgrade amount="1" system="oe_aux_shields"/>
+			<item_modify>
+				<item type="fuel" min="-3" max="-3"/>
+				<item type="drones" min="-1" max="-1"/>
+				<item type="scrap" min="-65" max="-65"/>
+			</item_modify>
+			<choice>
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice req="UPG_OE_AUX_SHIELD_CAPACITY" lvl="1" max_group="0" blue="false" hidden="true">
+		<text>This upgrade is unavailable: not compatible with Shield Capacitors.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="pilot" lvl="1" max_group="1" blue="false" hidden="true">
+		<text>Nevermind.</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+	</choice>
+</event>
+
+<event name="STORAGE_CHECK_SYSTEM_OE_AUX_SHIELD_CAPACITY">
+	<text>You are about to install the Shield Capacitors upgrade.
+	[Effects: Removes the layer cap on the Auxiliary Shields system, allowing it to charge up to your super shield cap, or 5, whichever is higher, is not compatible with Auxiliary Shields lvl 3]</text>
+	<choice req="oe_aux_shields" lvl="1" max_group="0" blue="false" hidden="true">
+		<text>Perform the upgrade. [Cost: 55~, 4}, 2{]</text>
+		<event>
+			<text>You install the upgrade.</text>
+			<item_modify>
+				<item type="missiles" min="-4" max="-4"/>
+				<item type="fuel" min="-2" max="-2"/>
+				<item type="scrap" min="-55" max="-55"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="INSTALL_OE_AUX_SHIELD_CAPACITY"/>
+			</choice>
+		</event>
+	</choice>
+	<choice req="oe_aux_shields" lvl="3" max_group="0" blue="false" hidden="true">
+		<text>This upgrade is unavailable: not compatible with Auxiliary Shields Level 3.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="EX_OE_AUX_SHIELD_CAPACITY" max_group="1" blue="false" hidden="true">
+		<text>Install the External Augment internally.</text>
+		<event>
+			<text>You install the upgrade.</text>
+			<remove name="EX_OE_AUX_SHIELD_CAPACITY"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="INSTALL_OE_AUX_SHIELD_CAPACITY"/>
+			</choice>
+		</event>
+	</choice>
+	<choice req="pilot" lvl="1" max_group="2" blue="false" hidden="true">
+		<text>Nevermind.</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+	</choice>
+</event>
+<event name="INSTALL_OE_AUX_SHIELD_CAPACITY">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<hiddenAug>UPG_OE_AUX_SHIELD_CAPACITY</hiddenAug>
+	<loadEvent>STORAGE_CHECK_SYSTEM</loadEvent>
+</event>
+
+<event name="STORAGE_CHECK_SYSTEM_OE_AUX_SHIELD_LINKER">
+	<text>You are about to install the Computer Synchronisation upgrade.
+	[Effects: Manning in Auxiliary Shields also provides Shields with 50% of the bonus, Manning in Shields provides Auxiliary Shields with 50% of it's bonus.]</text>
+	<choice max_group="0" blue="false" hidden="true">
+		<text>Perform the upgrade. [Cost: 35~, 5|]</text>
+		<event>
+			<text>You install the upgrade.</text>
+			<item_modify>
+				<item type="drones" min="-5" max="-5" />
+				<item type="scrap" min="-35" max="-35" />
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="INSTALL_OE_AUX_SHIELD_LINKER" />
+			</choice>
+		</event>
+	</choice> 
+	<choice req="EX_OE_AUX_SHIELD_LINKER" max_group="1" blue="false" hidden="true">
+		<text>Install the External Augment internally.</text>
+		<event>
+			<text>You install the upgrade.</text>
+			<remove name="EX_OE_AUX_SHIELD_LINKER" />
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="INSTALL_OE_AUX_SHIELD_LINKER" />
+			</choice>
+		</event>
+	</choice>
+	<choice req="pilot" lvl="1" max_group="2" blue="false" hidden="true">
+		<text>Nevermind.</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="INSTALL_OE_AUX_SHIELD_LINKER">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<hiddenAug>UPG_OE_AUX_SHIELD_LINKER</hiddenAug>
+	<loadEvent>STORAGE_CHECK_SYSTEM</loadEvent>
+</event>
+
+<event name="STORAGE_CHECK_SYSTEM_OE_AUX_SHIELD_OVERCHARGER">
+	<text>You are about to install the Auxiliary Overcharger upgrade.
+	[Effects: Grants all super shield layers that the system can generate on jump.]</text>
+	<choice max_group="0" blue="false" hidden="true">
+		<text>Perform the upgrade. [Cost: 50~, 1{]</text>
+		<event>
+			<text>You install the upgrade.</text>
+			<item_modify>
+				<item type="fuel" min="-1" max="-1" />
+				<item type="scrap" min="-50" max="-50" />
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="INSTALL_OE_AUX_SHIELD_OVERCHARGER" />
+			</choice>
+		</event>
+	</choice> 
+	<choice req="EX_OE_AUX_SHIELD_OVERCHARGER" max_group="1" blue="false" hidden="true">
+		<text>Install the External Augment internally.</text>
+		<event>
+			<text>You install the upgrade.</text>
+			<remove name="EX_OE_AUX_SHIELD_OVERCHARGER" />
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="INSTALL_OE_AUX_SHIELD_OVERCHARGER" />
+			</choice>
+		</event>
+	</choice>
+	<choice req="pilot" lvl="1" max_group="2" blue="false" hidden="true">
+		<text>Nevermind.</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="INSTALL_OE_AUX_SHIELD_OVERCHARGER">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<hiddenAug>UPG_OE_AUX_SHIELD_OVERCHARGER</hiddenAug>
+	<loadEvent>STORAGE_CHECK_SYSTEM</loadEvent>
+</event>
+</FTL>
+
+<!--Grease-->
+<FTL>
+
+<event name="STORAGE_CHECK_SYSTEM_OE_GREASE">
+    <text>What upgrade do you want to install?</text>
+	<choice req="UPG_OE_GREASE_IGNITER" lvl="1" max_group="0" blue="false" hidden="true">
+		<text>Pre-Ignited Canisters. [ALREADY INSTALLED]</text>
+		<event load="OPTION_INVALID" />
+	</choice>
+	<choice req="UPG_OE_GREASE_IGNITER" lvl="0" max_group="0" blue="false" hidden="true">
+		<text>Pre-Ignited Canisters. [Cost: 60~]</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GREASE_IGNITER" />
+	</choice>
+    <choice req="UPG_OE_GREASE_SWITCH" lvl="1" max_group="1" blue="false" hidden="true">
+        <text>Fluid Recycler. [ALREADY INSTALLED]</text>
+        <event load="OPTION_INVALID" />
+    </choice>
+    <choice req="UPG_OE_GREASE_SWITCH" lvl="0" max_group="1" blue="false" hidden="true">
+        <text>Fluid Recycler. [Cost: 20~, 5{]</text>
+        <event load="STORAGE_CHECK_SYSTEM_OE_GREASE_SWITCH" />
+    </choice>
+	<choice req="pilot" max_group="2" blue="false" hidden="true">
+		<text>Fire Amplification. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="pilot" max_group="3" blue="false" hidden="true">
+		<text>Frost Amplification. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="pilot" max_group="4" blue="false" hidden="true">
+		<text>Breach Amplification. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GREASE_EFFECT_SHOCK" lvl="1" max_group="5" blue="false" hidden="true">
+		<text>Shock Amplification. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GREASE_REQ_EFFECT_SHOCK" lvl="1" max_group="5" blue="true" hidden="true">
+		<text>Shock Amplification.</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_SHOCK"/>
+	</choice>
+	<choice req="OE_GREASE_EFFECT_SHATTER" lvl="1" max_group="6" blue="false" hidden="true">
+		<text>Shatter Amplification. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GREASE_REQ_EFFECT_SHATTER" lvl="1" max_group="6" blue="true" hidden="true">
+		<text>Shatter Amplification.</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_SHATTER"/>
+	</choice>
+	<choice req="OE_GREASE_EFFECT_ACID" lvl="1" max_group="7" blue="false" hidden="true">
+		<text>Acidic Amplification. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GREASE_REQ_EFFECT_ACID" lvl="1" max_group="7" blue="true" hidden="true">
+		<text>Acidic Amplification.</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_ACID"/>
+	</choice>
+	<choice req="OE_GREASE_EFFECT_SHLEG" lvl="1" max_group="8" blue="false" hidden="true">
+		<text>Inculcation Amplification. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GREASE_REQ_EFFECT_SHLEG" lvl="1" max_group="8" blue="true" hidden="true">
+		<text>Inculcation Amplification.</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_SHLEG"/>
+	</choice>
+	<choice req="OE_GREASE_EFFECT_BIRD" lvl="1" max_group="9" blue="false" hidden="true">
+		<text>Mark Amplification. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GREASE_REQ_EFFECT_BIRD" lvl="1" max_group="9" blue="true" hidden="true">
+		<text>Mark Amplification.</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_BIRD"/>
+	</choice>
+	<choice req="OE_GREASE_EFFECT_NECRO" lvl="1" max_group="10" blue="false" hidden="true">
+		<text>Resurrection Amplification. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GREASE_REQ_EFFECT_NECRO" lvl="1" max_group="10" blue="true" hidden="true">
+		<text>Resurrection Amplification.</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_NECRO"/>
+	</choice>
+	<choice req="OE_GREASE_EFFECT_CASCADE" lvl="1" max_group="11" blue="false" hidden="true">
+		<text>Cascade Amplification. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GREASE_REQ_EFFECT_CASCADE" lvl="1" max_group="11" blue="true" hidden="true">
+		<text>Cascade Amplification.</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_CASCADE"/>
+	</choice>
+	<choice req="OE_GREASE_EFFECT_CHAOS" lvl="1" max_group="12" blue="false" hidden="true">
+		<text>Chaos Amplification. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GREASE_REQ_EFFECT_CHAOS" lvl="1" max_group="12" blue="true" hidden="true">
+		<text>Chaos Amplification.</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_CHAOS"/>
+	</choice>
+	<choice req="OE_GREASE_EFFECT_DD_SOULPLAGUE" lvl="1" max_group="13" blue="false" hidden="true">
+		<text>Soulplague Amplification. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GREASE_REQ_EFFECT_DD_SOULPLAGUE" lvl="1" max_group="13" blue="true" hidden="true">
+		<text>Soulplague Amplification.</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_DD_SOULPLAGUE"/>
+	</choice>
+	<choice req="OE_GREASE_EFFECT_DD_DARKNESS" lvl="1" max_group="14" blue="false" hidden="true">
+		<text>Darkness Amplification. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GREASE_REQ_EFFECT_DD_DARKNESS" lvl="1" max_group="14" blue="true" hidden="true">
+		<text>Darkness Amplification.</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_DD_DARKNESS"/>
+	</choice>
+	<choice req="OE_GREASE_EFFECT_DD_SHADOW" lvl="1" max_group="15" blue="false" hidden="true">
+		<text>Shadow-Frost Amplification. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GREASE_REQ_EFFECT_DD_SHADOW" lvl="1" max_group="15" blue="true" hidden="true">
+		<text>Shadow-Frost Amplification.</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_DD_SHADOW"/>
+	</choice>
+	<choice req="OE_GREASE_EFFECT_DD_RADIANT" lvl="1" max_group="16" blue="false" hidden="true">
+		<text>Radiant Amplification. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GREASE_REQ_EFFECT_DD_RADIANT" lvl="1" max_group="16" blue="true" hidden="true">
+		<text>Radiant Amplification.</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_DD_RADIANT"/>
+	</choice>
+    <choice>
+        <text>Nevermind.</text>
+        <event load="STORAGE_CHECK_SYSTEM_LOAD" />
+    </choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_SHOCK">
+	<text>You have tech on your ship which can be scanned by your Weapons Amplifier.
+[Shock Enhancement: Causes the last projectile in the volley to break and stun all doors in the room.]
+It will take a while to scan, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed.</text>
+		<event>
+			<text>Your system scans the technology, adding the enhancement to the system's library.</text>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GREASE_EFFECT_SHOCK</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_SHATTER">
+	<text>You have tech on your ship which can be scanned by your Weapons Amplifier.
+[Shatter Enhancement: Causes the last projectile in the volley to create an extremely weak lockdown, the next hit to this room while the lockdown is active will do 2x damage.]
+It will take a while to scan, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed.</text>
+		<event>
+			<text>Your system scans the technology, adding the enhancement to the system's library.</text>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GREASE_EFFECT_SHATTER</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_ACID">
+	<text>You have tech on your ship which can be scanned by your Weapons Amplifier.
+[Acidic Enhancement: Causes the last projectile in the volley to create acidic that erodes the system on hit.]
+It will take a while to scan, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed.</text>
+		<event>
+			<text>Your system scans the technology, adding the enhancement to the system's library.</text>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GREASE_EFFECT_ACID</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_SHLEG">
+	<text>You have tech on your ship which can be scanned by your Weapons Amplifier.
+[Inculcation Enhancement: Causes the last projectile in the volley to create inculcation gas on hit.]
+It will take a while to scan, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed.</text>
+		<event>
+			<text>Your system scans the technology, adding the enhancement to the system's library.</text>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GREASE_EFFECT_SHLEG</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_BIRD">
+	<text>You have tech on your ship which can be scanned by your Weapons Amplifier.
+[Marked Enhancement: Causes the last projectile in the volley to target all friendly drones on hit.]
+It will take a while to scan, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed.</text>
+		<event>
+			<text>Your system scans the technology, adding the enhancement to the system's library.</text>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GREASE_EFFECT_BIRD</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_NECRO">
+	<text>You have tech on your ship which can be scanned by your Weapons Amplifier.
+[Resurrection Enhancement: When a projectile kills a crewmember, temporarily resurrect that crewmember on your side.]
+It will take a while to scan, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed.</text>
+		<event>
+			<text>Your system scans the technology, adding the enhancement to the system's library.</text>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GREASE_EFFECT_NECRO</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_CASCADE">
+	<text>You have tech on your ship which can be scanned by your Weapons Amplifier.
+[Cascade Enhancement: When a projectile full breaks a system, deal system damage to an adjacent room.]
+It will take a while to scan, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed.</text>
+		<event>
+			<text>Your system scans the technology, adding the enhancement to the system's library.</text>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GREASE_EFFECT_CASCADE</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_CHAOS">
+	<text>You have tech on your ship which can be scanned by your Weapons Amplifier.
+[Chaos Enhancement: Causes the last projectile in the volley to trigger a random effect that you have available.]
+It will take a while to scan, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed.</text>
+		<event>
+			<text>Your system scans the technology, adding the enhancement to the system's library.</text>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GREASE_EFFECT_CHAOS</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_DD_SOULPLAGUE">
+	<text>You have tech on your ship which can be scanned by your Weapons Amplifier.
+[Soulplague Enhancement: Causes the last projectile in the volley to inflict the Plagueridden effect.]
+It will take a while to scan, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed.</text>
+		<event>
+			<text>Your system scans the technology, adding the enhancement to the system's library.</text>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GREASE_EFFECT_DD_SOULPLAGUE</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_DD_DARKNESS">
+	<text>You have tech on your ship which can be scanned by your Weapons Amplifier.
+[Darkness Enhancement: Causes the last projectile in the volley to inflict a chaotic, and potentially dark effect.]
+It will take a while to scan, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed.</text>
+		<event>
+			<text>Your system scans the technology, adding the enhancement to the system's library.</text>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GREASE_EFFECT_DD_DARKNESS</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_DD_SHADOW">
+	<text>You have tech on your ship which can be scanned by your Weapons Amplifier.
+[Shadow-Frost Enhancement: Causes the last projectile in the volley to inflict a series of Shadow-Crystal lockdowns, and potentially spawn a Hungering Shadow.]
+It will take a while to scan, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed.</text>
+		<event>
+			<text>Your system scans the technology, adding the enhancement to the system's library.</text>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GREASE_EFFECT_DD_SHADOW</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GREASE_EFFECT_DD_RADIANT">
+	<text>You have tech on your ship which can be scanned by your Weapons Amplifier.
+[Radiant Enhancement: Causes the last projectile in the volley to inflict the Radiant Desecration effect, and spawn a random Lightborne.]
+It will take a while to scan, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed.</text>
+		<event>
+			<text>Your system scans the technology, adding the enhancement to the system's library.</text>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GREASE_EFFECT_DD_RADIANT</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+
+<event name="STORAGE_CHECK_SYSTEM_OE_GREASE_IGNITER">
+	<text>You are about to install the Pre-Ignited Canisters upgrade.
+	[Effects: System charges are refilled with each jump.]</text>
+	<choice max_group="0" blue="false" hidden="true">
+		<text>Perform the upgrade. [Cost: 60~]</text>
+		<event>
+			<text>You install the upgrade.</text>
+			<item_modify>
+				<item type="scrap" min="-60" max="-60" />
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="INSTALL_OE_GREASE_IGNITER" />
+			</choice>
+		</event>
+	</choice> 
+	<choice req="EX_OE_GREASE_IGNITER" max_group="1" blue="false" hidden="true">
+		<text>Install the External Augment internally.</text>
+		<event>
+			<text>You install the upgrade.</text>
+			<remove name="EX_OE_GREASE_IGNITER" />
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="INSTALL_OE_GREASE_IGNITER" />
+			</choice>
+		</event>
+	</choice>
+	<choice req="pilot" lvl="1" max_group="2" blue="false" hidden="true">
+		<text>Nevermind.</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="INSTALL_OE_GREASE_IGNITER">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<hiddenAug>UPG_OE_GREASE_IGNITER</hiddenAug>
+	<loadEvent>STORAGE_CHECK_SYSTEM</loadEvent>
+</event>
+
+<event name="STORAGE_CHECK_SYSTEM_OE_GREASE_SWITCH">
+	<text>You are about to install the Fluid Recycler upgrade.
+	[Effects: Switching enhancements no longer resets system charges.]</text>
+	<choice max_group="0" blue="false" hidden="true">
+		<text>Perform the upgrade. [Cost: 20~, 5{]</text>
+		<event>
+			<text>You install the upgrade.</text>
+			<item_modify>
+				<item type="fuel" min="-5" max="-5" />
+				<item type="scrap" min="-20" max="-20" />
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="INSTALL_OE_GREASE_SWITCH" />
+			</choice>
+		</event>
+	</choice> 
+	<choice req="EX_OE_GREASE_SWITCH" max_group="1" blue="false" hidden="true">
+		<text>Install the External Augment internally.</text>
+		<event>
+			<text>You install the upgrade.</text>
+			<remove name="EX_OE_GREASE_SWITCH" />
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="INSTALL_OE_GREASE_SWITCH" />
+			</choice>
+		</event>
+	</choice>
+	<choice req="pilot" lvl="1" max_group="2" blue="false" hidden="true">
+		<text>Nevermind.</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="INSTALL_OE_GREASE_SWITCH">
+	<variable name="loc_internal_upgrades" op="add" val="1" />
+	<hiddenAug>UPG_OE_GREASE_SWITCH</hiddenAug>
+	<loadEvent>STORAGE_CHECK_SYSTEM</loadEvent>
+</event>
 </FTL>

@@ -8,8 +8,77 @@ local function getRoomCount(file)
 end
 
 local systemsToAppend = {}
-
-
+systemsToAppend[1] = {id_name = "oe_aux_shields", attributes = {power = 1, start = "false"}, manning = true, replace_sys = "cloaking", 
+    image_list = {
+        {room_image = "room_shields", 		w = 2, h = 2, top = "00", bottom = "11", left="10", right="01", manning_slot = 0, manning_direction = "left"},
+        {room_image = "room_shields_oe_r", w = 2, h = 2, top = "01", bottom = "10", left="11", right="00", manning_slot = 1, manning_direction = "up"},
+        {room_image = "room_shields_oe_rr", w = 2, h = 2, top = "11", bottom = "00", left="10", right="01", manning_slot = 3, manning_direction = "right"},
+        {room_image = "room_shields_oe_rrr", w = 2, h = 2, top = "01", bottom = "10", left="00", right="11", manning_slot = 2, manning_direction = "down"},
+        {room_image = "room_shields_2", w = 2, h = 2, top = "10", bottom = "00", left="10", right="01", manning_slot = 0, manning_direction = "left"},
+        {room_image = "room_shields_oe_2_r", w = 2, h = 2, top = "01", bottom = "10", left="00", right="10", manning_slot = 1, manning_direction = "up"},
+        {room_image = "room_shields_oe_2_rr", w = 2, h = 2, top = "00", bottom = "01", left="10", right="01", manning_slot = 3, manning_direction = "right"},
+        {room_image = "room_shields_oe_2_rrr", w = 2, h = 2, top = "01", bottom = "10", left="01", right="00", manning_slot = 2, manning_direction = "down"},
+        {room_image = "room_shields_3", w = 2, h = 2, top = "01", bottom = "00", left="01", right="10", manning_slot = 2, manning_direction = "left"},
+        {room_image = "room_shields_oe_3_r", w = 2, h = 2, top = "10", bottom = "01", left="00", right="01", manning_slot = 0, manning_direction = "up"},
+        {room_image = "room_shields_oe_3_rr", w = 2, h = 2, top = "00", bottom = "10", left="01", right="10", manning_slot = 1, manning_direction = "right"},
+        {room_image = "room_shields_oe_3_rrr", w = 2, h = 2, top = "10", bottom = "01", left="10", right="00", manning_slot = 3, manning_direction = "down"},
+        {room_image = "room_shields_4", w = 2, h = 2, top = "11", bottom = "00", left="10", right="00", manning_slot = 0, manning_direction = "left"},
+        {room_image = "room_shields_5", w = 2, h = 2, top = "10", bottom = "10", left="01", right="00", manning_slot = 0, manning_direction = "up"},
+        {room_image = "room_shields_6", w = 2, h = 2, top = "10", bottom = "01", left="10", right="00", manning_slot = 0, manning_direction = "left"},
+        {room_image = "room_shields_7", w = 2, h = 2, top = "01", bottom = "01", left="10", right="00", manning_slot = 1, manning_direction = "up"},
+        {room_image = "room_shields_8", w = 2, h = 2, top = "00", bottom = "00", left="10", right="11", manning_slot = 0, manning_direction = "left"},
+        {room_image = "room_shields_9", w = 2, h = 2, top = "01", bottom = "01", left="00", right="01", manning_slot = 1, manning_direction = "up"},
+        {room_image = "room_shields_10", w = 2, h = 2, top = "01", bottom = "01", left="00", right="01", manning_slot = 3, manning_direction = "down"},
+        {room_image = "room_shields_11", w = 2, h = 1, top = "00", bottom = "11", left="0", right="1", manning_slot = 1, manning_direction = "down"},
+        {room_image = "room_shields_oe_cloak", w = 2, h = 2, top = "01", bottom = "00", left="00", right="10", manning_slot = 1, manning_direction = "up"},
+        {room_image = "room_shields_oe_cloak_2", w = 2, h = 2, top = "00", bottom = "01", left="00", right="01", manning_slot = 3, manning_direction = "right"},
+        {room_image = "room_shields_oe_cloak_10", w = 2, h = 2, top = "10", bottom = "00", left="10", right="00", manning_slot = 0, manning_direction = "left"},
+        {room_image = "room_shields_oe_cloak_11", w = 2, h = 2, top = "00", bottom = "10", left="01", right="00", manning_slot = 1, manning_direction = "down"},
+        {room_image = "room_shields_oe_cloak_3", w = 2, h = 1, top = "11", bottom = "00", left="0", right="0", manning_slot = 0, manning_direction = "up"},
+        {room_image = "room_shields_oe_cloak_12", w = 2, h = 2, top = "00", bottom = "11", left="00", right="00", manning_slot = 3, manning_direction = "down"},
+        {room_image = "room_shields_oe_11_r", w = 1, h = 2, top = "0", bottom = "1", left="11", right="00", manning_slot = 1, manning_direction = "left"},
+        {room_image = "room_shields_oe_11_rr", w = 2, h = 1, top = "11", bottom = "00", left="1", right="0", manning_slot = 0, manning_direction = "up"},
+        {room_image = "room_shields_oe_11_rrr", w = 1, h = 2, top = "1", bottom = "0", left="00", right="11", manning_slot = 0, manning_direction = "right"},
+        {room_image = "room_shields_oe_11_f", w = 2, h = 1, top = "00", bottom = "11", left="1", right="0", manning_slot = 0, manning_direction = "down"},
+        {room_image = "room_shields_oe_11_fr", w = 1, h = 2, top = "1", bottom = "0", left="11", right="00", manning_slot = 0, manning_direction = "left"},
+        {room_image = "room_shields_oe_11_frr", w = 2, h = 1, top = "11", bottom = "00", left="0", right="1", manning_slot = 1, manning_direction = "up"},
+        {room_image = "room_shields_oe_11_frrr", w = 1, h = 2, top = "0", bottom = "1", left="00", right="11", manning_slot = 1, manning_direction = "right"},
+        {room_image = "room_shields_oe_1", w = 1, h = 1, top = "1", bottom = "0", left="0", right="0", manning_slot = 0, manning_direction = "up"},
+        {room_image = "room_shields_oe_2", w = 1, h = 1, top = "0", bottom = "0", left="0", right="1", manning_slot = 0, manning_direction = "right"},
+        {room_image = "room_shields_oe_3", w = 1, h = 1, top = "0", bottom = "1", left="0", right="0", manning_slot = 0, manning_direction = "down"},
+        {room_image = "room_shields_oe_4", w = 1, h = 1, top = "0", bottom = "0", left="1", right="0", manning_slot = 0, manning_direction = "left"},
+        {room_image = "room_shields_oe_5", w = 2, h = 1, top = "0", bottom = "0", left="0", right="1", manning_slot = 1, manning_direction = "right"},
+        {room_image = "room_shields_oe_6", w = 3, h = 1, top = "0", bottom = "0", left="0", right="1", manning_slot = 2, manning_direction = "right"},
+        {room_image = "room_shields_oe_7", w = 4, h = 1, top = "0", bottom = "0", left="0", right="1", manning_slot = 3, manning_direction = "right"},
+        {room_image = "room_shields_oe_8", w = 1, h = 2, top = "0", bottom = "1", left="00", right="00", manning_slot = 1, manning_direction = "down"},
+        {room_image = "room_shields_oe_9", w = 1, h = 3, top = "0", bottom = "1", left="000", right="000", manning_slot = 2, manning_direction = "down"},
+        {room_image = "room_shields_oe_10", w = 1, h = 4, top = "0", bottom = "1", left="0000", right="0000", manning_slot = 3, manning_direction = "down"},
+    }
+}
+systemsToAppend[2] = {id_name = "oe_grease", attributes = {power = 1, start = "false"}, manning = false, replace_sys = "battery",
+    image_list = {
+        {room_image = "room_oe_grease_4", w = 2, h = 2, top = "10", bottom = "10", left="00", right="11"},
+        {room_image = "room_oe_grease", w = 2, h = 1, top = "11", bottom = "00", left="0", right="1"},
+        {room_image = "room_oe_grease_2", w = 2, h = 1, top = "00", bottom = "00", left="1", right="0"},
+        {room_image = "room_oe_grease_3", w = 2, h = 1, top = "11", bottom = "00", left="0", right="0"},
+        {room_image = "room_oe_grease_5", w = 1, h = 2, top = "1", bottom = "0", left="00", right="11"},
+        {room_image = "room_oe_grease_6", w = 1, h = 2, top = "0", bottom = "0", left="11", right="00"},
+        {room_image = "room_oe_grease_7", w = 2, h = 1, top = "00", bottom = "00", left="1", right="1"},
+        {room_image = "room_oe_grease_8", w = 1, h = 2, top = "0", bottom = "0", left="01", right="10"},
+        {room_image = "room_oe_grease_9", w = 2, h = 1, top = "00", bottom = "11", left="1", right="0"},
+        {room_image = "room_oe_grease_10", w = 2, h = 2, top = "0", bottom = "0", left="00", right="11"},
+        {room_image = "room_oe_grease_11", w = 1, h = 2, top = "0", bottom = "1", left="01", right="00"},
+        {room_image = "room_oe_grease_12", w = 2, h = 1, top = "01", bottom = "00", left="0", right="1"},
+        {room_image = "room_oe_grease_13", w = 2, h = 1, top = "01", bottom = "01", left="0", right="0"},
+        {room_image = "room_oe_grease_14", w = 2, h = 1, top = "00", bottom = "11", left="0", right="0"},
+        {room_image = "room_oe_grease_15", w = 1, h = 2, top = "0", bottom = "0", left="00", right="01"},
+        {room_image = "room_oe_grease_16", w = 1, h = 2, top = "0", bottom = "0", left="11", right="00"},
+        {room_image = "room_oe_grease_17", w = 1, h = 2, top = "0", bottom = "0", left="10", right="10"},
+        {room_image = "room_oe_grease_18", w = 1, h = 2, top = "0", bottom = "0", left="10", right="01"},
+        {room_image = "room_oe_grease_19", w = 2, h = 1, top = "10", bottom = "00", left="1", right="0"},
+        {room_image = "room_oe_grease_20", w = 1, h = 2, top = "1", bottom = "1", left="00", right="00"}
+    }
+}
 
 local function noDoorOverlap(rT, rB, rL, rR, iT, iB, iL, iR, shipName)
 	local room = table.concat({rT,rB,rL,rR},"")

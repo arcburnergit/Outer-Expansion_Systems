@@ -10,15 +10,400 @@
   <mod-append:script>data/oe_scripts/sys_medusa.lua</mod-append:script>
 </mod:findLike>
 
-<mod:findLike type="ships" limit="1" reverse="false">
+
+<mod:findLike type="customSystems" reverse="false">
+	<mod-append:customSystem id="oe_aux_shields"/>
+	<mod-append:customSystem id="oe_grease" subSystem="true"/>
+
+	<mod:findWithChildLike type="exclusivityGroup" child-type="cloaking">
+		<mod-append:oe_aux_shields/>
+	</mod:findWithChildLike>
+	<mod:findWithChildLike type="exclusivityGroup" child-type="battery">
+		<mod-append:oe_grease/>
+	</mod:findWithChildLike>
+
+	<mod:findLike type="systemPositions" reverse="false">
+		<mod-append:oe_aux_shields position="6"/>
+		<mod-append:oe_grease staticOffset="123"/>
+	</mod:findLike>
+
+	<mod-append:systemPositions subSystemOffset="1015"> 
+		<shields position="0"/>
+		<engines position="1"/>
+		<medbay position="2"/>
+		<clonebay position="3"/>
+		<oxygen position="4"/>
+		<teleporter position="5"/>
+		<cloaking position="6"/>
+		<oe_aux_shields position="6"/>
+		<artillery position="7"/>
+		<mind position="8"/>
+		<hacking position="9"/>
+		<temporal position="10"/>
+		<weapons position="2147483646"/>
+		<drones position="2147483647"/>
+
+		<pilot staticOffset="0"/>
+		<sensors staticOffset="36"/>
+		<doors staticOffset="72"/>
+		<battery staticOffset="123"/>
+		<oe_grease staticOffset="123"/>
+	</mod-append:systemPositions>
+
+	<mod:findLike type="systemPositions" start="1" reverse="false">
+		<mod:removeTag />
+	</mod:findLike>
 </mod:findLike>
 
-<augments>
-</augments>
+<mod:findLike type="ships" limit="1" reverse="false">
+	<mod:findLike type="customShip">
+		<mod:findLike type="exclusivityOverride">
+			<mod:findWithChildLike type="exclusivityGroup" child-type="cloaking">
+				<mod-append:oe_aux_shields/>
+			</mod:findWithChildLike>
+			<mod:findWithChildLike type="exclusivityGroup" child-type="battery">
+				<mod-append:oe_grease/>
+			</mod:findWithChildLike>
+			<mod-append:exclusivityGroup>
+				<cloaking/>
+				<oe_aux_shields/>
+			</mod-append:exclusivityGroup>
+			<mod-append:exclusivityGroup>
+				<battery/>
+				<oe_grease/>
+			</mod-append:exclusivityGroup>
+			<mod:findWithChildLike type="exclusivityGroup" child-type="cloaking" start="1">
+				<mod:removeTag />
+			</mod:findWithChildLike>
+			<mod:findWithChildLike type="exclusivityGroup" child-type="battery" start="1">
+				<mod:removeTag />
+			</mod:findWithChildLike>
+		</mod:findLike>
+	</mod:findLike>
+</mod:findLike>
+
+<mod:findLike type="augments" limit="1" reverse="false">
+	<mod-append:aug name="BOON_OE_AUX_SHIELDS">
+		<superShield>
+			<add>1</add>
+			<color r="255" g="255" b="255" a="1" />
+			<shieldImage>ship/oe_shield_base_bubble_white.png</shieldImage>
+		</superShield>
+	</mod-append:aug>
+</mod:findLike>
+
 
 <events>
+	<req name="OE_GREASE_REQ_EFFECT_SHOCK" type="any">
+		<name>oe_old_1</name>
+		<name>oe_old_unique_1</name>
+		<name>oe_old_unique_2</name>
+		<name>oe_old_unique_3</name>
+		<name>oe_old_unique_4</name>
+		<name>oe_old_unique_5</name>
+		
+		<name>OE_COMPONENT_OLD</name>
+
+		<name>OE_LASER_OLD_1</name>
+		<name>OE_LASER_OLD_2</name>
+		<name>OE_LASER_OLD_3</name>
+
+		<name>OE_LASER_OLDP_1</name>
+		<name>OE_LASER_OLDP_2</name>
+		<name>OE_LASER_OLDP_3</name>
+		<name>OE_LASER_OLDP_3_LOOT</name>
+
+		<name>OE_FOCUS_OLD_1</name>
+		<name>OE_FOCUS_OLD_2</name>
+		<name>OE_FOCUS_OLD_3</name>
+
+		<name>OE_MISSILE_OLD_1</name>
+		<name>OE_MISSILE_OLD_2</name>
+		<name>OE_MISSILE_OLD_3</name>
+	</req>
+	<req name="OE_GREASE_REQ_EFFECT_SHATTER" type="any">
+		<name>oe_shard_breaker</name>
+		<name>oe_shard_smasher</name>
+		<name>oe_shard_dawn</name>
+
+		<name>OE_CRYSTAL_SHARD_BOSS</name>
+		<name>OE_CRYSTAL_SHARD_BOSS_CHAOS</name>
+	</req>
+	<req name="OE_GREASE_REQ_EFFECT_ACID" type="any">
+		<name>oe_acid_worker</name>
+		<name>oe_acid_soldier</name>
+		<name>oe_acid_bill</name>
+
+		<name>OE_LASER_ACID_1</name>
+		<name>OE_LASER_ACID_2</name>
+		<name>OE_LASER_ACID_3</name>
+		<name>OE_LASER_ACID_SUPER</name>
+		<name>OE_BEAM_ACID_1</name>
+		<name>OE_ION_ACID_1</name>
+
+		<name>OE_LASER_ACID_1_ELITE</name>
+		<name>OE_LASER_ACID_2_ELITE</name>
+		<name>OE_LASER_ACID_3_ELITE</name>
+		<name>OE_BEAM_ACID_1_ELITE</name>
+		<name>OE_ION_ACID_1_ELITE</name>
+		<name>OE_ION_ACID_1_ELITE</name>
+
+		<name>OE_LASER_ACID_BOSS</name>
+		<name>OE_LASER_ACID_BOSS_CHAOS</name>
+	</req>
+	<req name="OE_GREASE_REQ_EFFECT_SHLEG" type="any">
+		<name>oe_shleg_slug</name>
+		<name>oe_shleg_shell</name>
+		<name>oe_shleg_sorrow</name>
+		<name>oe_shleg_sickle</name>
+		
+		<name>OE_SHLEG_BOMB</name>
+		<name>OE_SHLEG_MISSILES</name>
+		<name>OE_SHLEG_MISSILES_LOOT</name>
+	</req>
+	<req name="OE_GREASE_REQ_EFFECT_BIRD" type="any">
+		<name>oe_bird_avali</name>
+		<name>oe_bird_illuminant</name>
+		<name>oe_bird_unique</name>
+
+		<name>OE_COMBAT_BIRD_BURST_1</name>
+		<name>OE_COMBAT_BIRD_BURST_2</name>
+		<name>OE_COMBAT_BIRD_BURST_3</name>
+
+		<name>OE_COMBAT_BIRD_BIO_1</name>
+		<name>OE_COMBAT_BIRD_BIO_2</name>
+		<name>OE_COMBAT_BIRD_BIO_3</name>
+
+		<name>OE_COMBAT_BIRD_MULTI_1_LASER</name>
+		<name>OE_COMBAT_BIRD_MULTI_1_BEAM</name>
+		<name>OE_COMBAT_BIRD_MULTI_2_LASER</name>
+		<name>OE_COMBAT_BIRD_MULTI_2_BEAM</name>
+
+		<name>OE_COMBAT_BIRD_SMART_1</name>
+		<name>OE_COMBAT_BIRD_SMART_2</name>
+
+		<name>OE_COMBAT_BIRD_BOSS</name>
+		<name>OE_COMBAT_BIRD_BOSS_CHAOS</name>
+	</req>
+	<req name="OE_GREASE_REQ_EFFECT_NECRO" type="any">
+		<name>oe_necro_engi</name>
+		<name>oe_necro_lich</name>
+		<name>oe_necro_king</name>
+		
+		<name>OE_LASER_NECRO_1</name>
+		<name>OE_LASER_NECRO_2</name>
+		<name>OE_LASER_NECRO_3</name>
+		<name>OE_LASER_NECRO_2_LOOT</name>
+		<name>OE_LASER_NECRO_CHARGE</name>
+		
+		<name>OE_DEFENSE_NECRO_1_DRONE</name>
+		<name>OE_DEFENSE_NECRO_1_MISSILE</name>
+		<name>OE_DEFENSE_NECRO_2_DRONE</name>
+		<name>OE_DEFENSE_NECRO_2_MISSILE</name>
+		<name>OE_DEFENSE_NECRO_1</name>
+		<name>OE_DEFENSE_NECRO_2</name>
+		<name>OE_COMBAT_NECRO_1_LASER</name>
+		<name>OE_COMBAT_NECRO_1_BEAM</name>
+		<name>OE_COMBAT_NECRO_2_LASER</name>
+		<name>OE_COMBAT_NECRO_2_BEAM</name>
+
+		<name>OE_COMBAT_NECRO_BOSS</name>
+		<name>OE_COMBAT_NECRO_BOSS_CHAOS</name>
+	</req>
+	<req name="OE_GREASE_REQ_EFFECT_CASCADE" type="any">
+	</req>
+	<req name="OE_GREASE_REQ_EFFECT_CHAOS" type="any">
+		<name>JUDGELIST_ROCK_MADNESS</name>
+		<name>LIST_SYMBIONT_CHAOS</name>
+		<name>LIST_SYMBIONT_CHAOS_DRONES</name>
+		<name>LIST_SURGEON_DRONES_CHAOS</name>
+		<name>BLUELIST_HOLODRONE_CHAOS</name>
+		<name>HEKTAR_MODULAR_CHARGE_CHAOS</name>
+		<name>BEAM_BATTERY_CHAOS</name>
+		<name>BEAM_QUICK_CHAOS</name>
+		<name>BEAM_ADAPT_3_CHAOS</name>
+		<name>BIG_ION_CHAOS</name>
+		<name>BOMB_CONSERVRECYCLER_CHAOS</name>
+		<name>BOMB_DRAIN_CHAOS</name>
+		<name>FROST_CHARGEGUN_CHAOS</name>
+		<name>ION_CHAIN_CHARGEGUN_CHAOS</name>
+		<name>MISSILES_OBSIDIAN_CHAOS</name>
+		<name>SHOTGUN_STEEL_CHAOS</name>
+		<name>SHOTGUN_TOGGLE_CHAOS</name>
+		<name>SHELL_LAUNCHER_CHAOS</name>
+		<name>SLOTGUN_CHAOS</name>
+		<name>SNIPER_CHAOS</name>
+		<name>UNSPOOLER_CHAOS</name>
+		<name>MINELAUNCHER_GIANT_CHAOS</name>
+		<name>LASER_LIGHT_CHARGEGUN_CHAOS</name>
+		<name>CRYSTAL_BURST_FIRE_CHAOS</name>
+		<name>STRAWBERRY_CHAOS</name>
+		<name>BOMB_ELITE_CHAOS</name>
+		<name>GASTER_BLASTER_CHAOS</name>
+		<name>DEFENSE_TRINITY_CHAOS</name>
+		<name>YINYANG_BATTLE_CHAOS</name>
+		<name>YINYANG_BOARDER_CHAOS</name>
+		<name>SURGEON_BATTLE_CHAOS</name>
+		<name>SURGEON_BOARDER_CHAOS</name>
+		<name>FOREMAN_BATTLE_CHAOS</name>
+		<name>FOREMAN_BOARDER_CHAOS</name>
+		<name>HOLODRONE_BATTLE_CHAOS</name>
+		<name>HOLODRONE_BOARDER_CHAOS</name>
+		<name>SALT_MINER_CHAOS</name>
+	</req>
+	<req name="OE_GREASE_REQ_EFFECT_DD_SOULPLAGUE" type="any">
+		<name>JUDGELIST_ROCK_DDSOULPLAGUE_GEAR</name>
+		<name>LIST_DDSOULPLAGUE_ALIGNED</name>
+	</req>
+	<req name="OE_GREASE_REQ_EFFECT_DD_DARKNESS" type="any">
+		<name>JUDGELIST_ROCK_DEEPONE_GEAR</name>
+		<name>LIST_CREW_DEEPONES</name>
+	</req>
+	<req name="OE_GREASE_REQ_EFFECT_DD_SHADOW" type="any">
+		<name>JUDGELIST_ROCK_DISPARITY_GEAR</name>
+		<name>LIST_CREW_DISPARITY</name>
+	</req>
+	<req name="OE_GREASE_REQ_EFFECT_DD_RADIANT" type="any">
+		<name>BLUELIST_DDLIGHTBORNE_EQUIPMENT</name>
+	</req>
 </events>
 
-<store>
-</store>
+<mod:findLike type="store">
+	<mod:findWithChildLike type="customStore" child-type="category">
+		<mod:selector type="SYSTEMS"/>
+		<mod:setAttributes oe="extra"/>
+	</mod:findWithChildLike>
+	<mod:findLike type="customStore">
+		<mod:selector oe="extra" />
+		<mod-append:category type="SYSTEMS">
+			<customTitle>TERTIARY SYSTEMS</customTitle>
+			<item>
+				<blueprint>OE_SHOP_ITEM_SYSTEMS_EXTRA</blueprint>
+			</item>
+			<item>
+				<blueprint>OE_SHOP_ITEM_SYSTEMS_EXTRA</blueprint>
+			</item>
+			<item>
+				<blueprint>OE_SHOP_ITEM_SYSTEMS_EXTRA</blueprint>
+			</item>
+			<chance>65</chance>
+		</mod-append:category>
+		<mod:removeAttributes oe="" />
+	</mod:findLike>
+</mod:findLike>
+
+
+<mod:findLike type="achievements" limit="1" reverse="false">
+	<mod:findLike type="page">
+		<mod:findLike type="section">
+			<mod:selector text="The Outer Cluster"/>
+		</mod:findLike>
+		<mod:findLike type="section">
+			<mod:selector text="Unique Crew (OE)"/>
+		</mod:findLike>
+		<mod:findLike type="section">
+			<mod:selector text="Loot Transports (OE)"/>
+		</mod:findLike>
+		<mod:findLike type="section">
+			<mod:selector text="Renegade Cruisers (OE)"/>
+		</mod:findLike>
+		<mod:findLike type="section">
+			<mod:selector text="Music (OE)"/>
+		</mod:findLike>
+		<mod:findLike type="section">
+			<mod:selector text="Thest's Boons (OE)"/>
+			<mod-append:achievement name="ACH_BOON_OE_AUX_SHIELDS">
+				<name>Grant of Auxiliary Shielding</name>
+				<secretDescription>Receive the Grant of Auxiliary Shielding from Corby.</secretDescription>
+				<description>Show an upgraded Auxiliary Shields System to Corby. 
+				While in effect; Add 1 energy shield layer after jump.</description>
+				<header>Grant Received</header>
+				<icon>ach_boon_oe_aux_shields</icon>
+				<multiDifficulty>false</multiDifficulty>
+			</mod-append:achievement>
+		</mod:findLike>
+	</mod:findLike>
+</mod:findLike>
+
+<mod:findLike type="events" limit="1" reverse="false">
+	<mod:findName type="req" name="LIST_START_CRATE_CHECK">
+	</mod:findName>
+	<mod:findName type="req" name="LIST_START_AUG_CHECK">
+	</mod:findName>
+	<mod:findName type="req" name="COORDS">
+	</mod:findName>
+	<mod:findName type="req" name="COORDS_BOSS">
+	</mod:findName>
+	<mod:findName type="req" name="COORDS_BOSS_TOOLATE">
+	</mod:findName>
+	<mod:findName type="req" name="OUTLIER_SECTOR">
+	</mod:findName>
+	<mod:findName type="req" name="LIST_UPG_ARMS">
+	</mod:findName>
+	<mod:findName type="req" name="LIST_UPG_ALL">
+	</mod:findName>
+	<mod:findName type="req" name="LIST_LAB_ALL">
+	</mod:findName>
+	<mod:findName type="req" name="LIST_UPG_SEALANT">
+	</mod:findName>
+	<mod:findName type="req" name="LIST_UPG_EXTINGUISHERS">
+	</mod:findName>
+	<mod:findName type="req" name="LIST_UPG_ION">
+	</mod:findName>
+	<mod:findName type="req" name="HS_LIST_HUMANS">
+	</mod:findName>
+	<mod:findName type="req" name="HS_LIST_ENGI">
+	</mod:findName>
+	<mod:findName type="req" name="HS_LIST_ZOLTAN">
+	</mod:findName>
+	<mod:findName type="req" name="HS_LIST_ORCHID">
+	</mod:findName>
+	<mod:findName type="req" name="HS_LIST_ROCK">
+	</mod:findName>
+	<mod:findName type="req" name="HS_LIST_CRYSTAL">
+	</mod:findName>
+	<mod:findName type="req" name="HS_LIST_MANTIS">
+	</mod:findName>
+	<mod:findName type="req" name="HS_LIST_FREEMANTIS">
+	</mod:findName>
+	<mod:findName type="req" name="HS_LIST_SLUG">
+	</mod:findName>
+	<mod:findName type="req" name="HS_LIST_SHELL">
+	</mod:findName>
+	<mod:findName type="req" name="HS_LIST_LEECH">
+	</mod:findName>
+	<mod:findName type="req" name="HS_LIST_LANIUS">
+	</mod:findName>
+	<mod:findName type="req" name="LIST_CREW_INTERACTIBLE">
+	</mod:findName>
+	<mod:findName type="req" name="BLUELIST_CREW_NO2">
+	</mod:findName>
+	<mod:findName type="req" name="BLUELIST_CREW_NO2_CONSTANT">
+	</mod:findName>
+	<mod:findName type="req" name="BLUELIST_CREW_NOFIRE">
+	</mod:findName>
+	<mod:findName type="req" name="BLUELIST_CREW_STRONG">
+	</mod:findName>
+	<mod:findName type="req" name="BLUELIST_CREW_NODOORS">
+	</mod:findName>
+	<mod:findName type="req" name="REBEL_SHIP">
+	</mod:findName>
+	<mod:findName type="req" name="LIST_CHECK_ANY_CREW">
+	</mod:findName>
+	<mod:findName type="req" name="COUNT_ALL_CREW">
+	</mod:findName>
+	<mod:findName type="req" name="LIST_CHECK_AUGMENTS">
+	</mod:findName>
+	<mod:findName type="req" name="LIST_CHECK_TOGGLES_AND_AMPS">
+	</mod:findName>
+	<mod:findName type="req" name="LIST_CHECK_ENERGY_SHIELD">
+		<mod-append:name>BOON_OE_AUX_SHIELDS</mod-append:name>
+	</mod:findName>
+	<mod:findName type="req" name="ANY_BOON">
+		<mod-append:name>prof_r_boon_oe_aux_shields</mod-append:name>
+	</mod:findName>
+	<mod:findName type="req" name="ALL_BOON">
+		<mod-append:name>prof_r_boon_oe_aux_shields</mod-append:name>
+	</mod:findName>
+</mod:findLike>
 </FTL>

@@ -1,3 +1,16 @@
 <FTL>
-<text name="oe_lua_sys_aux_shields">Duration: %i / Speed: %i</text>
+<text name="oe_lua_sys_aux_shields">Duration: %i / Speed: %gx</text>
+<text name="oe_lua_sys_aux_shields_boost">Overclock the Auxiliary Shields system, temporarily boosting the speed. Afterwards system becomes locked for %d seconds.\nHotkey: %s</text>
+
+<text name="oe_aux_shields">Auxiliary Shields</text>
+<text name="oe_aux_shields_installed">Auxiliary Shields System installed</text>
+
+<text name="tooltip_oe_aux_shields">Auxiliary Shields: Generates super shield layers over time, can be boosted for a much higher rate temporarily.</text>
+<text name="tooltip_oe_aux_shields_enemy">Auxiliary Shields: Generates super shield layers.</text>
+
+<text name="oe_grease">Weapons Amplifier</text>
+<text name="oe_grease_installed">Weapons Amplifier System installed</text>
+
+<text name="tooltip_oe_grease">Weapons Amplifier:  Enhances the weapons you fire, can be modified to provide different effects.</text>
+<text name="tooltip_oe_grease_enemy">Weapons Amplifier: Enhances the weapons the enemy fires, depending on the enemy the system will enhance their weapons in different ways.</text>
 </FTL>

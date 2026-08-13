@@ -1,4 +1,4 @@
-local mod_name = "Outer Expansion: Acidic Growth"
+local mod_name = "Outer Expansion: Systems"
 if not mods.oe then
 	error("Outer Expansion: Core not detected, please ensure it is present in the mod list and patched before "..mod_name.."!")
 else

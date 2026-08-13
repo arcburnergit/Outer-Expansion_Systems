@@ -2,6 +2,12 @@
 <text name="oe_lua_sys_aux_shields">Duration: %i / Speed: %gx</text>
 <text name="oe_lua_sys_aux_shields_boost">Overclock the Auxiliary Shields system, temporarily boosting the speed. Afterwards system becomes locked for %d seconds.\nHotkey: %s</text>
 
+<text name="oe_lua_sys_grease_desc_single">%i charge</text>
+<text name="oe_lua_sys_grease_desc_plural">%i charges</text>
+<text name="oe_lua_sys_grease_weapon_enable">Enable consumption of Weapon Amplification charges for this weapon.</text>
+<text name="oe_lua_sys_grease_weapon_disable">Disable consumption of Weapon Amplification charges for this weapon.</text>
+<text name="oe_lua_sys_grease_current_enhancement">Current Enhancement: %s</text>
+
 <text name="oe_aux_shields">Auxiliary Shields</text>
 <text name="oe_aux_shields_installed">Auxiliary Shields System installed</text>
 
@@ -13,4 +19,21 @@
 
 <text name="tooltip_oe_grease">Weapons Amplifier:  Enhances the weapons you fire, can be modified to provide different effects.</text>
 <text name="tooltip_oe_grease_enemy">Weapons Amplifier: Enhances the weapons the enemy fires, depending on the enemy the system will enhance their weapons in different ways.</text>
+
+
+<text name="oe_lua_sys_grease_effect_fire">Causes the last projectile in the volley to start a fire on hit.</text>
+<text name="oe_lua_sys_grease_effect_frost">Causes the last projectile in the volley to create a short lockdown on hit.</text>
+<text name="oe_lua_sys_grease_effect_breach">Causes the last projectile in the volley to open a breach on hit.</text>
+<text name="oe_lua_sys_grease_effect_shock">Causes the last projectile in the volley to break and stun all doors in the room.</text>
+<text name="oe_lua_sys_grease_effect_shatter">Causes the last projectile in the volley to create an extremely weak lockdown, the next hit to this room while the lockdown is active will do 2x damage.</text>
+<text name="oe_lua_sys_grease_effect_acidic">Causes the last projectile in the volley to create acidic that erodes the system on hit.</text>
+<text name="oe_lua_sys_grease_effect_inculcation">Causes the last projectile in the volley to create inculcation gas on hit.</text>
+<text name="oe_lua_sys_grease_effect_marked">Causes the last projectile in the volley to target all friendly drones on hit.</text>
+<text name="oe_lua_sys_grease_effect_resurrection">When a projectile kills a crewmember, temporarily resurrect that crewmember on your side.</text>
+<text name="oe_lua_sys_grease_effect_cascade">When a projectile full breaks a system, deal system damage to an adjacent room.</text>
+<text name="oe_lua_sys_grease_effect_dd_soulplagued">Causes the last projectile in the volley to inflict the Plagueridden effect.</text>
+<text name="oe_lua_sys_grease_effect_dd_darkness">Causes the last projectile in the volley to inflict a chaotic, and potentially dark effect.</text>
+<text name="oe_lua_sys_grease_effect_dd_shadow_frost">Causes the last projectile in the volley to inflict a series of Shadow-Crystal lockdowns, and potentially spawn a Hungering Shadow.</text>
+<text name="oe_lua_sys_grease_effect_dd_radiant">Causes the last projectile in the volley to inflict the Radiant Desecration effect, and spawn a random Lightborne.</text>
+<text name="oe_lua_sys_grease_effect_chaos">Causes the last projectile in the volley to trigger a random effect that you have available.</text>
 </FTL>

@@ -110,7 +110,7 @@ local function key_down(systemBox, key, shift)
 			system_activate(systemBox.pSystem)
 		end
 	end
-end)
+end
 script.on_internal_event(Defines.InternalEvents.SYSTEM_BOX_KEY_DOWN, key_down)
 
 local COLOUR_WHITE = Graphics.GL_Color(1, 1, 1, 1)

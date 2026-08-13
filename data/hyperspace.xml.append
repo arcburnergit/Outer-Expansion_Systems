@@ -5,6 +5,7 @@
   <mod-append:script>data/oe_scripts/sys_aux_shields.lua</mod-append:script>
   <mod-append:script>data/oe_scripts/sys_clone_crime.lua</mod-append:script>
   <mod-append:script>data/oe_scripts/sys_clone_projector.lua</mod-append:script>
+  <mod-append:script>data/oe_scripts/sys_grease_dd.lua</mod-append:script>
   <mod-append:script>data/oe_scripts/sys_grease.lua</mod-append:script>
   <mod-append:script>data/oe_scripts/sys_growth.lua</mod-append:script>
   <mod-append:script>data/oe_scripts/sys_medusa.lua</mod-append:script>

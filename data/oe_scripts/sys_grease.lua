@@ -26,21 +26,21 @@ local systemFillingAmount = {[0] = 0, [1] = 0}
 local systemTypeVariable = "oe_grease_type"
 
 local greaseEffects = {
-	{name = "Fire", type = 1, colour = Graphics.GL_Color(253/255, 84/255, 70/255, 1), fill_rate = 0.075, desc = "Causes the last projectile in the volley to start a fire on hit."},
-	{name = "Frost", type = 1, colour = Graphics.GL_Color(171/255, 201/255, 202/255, 1), fill_rate = 0.05, desc = "Causes the last projectile in the volley to create a short lockdown on hit."},
-	{name = "Breach", type = 1, colour = Graphics.GL_Color(138/255, 150/255, 125/255, 1), fill_rate = 0.075, desc = "Causes the last projectile in the volley to open a breach on hit."},
-	{name = "Shock", req="OE_GREASE_EFFECT_SHOCK", type = 1, colour = Graphics.GL_Color(95/255, 205/255, 228/255, 1), fill_rate = 0.15, desc = "Causes the last projectile in the volley to break and stun all doors in the room."},
-	{name = "Shatter", req="OE_GREASE_EFFECT_SHATTER", type = 1, colour = Graphics.GL_Color(241/255, 241/255, 241/255, 1), fill_rate = 0.05, desc = "Causes the last projectile in the volley to create an extremely weak lockdown, the next hit to this room while the lockdown is active will do 2x damage."},
-	{name = "Acidic", req="OE_GREASE_EFFECT_ACID", type = 1, colour = Graphics.GL_Color(111/255, 236/255, 95/255, 1), fill_rate = 0.075, desc = "Causes the last projectile in the volley to create acidic that erodes the system on hit."},
-	{name = "Inculcation", req="OE_GREASE_EFFECT_SHLEG", type = 1, colour = Graphics.GL_Color(159/255, 228/255, 204/255, 1), fill_rate = 0.033, desc = "Causes the last projectile in the volley to create inculcation gas on hit."},
-	{name = "Marked", req="OE_GREASE_EFFECT_BIRD", type = 1, colour = Graphics.GL_Color(211/255, 133/255, 255/255, 1), fill_rate = 0.033, desc = "Causes the last projectile in the volley to target all friendly drones on hit."},
-	{name = "Resurrection", req="OE_GREASE_EFFECT_NECRO", type = 2, colour = Graphics.GL_Color(255/255, 201/255, 63/255, 1), fill_rate = 0.033, desc = "When a projectile kills a crewmember, temporarily resurrect that crewmember on your side."},
-	{name = "Cascade", req="OE_GREASE_EFFECT_CASCADE", type = 2, colour = Graphics.GL_Color(182/255, 182/255, 182/255, 1), fill_rate = 0.075, desc = "When a projectile full breaks a system, deal system damage to an adjacent room."},
-	{name = "Soulplagued", req="OE_GREASE_EFFECT_DD_SOULPLAGUE", type = 1, colour = Graphics.GL_Color(109/255, 75/255, 187/255, 1), fill_rate = 0.075, desc = "Causes the last projectile in the volley to inflict the Plagueridden effect."},
-	{name = "Darkness", req="OE_GREASE_EFFECT_DD_DARKNESS", type = 1, colour = Graphics.GL_Color(194/255, 51/255, 51/255, 1), fill_rate = 0.033, desc = "Causes the last projectile in the volley to inflict a chaotic, and potentially dark effect."},
-	{name = "Shadow-Frost", req="OE_GREASE_EFFECT_DD_SHADOW", type = 1, colour = Graphics.GL_Color(255/255, 129/255, 249/255, 1), fill_rate = 0.075, desc = "Causes the last projectile in the volley to inflict a series of Shadow-Crystal lockdowns, and potentially spawn a Hungering Shadow."},
-	{name = "Radiant", req="OE_GREASE_EFFECT_DD_RADIANT", type = 1, colour = Graphics.GL_Color(255/255, 255/255, 255/255, 1), fill_rate = 0.075, desc = "Causes the last projectile in the volley to inflict the Radiant Desecration effect, and spawn a random Lightborne."},
-	{name = "Chaos", req="OE_GREASE_EFFECT_CHAOS", type = 1, colour = Graphics.GL_Color(100/255, 50/255, 50/255, 1), fill_rate = 0.15, desc = "Causes the last projectile in the volley to trigger a random effect that you have available."},
+	{name = "Fire", type = 1, colour = Graphics.GL_Color(253/255, 84/255, 70/255, 1), fill_rate = 0.075, desc = Hyperspace.Text:GetText("oe_lua_sys_grease_effect_fire")},
+	{name = "Frost", type = 1, colour = Graphics.GL_Color(171/255, 201/255, 202/255, 1), fill_rate = 0.05, desc = Hyperspace.Text:GetText("oe_lua_sys_grease_effect_frost")},
+	{name = "Breach", type = 1, colour = Graphics.GL_Color(138/255, 150/255, 125/255, 1), fill_rate = 0.075, desc = Hyperspace.Text:GetText("oe_lua_sys_grease_effect_breach")},
+	{name = "Shock", req="OE_GREASE_EFFECT_SHOCK", type = 1, colour = Graphics.GL_Color(95/255, 205/255, 228/255, 1), fill_rate = 0.15, desc = Hyperspace.Text:GetText("oe_lua_sys_grease_effect_shock")},
+	{name = "Shatter", req="OE_GREASE_EFFECT_SHATTER", type = 1, colour = Graphics.GL_Color(241/255, 241/255, 241/255, 1), fill_rate = 0.05, desc = Hyperspace.Text:GetText("oe_lua_sys_grease_effect_shatter")},
+	{name = "Acidic", req="OE_GREASE_EFFECT_ACID", type = 1, colour = Graphics.GL_Color(111/255, 236/255, 95/255, 1), fill_rate = 0.075, desc = Hyperspace.Text:GetText("oe_lua_sys_grease_effect_acidic")},
+	{name = "Inculcation", req="OE_GREASE_EFFECT_SHLEG", type = 1, colour = Graphics.GL_Color(159/255, 228/255, 204/255, 1), fill_rate = 0.033, desc = Hyperspace.Text:GetText("oe_lua_sys_grease_effect_inculcation")},
+	{name = "Marked", req="OE_GREASE_EFFECT_BIRD", type = 1, colour = Graphics.GL_Color(211/255, 133/255, 255/255, 1), fill_rate = 0.033, desc = Hyperspace.Text:GetText("oe_lua_sys_grease_effect_marked")},
+	{name = "Resurrection", req="OE_GREASE_EFFECT_NECRO", type = 2, colour = Graphics.GL_Color(255/255, 201/255, 63/255, 1), fill_rate = 0.033, desc = Hyperspace.Text:GetText("oe_lua_sys_grease_effect_resurrection")},
+	{name = "Cascade", req="OE_GREASE_EFFECT_CASCADE", type = 2, colour = Graphics.GL_Color(182/255, 182/255, 182/255, 1), fill_rate = 0.075, desc = Hyperspace.Text:GetText("oe_lua_sys_grease_effect_cascade")},
+	{name = "Soulplagued", req="OE_GREASE_EFFECT_DD_SOULPLAGUE", type = 1, colour = Graphics.GL_Color(109/255, 75/255, 187/255, 1), fill_rate = 0.075, desc = Hyperspace.Text:GetText("oe_lua_sys_grease_effect_dd_soulplagued")},
+	{name = "Darkness", req="OE_GREASE_EFFECT_DD_DARKNESS", type = 1, colour = Graphics.GL_Color(194/255, 51/255, 51/255, 1), fill_rate = 0.033, desc = Hyperspace.Text:GetText("oe_lua_sys_grease_effect_dd_darkness")},
+	{name = "Shadow-Frost", req="OE_GREASE_EFFECT_DD_SHADOW", type = 1, colour = Graphics.GL_Color(255/255, 129/255, 249/255, 1), fill_rate = 0.075, desc = Hyperspace.Text:GetText("oe_lua_sys_grease_effect_dd_shadow_frost")},
+	{name = "Radiant", req="OE_GREASE_EFFECT_DD_RADIANT", type = 1, colour = Graphics.GL_Color(255/255, 255/255, 255/255, 1), fill_rate = 0.075, desc = Hyperspace.Text:GetText("oe_lua_sys_grease_effect_dd_radiant")},
+	{name = "Chaos", req="OE_GREASE_EFFECT_CHAOS", type = 1, colour = Graphics.GL_Color(100/255, 50/255, 50/255, 1), fill_rate = 0.15, desc = Hyperspace.Text:GetText("oe_lua_sys_grease_effect_fire")},
 }
 greaseEffects[0] = {name = "PLACEHOLDER", type = 1, colour = Graphics.GL_Color(255/255, 255/255, 255/255, 1), fill_rate = 0.1, desc = "PLACEHOLDER"}
 
@@ -62,13 +62,16 @@ effectImages["Shadow-Frost"] = Hyperspace.Resources:CreateImagePrimitiveString( 
 effectImages["Radiant"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_dd_radiant.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
 effectImages["Chaos"] = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_icon_chaos.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
 
+
+local system_desc_single = Hyperspace.Text:GetText("oe_lua_sys_grease_desc_single")
+local system_desc_plural = Hyperspace.Text:GetText("oe_lua_sys_grease_desc_plural")
 --Handles tooltips and mousever descriptions per level
 local function get_level_description_grease(systemId, level, tooltip)
 	if systemId == Hyperspace.ShipSystem.NameToSystemId(systemIdName) then
 		if level == 1 then
-			return string.format("%i charge", level)
+			return string.format(system_desc_single, level)
 		else
-			return string.format("%i charges", level)
+			return string.format(system_desc_plural, level)
 		end
 	end
 end
@@ -160,6 +163,8 @@ end
 
 script.on_internal_event(Defines.InternalEvents.CONSTRUCT_SYSTEM_BOX, grease_construct_system_box)
 
+local mouse_tooltip_string_weapon_enable = Hyperspace.Text:GetText("oe_lua_sys_grease_weapon_enable")
+local mouse_tooltip_string_weapon_disable = Hyperspace.Text:GetText("oe_lua_sys_grease_weapon_disable")
 --Handles mouse movement
 local function grease_mouse_move(systemBox, x, y)
 	if is_grease(systemBox) then
@@ -178,9 +183,11 @@ local function grease_mouse_move(systemBox, x, y)
 			--Graphics.CSurface.GL_DrawCircle(w_x, w_y, 5, Graphics.GL_Color(1, 0, 0, 0.5))
 			if x >= w_x and x <= w_x + enable_size.w and y >= w_y and y <= w_y + enable_size.h then
 				if userdata_table(weapon, "mods.oe.grease").disabled then
-					Hyperspace.Mouse.tooltip = "Enable consumption of Weapon Amplification charges for this weapon."
+					Hyperspace.Mouse.bForceTooltip = true
+					Hyperspace.Mouse:SetTooltip(mouse_tooltip_string_weapon_enable)
 				else
-					Hyperspace.Mouse.tooltip = "Disable consumption of Weapon Amplification charges for this weapon."
+					Hyperspace.Mouse.bForceTooltip = true
+					Hyperspace.Mouse:SetTooltip(mouse_tooltip_string_weapon_disable)
 				end
 				userdata_table(weapon, "mods.oe.grease").weaponHover = true
 			else
@@ -198,9 +205,11 @@ local function grease_mouse_move(systemBox, x, y)
 		end
 		if x >= w_x and x <= w_x + enable_size.w and y >= w_y and y <= w_y + enable_size.h then
 			if userdata_table(weapon, "mods.oe.grease").disabled then
-				Hyperspace.Mouse.tooltip = "Enable consumption of Weapon Amplification charges for this weapon."
+				Hyperspace.Mouse.bForceTooltip = true
+				Hyperspace.Mouse:SetTooltip(mouse_tooltip_string_weapon_enable)
 			else
-				Hyperspace.Mouse.tooltip = "Disable consumption of Weapon Amplification charges for this weapon."
+				Hyperspace.Mouse.bForceTooltip = true
+				Hyperspace.Mouse:SetTooltip(mouse_tooltip_string_weapon_disable)
 			end
 			userdata_table(weapon, "mods.oe.grease").weaponHover = true
 		else
@@ -416,6 +425,7 @@ local function grease_ready_enemy(shipSystem)
    return not (shipSystem:GetLocked() and shipSystem.iLockCount ~= -1) and shipSystem:Functioning() and shipSystem.iHackEffect <= 1 and Hyperspace.ships.enemy and Hyperspace.ships.enemy._targetable.hostile and not shield_blocking
 end
 
+local mouse_tooltip_string_current_enhancement = Hyperspace.Text:GetText("oe_lua_sys_grease_current_enhancement")
 local yOffset = 13
 --Handles custom rendering
 local function grease_render(systemBox, ignoreStatus)
@@ -468,7 +478,8 @@ local function grease_render(systemBox, ignoreStatus)
 		local greaseButton = systemBox.table.greaseButton
 		greaseButton:OnRender()
 		if greaseButton.bHover then
-			Hyperspace.Mouse.tooltip = "Current Enhancement: "..effect.name
+			Hyperspace.Mouse.bForceTooltip = true
+			Hyperspace.Mouse:SetTooltip(string.format(mouse_tooltip_string_current_enhancement, effect.name))
 		end
 		local effectButtonTable = systemBox.table.effectButtonTable
 		if displayGreaseOptions then

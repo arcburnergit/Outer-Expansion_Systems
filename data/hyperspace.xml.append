@@ -14,16 +14,21 @@
 
 <mod:findLike type="customSystems" reverse="false">
 	<mod-append:customSystem id="oe_aux_shields"/>
+	<mod-append:customSystem id="oe_growth"/>
 	<mod-append:customSystem id="oe_grease" subSystem="true"/>
 
 	<mod:findWithChildLike type="exclusivityGroup" child-type="cloaking">
 		<mod-append:oe_aux_shields/>
+	</mod:findWithChildLike>
+	<mod:findWithChildLike type="exclusivityGroup" child-type="oxygen">
+		<mod-append:oe_growth/>
 	</mod:findWithChildLike>
 	<mod:findWithChildLike type="exclusivityGroup" child-type="battery">
 		<mod-append:oe_grease/>
 	</mod:findWithChildLike>
 
 	<mod:findLike type="systemPositions" reverse="false">
+		<mod-append:oe_growth position="4"/>
 		<mod-append:oe_aux_shields position="6"/>
 		<mod-append:oe_grease staticOffset="123"/>
 	</mod:findLike>
@@ -34,6 +39,7 @@
 		<medbay position="2"/>
 		<clonebay position="3"/>
 		<oxygen position="4"/>
+		<oe_growth position="4"/>
 		<teleporter position="5"/>
 		<cloaking position="6"/>
 		<oe_aux_shields position="6"/>
@@ -62,6 +68,9 @@
 			<mod:findWithChildLike type="exclusivityGroup" child-type="cloaking">
 				<mod-append:oe_aux_shields/>
 			</mod:findWithChildLike>
+			<mod:findWithChildLike type="exclusivityGroup" child-type="oxygen">
+				<mod-append:oe_growth/>
+			</mod:findWithChildLike>
 			<mod:findWithChildLike type="exclusivityGroup" child-type="battery">
 				<mod-append:oe_grease/>
 			</mod:findWithChildLike>
@@ -70,10 +79,17 @@
 				<oe_aux_shields/>
 			</mod-append:exclusivityGroup>
 			<mod-append:exclusivityGroup>
+				<oxygen/>
+				<oe_growth/>
+			</mod-append:exclusivityGroup>
+			<mod-append:exclusivityGroup>
 				<battery/>
 				<oe_grease/>
 			</mod-append:exclusivityGroup>
 			<mod:findWithChildLike type="exclusivityGroup" child-type="cloaking" start="1">
+				<mod:removeTag />
+			</mod:findWithChildLike>
+			<mod:findWithChildLike type="exclusivityGroup" child-type="oxygen" start="1">
 				<mod:removeTag />
 			</mod:findWithChildLike>
 			<mod:findWithChildLike type="exclusivityGroup" child-type="battery" start="1">
@@ -314,9 +330,9 @@
 		<mod:findLike type="section">
 			<mod:selector text="Thest's Boons (OE)"/>
 			<mod-append:achievement name="ACH_BOON_OE_AUX_SHIELDS">
-				<name>Grant of Auxiliary Shielding</name>
-				<secretDescription>Receive the Grant of Auxiliary Shielding from Corby.</secretDescription>
-				<description>Show an upgraded Auxiliary Shields System to Corby. 
+				<name>Grant of Weapons Amplifier</name>
+				<secretDescription>Receive the Grant of Weapons Amplifier from Corby.</secretDescription>
+				<description>Show an upgraded Weapons Amplifier System to Corby. 
 				While in effect; Add 1 energy shield layer after jump.</description>
 				<header>Grant Received</header>
 				<icon>ach_boon_oe_aux_shields</icon>

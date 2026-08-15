@@ -695,3 +695,62 @@
 	<stackable>false</stackable>
 </augBlueprint>
 </FTL>
+
+<FTL>
+<systemBlueprint name="oe_growth">
+	<type>oe_growth</type>
+	<title>Growth.</title>
+	<desc>Spreads.</desc>
+	<startPower>1</startPower>
+	<maxPower>3</maxPower>
+	<rarity>0</rarity>
+	<upgradeCost>
+		<level>25</level>
+		<level>35</level>
+		<level>65</level>
+	</upgradeCost>
+	<cost>30</cost>
+</systemBlueprint>
+
+<augBlueprint name="UPG_OE_GREASE_IGNITER">
+	<title>Pre-Ignited Canisters</title>
+	<desc>YOU SHOULD NEVER SEE THIS</desc>
+	<cost>0</cost>
+	<rarity>0</rarity>
+	<stackable>true</stackable>
+	<value>1</value>
+</augBlueprint>
+<augBlueprint name="EX_OE_GREASE_IGNITER">
+	<title>Pre-Ignited Canisters [X]</title>
+	<desc>System charges are refilled with each jump.
+    
+	[X] - As an external system upgrade, this augment will provide its normal effect but take up an augment slot. Can be converted for free to the internal version under the internal upgrade menu if you have the Modified Clone Bay system.</desc>
+	<cost>80</cost>
+	<rarity>0</rarity>
+	<stackable>true</stackable>
+	<value>1</value>
+</augBlueprint>
+<augBlueprint name="UPG_OE_GREASE_SWITCH">
+	<title>Fluid Recycler</title>
+	<desc>YOU SHOULD NEVER SEE THIS</desc>
+	<cost>0</cost>
+	<rarity>0</rarity>
+	<stackable>false</stackable>
+</augBlueprint>
+<augBlueprint name="EX_OE_GREASE_SWITCH">
+	<title>Fluid Recycler [X]</title>
+	<desc>Switching enhancements no longer resets system charges.
+    
+	[X] - As an external system upgrade, this augment will provide its normal effect but take up an augment slot. Can be converted for free to the internal version under the internal upgrade menu if you have the Modified Clone Bay system.</desc>
+	<cost>40</cost>
+	<rarity>0</rarity>
+	<stackable>false</stackable>
+</augBlueprint>
+<augBlueprint name="BOON_OE_GREASE">
+	<title>Weapons Amplifier</title>
+	<desc>YOU SHOULD NEVER SEE THIS</desc>
+	<cost>0</cost>
+	<rarity>0</rarity>
+	<stackable>false</stackable>
+</augBlueprint>
+</FTL>

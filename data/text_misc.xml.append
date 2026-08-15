@@ -20,7 +20,6 @@
 <text name="tooltip_oe_grease">Weapons Amplifier:  Enhances the weapons you fire, can be modified to provide different effects.</text>
 <text name="tooltip_oe_grease_enemy">Weapons Amplifier: Enhances the weapons the enemy fires, depending on the enemy the system will enhance their weapons in different ways.</text>
 
-
 <text name="oe_lua_sys_grease_effect_fire">Causes the last projectile in the volley to start a fire on hit.</text>
 <text name="oe_lua_sys_grease_effect_frost">Causes the last projectile in the volley to create a short lockdown on hit.</text>
 <text name="oe_lua_sys_grease_effect_breach">Causes the last projectile in the volley to open a breach on hit.</text>
@@ -36,4 +35,12 @@
 <text name="oe_lua_sys_grease_effect_dd_shadow_frost">Causes the last projectile in the volley to inflict a series of Shadow-Crystal lockdowns, and potentially spawn a Hungering Shadow.</text>
 <text name="oe_lua_sys_grease_effect_dd_radiant">Causes the last projectile in the volley to inflict the Radiant Desecration effect, and spawn a random Lightborne.</text>
 <text name="oe_lua_sys_grease_effect_chaos">Causes the last projectile in the volley to trigger a random effect that you have available.</text>
+
+<text name="oe_lua_sys_growth_level">Speed: %g tiles/second</text>
+
+<text name="oe_growth">Weapons Amplifier</text>
+<text name="oe_growth_installed">Weapons Amplifier System installed</text>
+
+<text name="tooltip_oe_growth">Weapons Amplifier:  Enhances the weapons you fire, can be modified to provide different effects.</text>
+<text name="tooltip_oe_growth_enemy">Weapons Amplifier: Enhances the weapons the enemy fires, depending on the enemy the system will enhance their weapons in different ways.</text>
 </FTL>

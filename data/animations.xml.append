@@ -1,2 +1,411 @@
 <FTL>
+<animSheet name="oe_growth_tilesheet_1" w="140" h="140" fw="35" fh="35">effects/oe_growth_tilesheet_1.png</animSheet>
+<anim name="oe_growth_tile_1_udl">
+	<sheet>oe_growth_tilesheet_1</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_1_ud">
+	<sheet>oe_growth_tilesheet_1</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_1_udr">
+	<sheet>oe_growth_tilesheet_1</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_1_udlr">
+	<sheet>oe_growth_tilesheet_1</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_1_ul">
+	<sheet>oe_growth_tilesheet_1</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_1_u">
+	<sheet>oe_growth_tilesheet_1</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_1_ur">
+	<sheet>oe_growth_tilesheet_1</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_1_ulr">
+	<sheet>oe_growth_tilesheet_1</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_1_l">
+	<sheet>oe_growth_tilesheet_1</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_1_">
+	<sheet>oe_growth_tilesheet_1</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_1_r">
+	<sheet>oe_growth_tilesheet_1</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_1_lr">
+	<sheet>oe_growth_tilesheet_1</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_1_dl">
+	<sheet>oe_growth_tilesheet_1</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_1_d">
+	<sheet>oe_growth_tilesheet_1</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_1_dr">
+	<sheet>oe_growth_tilesheet_1</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_1_dlr">
+	<sheet>oe_growth_tilesheet_1</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+
+<animSheet name="oe_growth_tilesheet_2" w="140" h="140" fw="35" fh="35">effects/oe_growth_tilesheet_2.png</animSheet>
+<anim name="oe_growth_tile_2_udl">
+	<sheet>oe_growth_tilesheet_2</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_2_ud">
+	<sheet>oe_growth_tilesheet_2</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_2_udr">
+	<sheet>oe_growth_tilesheet_2</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_2_udlr">
+	<sheet>oe_growth_tilesheet_2</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_2_ul">
+	<sheet>oe_growth_tilesheet_2</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_2_u">
+	<sheet>oe_growth_tilesheet_2</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_2_ur">
+	<sheet>oe_growth_tilesheet_2</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_2_ulr">
+	<sheet>oe_growth_tilesheet_2</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_2_l">
+	<sheet>oe_growth_tilesheet_2</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_2_">
+	<sheet>oe_growth_tilesheet_2</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_2_r">
+	<sheet>oe_growth_tilesheet_2</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_2_lr">
+	<sheet>oe_growth_tilesheet_2</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_2_dl">
+	<sheet>oe_growth_tilesheet_2</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_2_d">
+	<sheet>oe_growth_tilesheet_2</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_2_dr">
+	<sheet>oe_growth_tilesheet_2</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_2_dlr">
+	<sheet>oe_growth_tilesheet_2</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+
+<animSheet name="oe_growth_tilesheet_3" w="140" h="140" fw="35" fh="35">effects/oe_growth_tilesheet_3.png</animSheet>
+<anim name="oe_growth_tile_3_udl">
+	<sheet>oe_growth_tilesheet_3</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_3_ud">
+	<sheet>oe_growth_tilesheet_3</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_3_udr">
+	<sheet>oe_growth_tilesheet_3</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_3_udlr">
+	<sheet>oe_growth_tilesheet_3</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_3_ul">
+	<sheet>oe_growth_tilesheet_3</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_3_u">
+	<sheet>oe_growth_tilesheet_3</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_3_ur">
+	<sheet>oe_growth_tilesheet_3</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_3_ulr">
+	<sheet>oe_growth_tilesheet_3</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_3_l">
+	<sheet>oe_growth_tilesheet_3</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_3_">
+	<sheet>oe_growth_tilesheet_3</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_3_r">
+	<sheet>oe_growth_tilesheet_3</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_3_lr">
+	<sheet>oe_growth_tilesheet_3</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_3_dl">
+	<sheet>oe_growth_tilesheet_3</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_3_d">
+	<sheet>oe_growth_tilesheet_3</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_3_dr">
+	<sheet>oe_growth_tilesheet_3</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_3_dlr">
+	<sheet>oe_growth_tilesheet_3</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+
+<animSheet name="oe_growth_tilesheet_4" w="140" h="140" fw="35" fh="35">effects/oe_growth_tilesheet_4.png</animSheet>
+<anim name="oe_growth_tile_4_udl">
+	<sheet>oe_growth_tilesheet_4</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_4_ud">
+	<sheet>oe_growth_tilesheet_4</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_4_udr">
+	<sheet>oe_growth_tilesheet_4</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_4_udlr">
+	<sheet>oe_growth_tilesheet_4</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_4_ul">
+	<sheet>oe_growth_tilesheet_4</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_4_u">
+	<sheet>oe_growth_tilesheet_4</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_4_ur">
+	<sheet>oe_growth_tilesheet_4</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_4_ulr">
+	<sheet>oe_growth_tilesheet_4</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_4_l">
+	<sheet>oe_growth_tilesheet_4</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_4_">
+	<sheet>oe_growth_tilesheet_4</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_4_r">
+	<sheet>oe_growth_tilesheet_4</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_4_lr">
+	<sheet>oe_growth_tilesheet_4</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_4_dl">
+	<sheet>oe_growth_tilesheet_4</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_4_d">
+	<sheet>oe_growth_tilesheet_4</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_4_dr">
+	<sheet>oe_growth_tilesheet_4</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_4_dlr">
+	<sheet>oe_growth_tilesheet_4</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+
+<animSheet name="oe_growth_tilesheet_5" w="140" h="140" fw="35" fh="35">effects/oe_growth_tilesheet_5.png</animSheet>
+<anim name="oe_growth_tile_5_udl">
+	<sheet>oe_growth_tilesheet_5</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_5_ud">
+	<sheet>oe_growth_tilesheet_5</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_5_udr">
+	<sheet>oe_growth_tilesheet_5</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_5_udlr">
+	<sheet>oe_growth_tilesheet_5</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_5_ul">
+	<sheet>oe_growth_tilesheet_5</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_5_u">
+	<sheet>oe_growth_tilesheet_5</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_5_ur">
+	<sheet>oe_growth_tilesheet_5</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_5_ulr">
+	<sheet>oe_growth_tilesheet_5</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_5_l">
+	<sheet>oe_growth_tilesheet_5</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_5_">
+	<sheet>oe_growth_tilesheet_5</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_5_r">
+	<sheet>oe_growth_tilesheet_5</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_5_lr">
+	<sheet>oe_growth_tilesheet_5</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_5_dl">
+	<sheet>oe_growth_tilesheet_5</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_5_d">
+	<sheet>oe_growth_tilesheet_5</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_5_dr">
+	<sheet>oe_growth_tilesheet_5</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_5_dlr">
+	<sheet>oe_growth_tilesheet_5</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
 </FTL>

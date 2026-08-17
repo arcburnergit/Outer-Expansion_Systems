@@ -79,30 +79,7 @@ systemsToAppend[2] = {id_name = "oe_grease", attributes = {power = 1, start = "f
         {room_image = "room_oe_grease_20", w = 1, h = 2, top = "1", bottom = "1", left="00", right="00"}
     }
 }
-systemsToAppend[2] = {id_name = "oe_growth", attributes = {power = 1, start = "false"}, manning = false, replace_sys = "oxygen",
-    image_list = {
-        {room_image = "room_oe_grease_4", w = 2, h = 2, top = "10", bottom = "10", left="00", right="11"},
-        {room_image = "room_oe_grease", w = 2, h = 1, top = "11", bottom = "00", left="0", right="1"},
-        {room_image = "room_oe_grease_2", w = 2, h = 1, top = "00", bottom = "00", left="1", right="0"},
-        {room_image = "room_oe_grease_3", w = 2, h = 1, top = "11", bottom = "00", left="0", right="0"},
-        {room_image = "room_oe_grease_5", w = 1, h = 2, top = "1", bottom = "0", left="00", right="11"},
-        {room_image = "room_oe_grease_6", w = 1, h = 2, top = "0", bottom = "0", left="11", right="00"},
-        {room_image = "room_oe_grease_7", w = 2, h = 1, top = "00", bottom = "00", left="1", right="1"},
-        {room_image = "room_oe_grease_8", w = 1, h = 2, top = "0", bottom = "0", left="01", right="10"},
-        {room_image = "room_oe_grease_9", w = 2, h = 1, top = "00", bottom = "11", left="1", right="0"},
-        {room_image = "room_oe_grease_10", w = 2, h = 2, top = "0", bottom = "0", left="00", right="11"},
-        {room_image = "room_oe_grease_11", w = 1, h = 2, top = "0", bottom = "1", left="01", right="00"},
-        {room_image = "room_oe_grease_12", w = 2, h = 1, top = "01", bottom = "00", left="0", right="1"},
-        {room_image = "room_oe_grease_13", w = 2, h = 1, top = "01", bottom = "01", left="0", right="0"},
-        {room_image = "room_oe_grease_14", w = 2, h = 1, top = "00", bottom = "11", left="0", right="0"},
-        {room_image = "room_oe_grease_15", w = 1, h = 2, top = "0", bottom = "0", left="00", right="01"},
-        {room_image = "room_oe_grease_16", w = 1, h = 2, top = "0", bottom = "0", left="11", right="00"},
-        {room_image = "room_oe_grease_17", w = 1, h = 2, top = "0", bottom = "0", left="10", right="10"},
-        {room_image = "room_oe_grease_18", w = 1, h = 2, top = "0", bottom = "0", left="10", right="01"},
-        {room_image = "room_oe_grease_19", w = 2, h = 1, top = "10", bottom = "00", left="1", right="0"},
-        {room_image = "room_oe_grease_20", w = 1, h = 2, top = "1", bottom = "1", left="00", right="00"}
-    }
-}
+systemsToAppend[2] = {id_name = "oe_growth", attributes = {power = 1, start = "false"}, manning = false, replace_sys = "oxygen"}
 
 local function noDoorOverlap(rT, rB, rL, rR, iT, iB, iL, iR, shipName)
 	local room = table.concat({rT,rB,rL,rR},"")

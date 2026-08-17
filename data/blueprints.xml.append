@@ -699,8 +699,8 @@
 <FTL>
 <systemBlueprint name="oe_growth">
 	<type>oe_growth</type>
-	<title>Growth.</title>
-	<desc>Spreads.</desc>
+	<title>Life Bloom</title>
+	<desc>An organic system which grows across the ship, budding into rooms to provide oxygen and other effects.</desc>
 	<startPower>1</startPower>
 	<maxPower>3</maxPower>
 	<rarity>0</rarity>
@@ -712,17 +712,17 @@
 	<cost>30</cost>
 </systemBlueprint>
 
-<augBlueprint name="UPG_OE_GREASE_IGNITER">
-	<title>Pre-Ignited Canisters</title>
+<augBlueprint name="UPG_OE_GROWTH_ROOT">
+	<title>Bare-rooted</title>
 	<desc>YOU SHOULD NEVER SEE THIS</desc>
 	<cost>0</cost>
 	<rarity>0</rarity>
 	<stackable>true</stackable>
 	<value>1</value>
 </augBlueprint>
-<augBlueprint name="EX_OE_GREASE_IGNITER">
-	<title>Pre-Ignited Canisters [X]</title>
-	<desc>System charges are refilled with each jump.
+<augBlueprint name="EX_OE_GROWTH_ROOT">
+	<title>Bare-rooted [X]</title>
+	<desc>The roots of the Bloom can be placed in a different room, causing the system to grow out from that point rather than the system room.
     
 	[X] - As an external system upgrade, this augment will provide its normal effect but take up an augment slot. Can be converted for free to the internal version under the internal upgrade menu if you have the Modified Clone Bay system.</desc>
 	<cost>80</cost>

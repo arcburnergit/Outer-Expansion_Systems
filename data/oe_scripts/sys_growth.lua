@@ -58,23 +58,107 @@ local function system_ready(shipSystem)
 	return ((not shipSystem:GetLocked()) or shipSystem.iLockCount == -1) and shipSystem:Functioning() and shipSystem.iHackEffect <= 1
 end
 
+local bud_types = {
+	{name = "Oxygen", colour = "blue", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_oxygen")},
+	{name = "Floral", colour = "green", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_floral")},
+	{name = "Vampweed", colour = "red", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_vampweed")},
+	{name = "Praetor", req="OE_GROWTH_BUD_PRAETOR", colour = "praetor", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_praetor")},
+	{name = "Cultivator", req="OE_GROWTH_BUD_CULTIVATOR", colour = "cultivator", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_cultivator")},
+	{name = "Acidic", req="OE_GROWTH_BUD_ACIDIC", colour = "acidic", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_acidic")},
+	{name = "Suffocating", req="OE_GROWTH_BUD_SUFFOCATING", colour = "grey", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_suffocating")},
+	{name = "Entangling", req="OE_GROWTH_BUD_ENTANGLING", colour = "orange", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_entangling")},
+	{name = "Electrified", req="OE_GROWTH_BUD_ELECTRIFIED", colour = "electric", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_electified")},
+}
+
+--Handles initialization of custom system box
+local buttonOffset_x = 37
+local buttonOffset_y = -50
+local function construct_system_box(systemBox)
+	if is_system(systemBox) then
+		systemBox.extend.xOffset = 54
+
+		local button = Hyperspace.Button()
+		button:OnInit("systemUI/button_oe_growth", Hyperspace.Point(buttonOffset_x, buttonOffset_y))
+		button.hitbox.x = 10
+		button.hitbox.y = 47
+		button.hitbox.w = 20
+		button.hitbox.h = 19
+		systemBox.table.button = button
+
+		local effectButtonTable = {}
+		for i = 1, #bud_types do
+			local effectButton = Hyperspace.Button()
+			effectButton:OnInit("systemUI/oe_grease_box_button_blank", Hyperspace.Point(0, 0))
+			effectButton.hitbox.x = 0
+			effectButton.hitbox.y = 0
+			effectButton.hitbox.w = 22
+			effectButton.hitbox.h = 22
+			table.insert(effectButtonTable, {b = effectButton, position = {x = 0, y = 0}})
+		end
+		systemBox.table.effectButtonTable = effectButtonTable
+
+		systemBox.pSystem.bBoostable = false
+	elseif is_system_enemy(systemBox) then
+		systemBox.pSystem.bBoostable = false
+	end
+end
+
+script.on_internal_event(Defines.InternalEvents.CONSTRUCT_SYSTEM_BOX, construct_system_box)
+
+local function mouse_move(systemBox, x, y)
+	if is_system(systemBox) then
+		local button = systemBox.table.button
+		button:MouseMove(x - buttonOffset_x, y - buttonOffset_y, false)
+		local effectButtonTable = systemBox.table.effectButtonTable
+		for _, effectButton in ipairs(effectButtonTable) do
+			effectButton.b:MouseMove(x - effectButton.position.x, y - effectButton.position.y, false)
+		end
+	end
+	return Defines.Chain.CONTINUE
+end
+script.on_internal_event(Defines.InternalEvents.SYSTEM_BOX_MOUSE_MOVE, mouse_move)
+
+local displayOptions = false
+local active_target_bud = false
+--Handles click events 
+local function system_click(systemBox, shift)
+	if is_system(systemBox) then
+		local button = systemBox.table.button
+		if button.bHover and button.bActive then
+			displayOptions = not displayOptions
+			active_target_bud = false
+		end
+
+		local effectButtonTable = systemBox.table.effectButtonTable
+		for i, effectButton in ipairs(effectButtonTable) do
+			if effectButton.b.bHover and effectButton.b.bActive then
+				active_target_bud = i
+			end
+		end
+	end
+	return Defines.Chain.CONTINUE
+end
+script.on_internal_event(Defines.InternalEvents.SYSTEM_BOX_MOUSE_CLICK, system_click)
 
 local table_growth = {[0] = {}, [1] = {} }
 local table_map = {[0] = nil, [1] = nil}
-mods.oe.table_bud = {[0] = {}, [1] = {}}
-local table_bud = mods.oe.table_bud
+local table_bud = {[0] = {}, [1] = {}}
+local table_bud_set = {[0] = {}, [1] = {}}
 
 local function new_bud(i, j)
 	return {i = i, j = j}
 end
 
 local growth_variable = "save_oe_growth%d_room%d_i%d_j%d"
+local root_variable = "save_oe_root%d"
 local bud_variable_i = "save_oe_bud%d_room%d_i"
 local bud_variable_j = "save_oe_bud%d_room%d_j"
+local bud_variable_setting = "save_oe_bud%d_room%d_setting"
 
 script.on_internal_event(Defines.InternalEvents.CONSTRUCT_SHIP_MANAGER, function(shipManager)
 	table_growth[shipManager.iShipId] = {}
 	table_bud[shipManager.iShipId] = {}
+	table_bud_set[shipManager.iShipId] = {}
 	table_map[shipManager.iShipId] = nil
 end)
 
@@ -82,6 +166,7 @@ local function save_system(shipManager, system)
 	for room in vter(shipManager.ship.vRoomList) do
 		Hyperspace.playerVariables[string.format(bud_variable_i, shipManager.iShipId, room.iRoomId)] = (table_bud[shipManager.iShipId][room.iRoomId] and table_bud[shipManager.iShipId][room.iRoomId].i) or -1
 		Hyperspace.playerVariables[string.format(bud_variable_j, shipManager.iShipId, room.iRoomId)] = (table_bud[shipManager.iShipId][room.iRoomId] and table_bud[shipManager.iShipId][room.iRoomId].j) or -1
+		Hyperspace.playerVariables[string.format(bud_variable_setting, shipManager.iShipId, room.iRoomId)] = table_bud_set[shipManager.iShipId][room.iRoomId] or 1
 		local room_map = table_map[shipManager.iShipId][room.iRoomId]
 		local w = room_map.w
 		local h = room_map.h
@@ -97,8 +182,14 @@ local function load_system(shipManager, system)
 	for room in vter(shipManager.ship.vRoomList) do
 		local bud_i = Hyperspace.playerVariables[string.format(bud_variable_i, shipManager.iShipId, room.iRoomId)]
 		local bud_j = Hyperspace.playerVariables[string.format(bud_variable_j, shipManager.iShipId, room.iRoomId)]
+		local bud_set = Hyperspace.playerVariables[string.format(bud_variable_setting, shipManager.iShipId, room.iRoomId)]
 		if bud_i >= 0 and bud_j >= 0 then
 			table_bud[shipManager.iShipId][room.iRoomId] = new_bud(bud_i, bud_j)
+		end
+		if bud_set > 0 then
+			table_bud_set[shipManager.iShipId][room.iRoomId] = Hyperspace.playerVariables[string.format(bud_variable_setting, shipManager.iShipId, room.iRoomId)]
+		else
+			table_bud_set[shipManager.iShipId][room.iRoomId] = 1
 		end
 		local room_map = table_map[shipManager.iShipId][room.iRoomId]
 		local w = room_map.w
@@ -107,6 +198,8 @@ local function load_system(shipManager, system)
 			for j = 0, h - 1 do
 				table_growth[shipManager.iShipId][room.iRoomId][i][j].val = Hyperspace.playerVariables[string.format(growth_variable, shipManager.iShipId, room.iRoomId, i, j)]
 			end
+		end
+		if Hyperspace.playerVariables[string.format(root_variable, shipManager.iShipId)] > -1 then
 		end
 	end
 end
@@ -138,10 +231,10 @@ local function construct_room_connection_map(shipManager)
 			table_map[shipManager.iShipId][room.iRoomId].slots[i] = {}
 			for j = 0, h - 1 do
 				local adjacent = {}
-				if i - 1 >= 0 then table.insert(adjacent, {room = room.iRoomId, i = i - 1, j = j}) end
-				if i + 1 < w then table.insert(adjacent, {room = room.iRoomId, i = i + 1, j = j}) end
-				if j - 1 >= 0 then table.insert(adjacent, {room = room.iRoomId, i = i, j = j - 1}) end
-				if j + 1 < h then table.insert(adjacent, {room = room.iRoomId, i = i, j = j + 1}) end
+				if i - 1 >= 0 then table.insert(adjacent, {room = room.iRoomId, dir="l", i = i - 1, j = j}) end
+				if i + 1 < w then table.insert(adjacent, {room = room.iRoomId, dir="r", i = i + 1, j = j}) end
+				if j - 1 >= 0 then table.insert(adjacent, {room = room.iRoomId, dir="u", i = i, j = j - 1}) end
+				if j + 1 < h then table.insert(adjacent, {room = room.iRoomId, dir="d", i = i, j = j + 1}) end
 				local x = room.rect.x + i * 35
 				local y = room.rect.y + j * 35
 				table_map[shipManager.iShipId][room.iRoomId].slots[i][j] = adjacent
@@ -152,9 +245,12 @@ local function construct_room_connection_map(shipManager)
 		local room_1 = door.iRoom1
 		local room_1_i = nil
 		local room_1_j = nil
+		local room_1_d = nil
+
 		local room_2 = door.iRoom2
 		local room_2_i = nil
 		local room_2_j = nil
+		local room_2_d = nil
 		if room_1 ~= -1 and room_2 ~= -1 then
 			for room in vter(shipManager.ship.vRoomList) do
 				local room_map = table_map[shipManager.iShipId][room.iRoomId]
@@ -165,45 +261,55 @@ local function construct_room_connection_map(shipManager)
 						local x = door.x
 						local y = door.y - 17
 						local i = nil
+						local d = nil
 						if x == room.rect.x then
 							i = 0
+							d = "l"
 						elseif x == room.rect.x + room.rect.w then
 							i = w - 1
+							d = "r"
 						end
 						if i and y >= room.rect.y and y < room.rect.y + room.rect.h then
 							local j = (y - room.rect.y) / 35
 							if room.iRoomId == room_1 then
 								room_1_i = i
 								room_1_j = j
+								room_1_d = d
 							else
 								room_2_i = i
 								room_2_j = j
+								room_2_d = d
 							end 
 						end
 					else
 						local x = door.x - 17
 						local y = door.y 
 						local j = nil
+						local d = nil
 						if y == room.rect.y then
 							j = 0
+							d = "u"
 						elseif y == room.rect.y + room.rect.h then
 							j = h - 1
+							d = "d"
 						end
 						if j and x >= room.rect.x and x < room.rect.x + room.rect.w then
 							local i = (x - room.rect.x) / 35
 							if room.iRoomId == room_1 then
 								room_1_i = i
 								room_1_j = j
+								room_1_d = d
 							else
 								room_2_i = i
 								room_2_j = j
+								room_2_d = d
 							end 
 						end
 					end
 				end
 				if room_1_i and room_1_j and room_2_i and room_2_j then
-					table.insert(table_map[shipManager.iShipId][room_1].slots[room_1_i][room_1_j], {room = room_2, i = room_2_i, j = room_2_j})
-					table.insert(table_map[shipManager.iShipId][room_2].slots[room_2_i][room_2_j], {room = room_1, i = room_1_i, j = room_1_j})
+					table.insert(table_map[shipManager.iShipId][room_1].slots[room_1_i][room_1_j], {room = room_2, dir = room_1_d, i = room_2_i, j = room_2_j})
+					table.insert(table_map[shipManager.iShipId][room_2].slots[room_2_i][room_2_j], {room = room_1, dir = room_2_d, i = room_1_i, j = room_1_j})
 					break
 				end
 			end
@@ -212,34 +318,129 @@ local function construct_room_connection_map(shipManager)
 	end
 end
 
+local flower_colour_list_random = {
+	"red",
+	"orange",
+	"yellow",
+	"green",
+	"cyan",
+	"blue",
+	"magenta",
+}
+
+local flower_colour_list = {
+	red = Graphics.GL_Color(208/255, 86/255, 86/255, 1),
+	orange = Graphics.GL_Color(221/255, 145/255, 73/255, 1),
+	yellow = Graphics.GL_Color(221/255, 217/255, 78/255, 1),
+	green = Graphics.GL_Color(96/255, 208/255, 90/255, 1),
+	cyan = Graphics.GL_Color(78/255, 221/255, 208/255, 1),
+	blue = Graphics.GL_Color(79/255, 157/255, 210/255, 1),
+	magenta = Graphics.GL_Color(223/255, 92/255, 202/255, 1),
+	acidic = Graphics.GL_Color(54/255, 255/255, 53/255, 1),
+	grey = Graphics.GL_Color(149/255, 149/255, 149/255, 1),
+	praetor = Graphics.GL_Color(187/255, 255/255, 253/255, 1),
+	cultivator = Graphics.GL_Color(91/255, 127/255, 0/255, 1),
+	electric = Graphics.GL_Color(58/255, 100/255, 100/255, 1),
+}
+local flower_dark_colour_list = {
+	red = Graphics.GL_Color(156/255, 57/255, 83/255, 1),
+	orange = Graphics.GL_Color(171/255, 101/255, 61/255, 1),
+	yellow = Graphics.GL_Color(169/255, 134/255, 66/255, 1),
+	green = Graphics.GL_Color(53/255, 156/255, 55/255, 1),
+	cyan = Graphics.GL_Color(57/255, 152/255, 148/255, 1),
+	blue = Graphics.GL_Color(57/255, 81/255, 152/255, 1),
+	magenta = Graphics.GL_Color(119/255, 58/255, 161/255, 1),
+	acidic = Graphics.GL_Color(0/255, 209/255, 4/255, 1),
+	grey = Graphics.GL_Color(105/255, 105/255, 105/255, 1),
+	praetor = Graphics.GL_Color(69/255, 106/255, 123/255, 1),
+	cultivator = Graphics.GL_Color(60/255, 74/255, 0/255, 1),
+	electric = Graphics.GL_Color(169/255, 134/255, 66/255, 1),
+}
+
 local function generate_slot_anim(shipManager, room, i, j)
 	local s = "oe_growth_tile_%d"
+	local spc = "oe_growth_tile_primary_colour_%d"
+	local sdpc = "oe_growth_tile_dark_primary_colour_%d"
+	local ssc = "oe_growth_tile_secondary_colour_%d"
+	local sdsc = "oe_growth_tile_dark_secondary_colour_%d"
+	local b = "oe_growth_bud_%d"
+	local bc = "oe_growth_bud_colour_%d"
+	local bdc = "oe_growth_bud_dark_colour_%d"
 	local post_fix = "_udlr"
 	local room_map = table_map[shipManager.iShipId][room.iRoomId]
 	local slot_map = room_map.slots[i][j]
 	for _, adjacent in ipairs(slot_map) do
 		--print(string.format("check_adjacent:%d i:%d j:%d", adjacent.room, adjacent.i, adjacent.j))
 		if adjacent.room == room.iRoomId then
-			if adjacent.i == i + 1 then 
-				post_fix = string.gsub(post_fix, "r", "")
-			elseif adjacent.i == i - 1 then 
-				post_fix = string.gsub(post_fix, "l", "")
-			elseif adjacent.j == j + 1 then 
-				post_fix = string.gsub(post_fix, "d", "")
-			elseif adjacent.j == j - 1 then 
-				post_fix = string.gsub(post_fix, "u", "")
-			end
+			post_fix = string.gsub(post_fix, adjacent.dir, "")
 		end
 	end
 	--print(string.format("ship:%d room:%d i:%d j:%d s:%s", shipManager.iShipId, room.iRoomId, i, j, post_fix))
-	local image_table = {}
+	local tile_image_table = {}
+	local tile_colour_primary_table = {}
+	local tile_colour_dark_primary_table = {}
+	local tile_colour_secondary_table = {}
+	local tile_colour_dark_secondary_table = {}
 	for n = 1, 5 do
 		local anim = Hyperspace.Animations:GetAnimation(string.format(s, n)..post_fix)
 		anim.position.x = room.rect.x + i * 35
 		anim.position.y = room.rect.y + j * 35
-		image_table[n] = anim
+		tile_image_table[n] = anim
+		if n >= 4 then
+			local anim_colour_dark_primary = Hyperspace.Animations:GetAnimation(string.format(sdpc, n)..post_fix)
+			anim_colour_dark_primary.position.x = room.rect.x + i * 35
+			anim_colour_dark_primary.position.y = room.rect.y + j * 35
+			tile_colour_dark_primary_table[n] = anim_colour_dark_primary
+			local anim_colour_dark_secondary = Hyperspace.Animations:GetAnimation(string.format(sdsc, n)..post_fix)
+			anim_colour_dark_secondary.position.x = room.rect.x + i * 35
+			anim_colour_dark_secondary.position.y = room.rect.y + j * 35
+			tile_colour_dark_secondary_table[n] = anim_colour_dark_secondary
+			if n >= 5 then
+				local anim_colour_primary = Hyperspace.Animations:GetAnimation(string.format(spc, n)..post_fix)
+				anim_colour_primary.position.x = room.rect.x + i * 35
+				anim_colour_primary.position.y = room.rect.y + j * 35
+				tile_colour_primary_table[n] = anim_colour_primary
+				local anim_colour_secondary = Hyperspace.Animations:GetAnimation(string.format(ssc, n)..post_fix)
+				anim_colour_secondary.position.x = room.rect.x + i * 35
+				anim_colour_secondary.position.y = room.rect.y + j * 35
+				tile_colour_secondary_table[n] = anim_colour_secondary
+			end
+		end
 	end
-	return image_table
+	local bud_image_table = {}
+	local bud_colour_table = {}
+	local bud_colour_dark_table = {}
+	for n = 1, 3 do
+		local anim = Hyperspace.Animations:GetAnimation(string.format(b, n)..post_fix)
+		anim.position.x = room.rect.x + i * 35
+		anim.position.y = room.rect.y + j * 35
+		bud_image_table[n] = anim
+		local anim_dark_colour = Hyperspace.Animations:GetAnimation(string.format(bdc, n)..post_fix)
+		anim_dark_colour.position.x = room.rect.x + i * 35
+		anim_dark_colour.position.y = room.rect.y + j * 35
+		bud_colour_dark_table[n] = anim_dark_colour
+		local anim_colour = Hyperspace.Animations:GetAnimation(string.format(bc, n)..post_fix)
+		anim_colour.position.x = room.rect.x + i * 35
+		anim_colour.position.y = room.rect.y + j * 35
+		bud_colour_table[n] = anim_colour
+	end
+	local colour_primary_index = math.random(#flower_colour_list_random)
+	local colour_secondary_index = math.random(#flower_colour_list_random - 1)
+	if colour_secondary_index >= colour_primary_index then colour_secondary_index = colour_secondary_index + 1 end
+	local colour_primary = flower_colour_list_random[colour_primary_index]
+	local colour_secondary = flower_colour_list_random[colour_secondary_index]
+	return {
+		tile = tile_image_table, 
+		tile_p =  tile_colour_primary_table, 
+		tile_d_p =  tile_colour_dark_primary_table, 
+		tile_s = tile_colour_secondary_table, 
+		tile_d_s = tile_colour_dark_secondary_table, 
+		bud =  bud_image_table, 
+		bud_c = bud_colour_table, 
+		bud_d_c = bud_colour_dark_table, 
+		colour_p = colour_primary, 
+		colour_s = colour_secondary
+	}
 end
 
 script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
@@ -248,6 +449,8 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 		construct_room_connection_map(shipManager)
 		for room in vter(shipManager.ship.vRoomList) do
 			table_bud[shipManager.iShipId][room.iRoomId] = false
+			table_bud_set[shipManager.iShipId][room.iRoomId] = 1
+			shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, 100)
 			table_growth[shipManager.iShipId][room.iRoomId] = {}
 			local room_map = table_map[shipManager.iShipId][room.iRoomId]
 			local w = room_map.w
@@ -255,9 +458,9 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 			for i = 0, w - 1 do
 				table_growth[shipManager.iShipId][room.iRoomId][i] = {}
 				for j = 0, h - 1 do
-					local anim = generate_slot_anim(shipManager, room, i, j)
+					local image = generate_slot_anim(shipManager, room, i, j)
 					--print(string.format("setup:%d, %d, %d, %d", shipManager.iShipId, room.iRoomId, i, j))
-					table_growth[shipManager.iShipId][room.iRoomId][i][j] = {val = 0, image = anim}
+					table_growth[shipManager.iShipId][room.iRoomId][i][j] = {val = 0, image = image}
 				end
 			end
 		end
@@ -272,7 +475,7 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 
 	if shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) then
 		local system = shipManager:GetSystem(Hyperspace.ShipSystem.NameToSystemId(systemName))
-		local system_room_id = system.roomId
+		local system_room_id = (shipManager:HasAugmentation("UPG_OE_GROWTH_ROOT") > 0 and system.table.growth_root) or system.roomId
 		local power = system:GetEffectivePower()
 
 		update_timer[shipManager.iShipId] = update_timer[shipManager.iShipId] + time_increment(true)
@@ -303,8 +506,8 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 						local energy_needed = 100 - current_energy
 						local energy_add = math.min(energy_per_cell, energy_needed)
 
-						local fire = shipManager:GetFireAtPoint(map[cell.room].x + cell.i * 35, map[cell.room].y + cell.j * 35)
-						if not fire.bWasOnFire then
+						local fire_room_count = shipManager:GetFireCount(cell.room)
+						if fire_room_count <= 0 then
 							table_growth[shipManager.iShipId][cell.room][cell.i][cell.j].val = current_energy + energy_add
 							energy_spent = energy_spent + energy_add
 						end
@@ -334,6 +537,8 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 					for j = 0, h - 1 do
 						local slot_map = room_map.slots[i][j]
 						local connected = visited[room.iRoomId] and visited[room.iRoomId][i] and visited[room.iRoomId][i][j]
+						local active_bud_index = table_bud_set[shipManager.iShipId][room.iRoomId]
+						--local active_bud = bud_types[active_bud_index]
 						local current_energy = table_growth[shipManager.iShipId][room.iRoomId][i][j].val
 						local decay = 0
 						if current_energy > 0 then
@@ -344,10 +549,14 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 							elseif table_bud[shipManager.iShipId][room.iRoomId].i == i and table_bud[shipManager.iShipId][room.iRoomId].j == j then
 								if not connected then
 									decay = decay + decay_bud_mult * energy_base
-									shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, 3 * update_timer[shipManager.iShipId])
-								elseif current_energy > 50 then
-									shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, 3 * update_timer[shipManager.iShipId])
-								else
+								end
+								if current_energy > 50 then
+									if active_bud_index == 1 then
+										shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, 5 * update_timer[shipManager.iShipId])
+									elseif active_bud_index == 6 then
+										shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, -5 * update_timer[shipManager.iShipId])
+									end
+								elseif connected then
 									table_bud[shipManager.iShipId][room.iRoomId] = false
 								end
 							end
@@ -395,17 +604,21 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 		end
 	end
 end)
-			
+
 
 local COLOUR_WHITE = Graphics.GL_Color(1, 1, 1, 1)
 local COLOUR_BLACK = Graphics.GL_Color(0, 0, 0, 1)
 local COLOUR_GREEN = Graphics.GL_Color(0, 0.5, 0, 1)
-script.on_render_event(Defines.RenderEvents.SHIP_FLOOR, function(ship, experimental) return Defines.Chain.CONTINUE end, function(ship, experimental) 
+local IMAGE_ROOT = Hyperspace.Resources:CreateImagePrimitiveString( "effects/oe_growth_roots.png", 0, 0, 0, COLOUR_WHITE, 1.0, false)
+script.on_render_event(Defines.RenderEvents.SHIP_SPARKS, function(ship, experimental) return Defines.Chain.CONTINUE end, function(ship, experimental) 
 	local shipManager = Hyperspace.ships(ship.iShipId)
 	if shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) then
+		local system = shipManager:GetSystem(Hyperspace.ShipSystem.NameToSystemId(systemName))
 		local map = table_map[shipManager.iShipId]
 		for room in vter(ship.vRoomList) do
 			local room_map = map[room.iRoomId]
+			local active_bud_index = table_bud_set[shipManager.iShipId][room.iRoomId]
+			local active_bud = bud_types[active_bud_index]
 			local w = room_map.w
 			local h = room_map.h
 			for i = 0, w - 1 do
@@ -415,20 +628,261 @@ script.on_render_event(Defines.RenderEvents.SHIP_FLOOR, function(ship, experimen
 					Graphics.CSurface.GL_SetColor(COLOUR_WHITE)
 					if current > 10 then
 						local i = math.floor((current - 10)/20) + 1
-						image_table[i]:OnRender(1, COLOUR_WHITE, false)
+						image_table.tile[i]:OnRender(1, COLOUR_WHITE, false)
+						if i >= 4 then
+							image_table.tile_d_p[i]:OnRender(1, flower_dark_colour_list[image_table.colour_p], false)
+							image_table.tile_d_s[i]:OnRender(1, flower_dark_colour_list[image_table.colour_s], false)
+							if i >= 5 then
+								image_table.tile_p[i]:OnRender(1, flower_colour_list[image_table.colour_p], false)
+								image_table.tile_s[i]:OnRender(1, flower_colour_list[image_table.colour_s], false)
+							end
+						end
 					end
-					local x = room.rect.x + i * 35
-					local y = room.rect.y + j * 35
 					if table_bud[shipManager.iShipId][room.iRoomId] and table_bud[shipManager.iShipId][room.iRoomId].i == i and table_bud[shipManager.iShipId][room.iRoomId].j == j then
-						Graphics.CSurface.GL_SetColor(COLOUR_GREEN)
-					else
-						Graphics.CSurface.GL_SetColor(COLOUR_BLACK)
+						if current > 90 then
+							image_table.bud[3]:OnRender(1, COLOUR_WHITE, false)
+							image_table.bud_d_c[3]:OnRender(1, flower_dark_colour_list[active_bud.colour], false)
+							image_table.bud_c[3]:OnRender(1, flower_colour_list[active_bud.colour], false)
+						elseif current > 70 then
+							image_table.bud[2]:OnRender(1, COLOUR_WHITE, false)
+							image_table.bud_d_c[2]:OnRender(1, flower_dark_colour_list[active_bud.colour], false)
+							image_table.bud_c[2]:OnRender(1, flower_colour_list[active_bud.colour], false)
+						elseif current > 50 then
+							image_table.bud[1]:OnRender(1, COLOUR_WHITE, false)
+							image_table.bud_d_c[1]:OnRender(1, flower_dark_colour_list[active_bud.colour], false)
+							image_table.bud_c[1]:OnRender(1, flower_colour_list[active_bud.colour], false)
+						end
 					end
-					Graphics.freetype.easy_print(5, x+4, y+2, string.format("%.1f", current))
+				end
+			end
+
+			if displayOptions then
+				if active_target_bud and Hyperspace.App.gui.combatControl.selectedSelfRoom == room.iRoomId then
+					Graphics.CSurface.GL_RenderPrimitive(room.highlightPrimitive)
+					Graphics.CSurface.GL_RenderPrimitive(room.highlightPrimitive2)
+				else
+					local colour_outline = flower_colour_list[active_bud.colour]
+					local colour_outline_dark = flower_dark_colour_list[active_bud.colour]
+					Graphics.CSurface.GL_PushStencilMode()
+					Graphics.CSurface.GL_SetStencilMode(1,1,1)
+					Graphics.CSurface.GL_RenderPrimitive(room.highlightPrimitive)
+					Graphics.CSurface.GL_RenderPrimitive(room.highlightPrimitive2)
+					Graphics.CSurface.GL_SetStencilMode(2,1,1)
+					Graphics.CSurface.GL_DrawRect(
+						room.rect.x, 
+						room.rect.y,
+						room.rect.w, 
+						room.rect.h, 
+						colour_outline)
+					Graphics.CSurface.GL_DrawRect(
+						room.rect.x+5, 
+						room.rect.y+5,
+						room.rect.w-10, 
+						room.rect.h-10, 
+						colour_outline_dark)
+					Graphics.CSurface.GL_SetStencilMode(0,1,1)
+					Graphics.CSurface.GL_PopStencilMode()
 				end
 			end
 		end
-		Graphics.CSurface.GL_SetColor(COLOUR_WHITE)
 	end
 	return Defines.Chain.CONTINUE 
+end)
+script.on_render_event(Defines.RenderEvents.SHIP_FLOOR, function(ship, experimental) return Defines.Chain.CONTINUE end, function(ship, experimental) 
+	local shipManager = Hyperspace.ships(ship.iShipId)
+	if shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) then
+		local system = shipManager:GetSystem(Hyperspace.ShipSystem.NameToSystemId(systemName))
+		local root_room = (shipManager:HasAugmentation("UPG_OE_GROWTH_ROOT") > 0 and system.table.growth_root) or system.roomId
+		local map = table_map[shipManager.iShipId]
+		for room in vter(ship.vRoomList) do
+			local room_map = map[room.iRoomId]
+			local w = room_map.w
+			local h = room_map.h
+			if room.iRoomId == root_room then
+				for i = 0, w - 1 do
+					for j = 0, h - 1 do
+						local x = room.rect.x + i * 35
+						local y = room.rect.y + j * 35
+						Graphics.CSurface.GL_PushMatrix()
+						Graphics.CSurface.GL_Translate(x, y, 0)
+						Graphics.CSurface.GL_RenderPrimitiveWithColor(IMAGE_ROOT, COLOUR_WHITE)
+						Graphics.CSurface.GL_PopMatrix()
+					end
+				end
+				break
+			end
+		end
+	end
+	return Defines.Chain.CONTINUE 
+end)
+
+local baseImage = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/button_oe_growth_base.png", buttonOffset_x, buttonOffset_y, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+local buttonIcon = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_growth_button_icon.png", 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+local boxImages = {
+	arrow = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_arrow.png" , -7, 3, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	top = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_top.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	bottom = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_bottom.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	left = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_left.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	right = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_right.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	top_left = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_top_left.png" , 4, 4, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	top_right = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_top_right.png" , 0, 4, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	bottom_left = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_bottom_left.png" , 4, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	bottom_right = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_bottom_right.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+	middle = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_middle.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
+}
+
+local maxButtonWidth = 4
+local boxButton_w = 22
+local boxButton_h = 22
+local function renderOptions(originPos_x, originPos_y, effectButtonTable)
+	Graphics.CSurface.GL_PushMatrix()
+	Graphics.CSurface.GL_Translate(originPos_x, originPos_y, 0)
+
+	local activeEffectButtons = {}
+	for i, effectButton in ipairs(effectButtonTable) do
+		local currentEffect = bud_types[i]
+		if (currentEffect.req and Hyperspace.ships.player:HasEquipment(currentEffect.req) > 0) or not currentEffect.req then
+			table.insert(activeEffectButtons, effectButton)
+			effectButton.index = i
+			if active_target_bud == i then
+				effectButton.b.bActive = false
+			else
+				effectButton.b.bActive = true
+			end
+		else
+			effectButton.b.bActive = false
+		end
+	end
+	local boxNumber = #activeEffectButtons
+
+	local boxWidthNumber = math.min(maxButtonWidth, boxNumber)
+	local boxHeightNumber = math.ceil(boxNumber/maxButtonWidth)
+	local boxWidth = boxButton_w * boxWidthNumber
+	local boxHeight = boxButton_h * boxHeightNumber
+	Graphics.CSurface.GL_PushMatrix()
+	Graphics.CSurface.GL_Translate(-0.5 * boxWidth, -1 * boxHeight, 0)
+
+	--Render Corners
+	Graphics.CSurface.GL_PushMatrix()
+	Graphics.CSurface.GL_Translate(-(boxButton_w/2), -(boxButton_h/2), 0)
+	Graphics.CSurface.GL_RenderPrimitive(boxImages.top_left)
+	Graphics.CSurface.GL_PopMatrix()
+	Graphics.CSurface.GL_PushMatrix()
+	Graphics.CSurface.GL_Translate(boxWidth-(boxButton_w/2), -(boxButton_h/2), 0)
+	Graphics.CSurface.GL_RenderPrimitive(boxImages.top_right)
+	Graphics.CSurface.GL_PopMatrix()
+	Graphics.CSurface.GL_PushMatrix()
+	Graphics.CSurface.GL_Translate(-(boxButton_w/2), boxHeight-(boxButton_h/2), 0)
+	Graphics.CSurface.GL_RenderPrimitive(boxImages.bottom_left)
+	Graphics.CSurface.GL_PopMatrix()
+	Graphics.CSurface.GL_PushMatrix()
+	Graphics.CSurface.GL_Translate(boxWidth-(boxButton_w/2), boxHeight-(boxButton_h/2), 0)
+	Graphics.CSurface.GL_RenderPrimitive(boxImages.bottom_right)
+	Graphics.CSurface.GL_PopMatrix()
+
+	if boxWidthNumber > 1 then
+		for n = 1, boxWidthNumber - 1 do
+			Graphics.CSurface.GL_PushMatrix()
+			Graphics.CSurface.GL_Translate(-(boxButton_w/2)+boxButton_w*n, -(boxButton_h/2), 0)
+			Graphics.CSurface.GL_RenderPrimitive(boxImages.top)
+			Graphics.CSurface.GL_PopMatrix()
+			Graphics.CSurface.GL_PushMatrix()
+			Graphics.CSurface.GL_Translate(-(boxButton_w/2)+boxButton_w*n, boxHeight-(boxButton_h/2), 0)
+			Graphics.CSurface.GL_RenderPrimitive(boxImages.bottom)
+			Graphics.CSurface.GL_PopMatrix()
+			if boxHeightNumber > 1 then
+				for m = 1, boxHeightNumber - 1 do
+					Graphics.CSurface.GL_PushMatrix()
+					Graphics.CSurface.GL_Translate(-(boxButton_w/2)+boxButton_w*n, -(boxButton_h/2)+boxButton_h*m, 0)
+					Graphics.CSurface.GL_RenderPrimitive(boxImages.middle)
+					Graphics.CSurface.GL_PopMatrix()
+				end
+			end
+		end
+	end
+	if boxHeightNumber > 1 then
+		for m = 1, boxHeightNumber - 1 do
+			Graphics.CSurface.GL_PushMatrix()
+			Graphics.CSurface.GL_Translate(-(boxButton_w/2), -(boxButton_h/2)+boxButton_h*m, 0)
+			Graphics.CSurface.GL_RenderPrimitive(boxImages.left)
+			Graphics.CSurface.GL_PopMatrix()
+			Graphics.CSurface.GL_PushMatrix()
+			Graphics.CSurface.GL_Translate(boxWidth-(boxButton_w/2), -(boxButton_h/2)+boxButton_h*m, 0)
+			Graphics.CSurface.GL_RenderPrimitive(boxImages.right)
+			Graphics.CSurface.GL_PopMatrix()
+		end
+	end
+
+	Graphics.CSurface.GL_PopMatrix()
+	Graphics.CSurface.GL_RenderPrimitive(boxImages.arrow)
+	Graphics.CSurface.GL_PopMatrix()
+	for i = 1, boxNumber do
+		if activeEffectButtons[i] then
+			effectButton = activeEffectButtons[i]
+			local buttonX = originPos_x - 0.5 * boxWidth + ((i - 1) % maxButtonWidth) * boxButton_w
+			local buttonY = originPos_y - 1 * boxHeight + math.floor((i - 1) / maxButtonWidth) * boxButton_h
+			effectButton.position = {x = buttonX, y = buttonY}
+			Graphics.CSurface.GL_PushMatrix()
+			Graphics.CSurface.GL_Translate(effectButton.position.x, effectButton.position.y, 0)
+			effectButton.b:OnRender()
+			local effect = bud_types[effectButton.index]
+			local effectColour = flower_colour_list[effect.colour]
+			Graphics.CSurface.GL_RenderPrimitiveWithColor(buttonIcon, effectColour)
+			Graphics.CSurface.GL_PopMatrix()
+			if effectButton.b.bHover then
+				Hyperspace.Mouse.bForceTooltip = true
+				Hyperspace.Mouse:SetTooltip(effect.name.." "..effect.desc)
+			end
+		end
+	end
+end
+
+local mouse_tooltip_string_hover = Hyperspace.Text:GetText("oe_lua_sys_growth_button_hover")
+local mouse_tooltip_string_disabled_hover = Hyperspace.Text:GetText("oe_lua_sys_growth_button_disabled_hover")
+local function system_render(systemBox, ignoreStatus)
+	if is_system(systemBox) then
+		local system = systemBox.pSystem
+		local effectivePower = system:GetEffectivePower()
+		local maxPower = system:GetMaxPower()
+		local mousePos = Hyperspace.Mouse.position
+
+		Graphics.CSurface.GL_RenderPrimitive(baseImage)
+
+		local button = systemBox.table.button
+		button.bActive = Hyperspace.App.gui.upgradeButton.bActive
+		button:OnRender()
+		if button.bHover and button.bActive then
+			Hyperspace.Mouse.bForceTooltip = true
+			Hyperspace.Mouse:SetTooltip(string.format(mouse_tooltip_string_hover))
+		elseif button.bHover then
+			Hyperspace.Mouse.bForceTooltip = true
+			Hyperspace.Mouse:SetTooltip(string.format(mouse_tooltip_string_disabled_hover))
+		end
+		local effectButtonTable = systemBox.table.effectButtonTable
+		if button.bActive and displayOptions then
+			renderOptions(buttonOffset_x + 20, buttonOffset_y+30, effectButtonTable)
+		elseif displayOptions then
+			displayOptions = false
+			active_target_bud = false
+		end
+	end
+end
+script.on_render_event(Defines.RenderEvents.SYSTEM_BOX, 
+function(systemBox, ignoreStatus) 
+	return Defines.Chain.CONTINUE
+end, system_render)
+
+script.on_internal_event(Defines.InternalEvents.ON_MOUSE_L_BUTTON_DOWN, function(x,y) 
+	if active_target_bud and Hyperspace.App.gui.combatControl.selectedSelfRoom >= 0 then
+		table_bud_set[0][Hyperspace.App.gui.combatControl.selectedSelfRoom] = active_target_bud
+	elseif active_bud_index then
+		active_target_bud = false
+	end
+	return Defines.Chain.CONTINUE
+end)
+script.on_internal_event(Defines.InternalEvents.ON_MOUSE_R_BUTTON_DOWN, function(x,y) 
+	if active_target_bud then
+		active_target_bud = false
+	end
+	return Defines.Chain.CONTINUE
 end)

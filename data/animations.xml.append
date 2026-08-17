@@ -409,3 +409,1250 @@
 	<time>1</time>
 </anim>
 </FTL>
+
+<!--Tile Colour-->
+<FTL>
+
+<animSheet name="oe_growth_tile_primary_coloursheet_5" w="140" h="140" fw="35" fh="35">effects/oe_growth_tile_primary_coloursheet_5.png</animSheet>
+<anim name="oe_growth_tile_primary_colour_5_udl">
+	<sheet>oe_growth_tile_primary_coloursheet_5</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_primary_colour_5_ud">
+	<sheet>oe_growth_tile_primary_coloursheet_5</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_primary_colour_5_udr">
+	<sheet>oe_growth_tile_primary_coloursheet_5</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_primary_colour_5_udlr">
+	<sheet>oe_growth_tile_primary_coloursheet_5</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_primary_colour_5_ul">
+	<sheet>oe_growth_tile_primary_coloursheet_5</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_primary_colour_5_u">
+	<sheet>oe_growth_tile_primary_coloursheet_5</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_primary_colour_5_ur">
+	<sheet>oe_growth_tile_primary_coloursheet_5</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_primary_colour_5_ulr">
+	<sheet>oe_growth_tile_primary_coloursheet_5</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_primary_colour_5_l">
+	<sheet>oe_growth_tile_primary_coloursheet_5</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_primary_colour_5_">
+	<sheet>oe_growth_tile_primary_coloursheet_5</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_primary_colour_5_r">
+	<sheet>oe_growth_tile_primary_coloursheet_5</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_primary_colour_5_lr">
+	<sheet>oe_growth_tile_primary_coloursheet_5</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_primary_colour_5_dl">
+	<sheet>oe_growth_tile_primary_coloursheet_5</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_primary_colour_5_d">
+	<sheet>oe_growth_tile_primary_coloursheet_5</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_primary_colour_5_dr">
+	<sheet>oe_growth_tile_primary_coloursheet_5</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_primary_colour_5_dlr">
+	<sheet>oe_growth_tile_primary_coloursheet_5</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+
+<animSheet name="oe_growth_tile_secondary_coloursheet_5" w="140" h="140" fw="35" fh="35">effects/oe_growth_tile_secondary_coloursheet_5.png</animSheet>
+<anim name="oe_growth_tile_secondary_colour_5_udl">
+	<sheet>oe_growth_tile_secondary_coloursheet_5</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_secondary_colour_5_ud">
+	<sheet>oe_growth_tile_secondary_coloursheet_5</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_secondary_colour_5_udr">
+	<sheet>oe_growth_tile_secondary_coloursheet_5</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_secondary_colour_5_udlr">
+	<sheet>oe_growth_tile_secondary_coloursheet_5</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_secondary_colour_5_ul">
+	<sheet>oe_growth_tile_secondary_coloursheet_5</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_secondary_colour_5_u">
+	<sheet>oe_growth_tile_secondary_coloursheet_5</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_secondary_colour_5_ur">
+	<sheet>oe_growth_tile_secondary_coloursheet_5</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_secondary_colour_5_ulr">
+	<sheet>oe_growth_tile_secondary_coloursheet_5</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_secondary_colour_5_l">
+	<sheet>oe_growth_tile_secondary_coloursheet_5</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_secondary_colour_5_">
+	<sheet>oe_growth_tile_secondary_coloursheet_5</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_secondary_colour_5_r">
+	<sheet>oe_growth_tile_secondary_coloursheet_5</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_secondary_colour_5_lr">
+	<sheet>oe_growth_tile_secondary_coloursheet_5</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_secondary_colour_5_dl">
+	<sheet>oe_growth_tile_secondary_coloursheet_5</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_secondary_colour_5_d">
+	<sheet>oe_growth_tile_secondary_coloursheet_5</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_secondary_colour_5_dr">
+	<sheet>oe_growth_tile_secondary_coloursheet_5</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_secondary_colour_5_dlr">
+	<sheet>oe_growth_tile_secondary_coloursheet_5</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+</FTL>
+
+<!--Tile Dark Colour-->
+<FTL>
+<animSheet name="oe_growth_tile_dark_primary_coloursheet_4" w="140" h="140" fw="35" fh="35">effects/oe_growth_tile_dark_primary_coloursheet_4.png</animSheet>
+<anim name="oe_growth_tile_dark_primary_colour_4_udl">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_4</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_4_ud">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_4</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_4_udr">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_4</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_4_udlr">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_4</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_4_ul">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_4</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_4_u">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_4</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_4_ur">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_4</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_4_ulr">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_4</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_4_l">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_4</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_4_">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_4</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_4_r">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_4</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_4_lr">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_4</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_4_dl">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_4</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_4_d">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_4</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_4_dr">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_4</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_4_dlr">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_4</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+
+<animSheet name="oe_growth_tile_dark_primary_coloursheet_5" w="140" h="140" fw="35" fh="35">effects/oe_growth_tile_dark_primary_coloursheet_5.png</animSheet>
+<anim name="oe_growth_tile_dark_primary_colour_5_udl">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_5</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_5_ud">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_5</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_5_udr">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_5</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_5_udlr">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_5</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_5_ul">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_5</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_5_u">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_5</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_5_ur">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_5</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_5_ulr">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_5</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_5_l">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_5</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_5_">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_5</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_5_r">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_5</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_5_lr">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_5</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_5_dl">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_5</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_5_d">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_5</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_5_dr">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_5</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_primary_colour_5_dlr">
+	<sheet>oe_growth_tile_dark_primary_coloursheet_5</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+
+
+<animSheet name="oe_growth_tile_dark_secondary_coloursheet_4" w="140" h="140" fw="35" fh="35">effects/oe_growth_tile_dark_secondary_coloursheet_4.png</animSheet>
+<anim name="oe_growth_tile_dark_secondary_colour_4_udl">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_4</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_4_ud">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_4</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_4_udr">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_4</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_4_udlr">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_4</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_4_ul">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_4</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_4_u">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_4</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_4_ur">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_4</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_4_ulr">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_4</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_4_l">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_4</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_4_">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_4</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_4_r">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_4</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_4_lr">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_4</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_4_dl">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_4</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_4_d">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_4</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_4_dr">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_4</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_4_dlr">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_4</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+
+<animSheet name="oe_growth_tile_dark_secondary_coloursheet_5" w="140" h="140" fw="35" fh="35">effects/oe_growth_tile_dark_secondary_coloursheet_5.png</animSheet>
+<anim name="oe_growth_tile_dark_secondary_colour_5_udl">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_5</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_5_ud">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_5</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_5_udr">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_5</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_5_udlr">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_5</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_5_ul">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_5</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_5_u">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_5</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_5_ur">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_5</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_5_ulr">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_5</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_5_l">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_5</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_5_">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_5</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_5_r">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_5</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_5_lr">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_5</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_5_dl">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_5</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_5_d">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_5</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_5_dr">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_5</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_tile_dark_secondary_colour_5_dlr">
+	<sheet>oe_growth_tile_dark_secondary_coloursheet_5</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+</FTL>
+
+<!--Bud Back-->
+<FTL>
+<animSheet name="oe_growth_budsheet_1" w="140" h="140" fw="35" fh="35">effects/oe_growth_budsheet_1.png</animSheet>
+<anim name="oe_growth_bud_1_udl">
+	<sheet>oe_growth_budsheet_1</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_1_ud">
+	<sheet>oe_growth_budsheet_1</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_1_udr">
+	<sheet>oe_growth_budsheet_1</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_1_udlr">
+	<sheet>oe_growth_budsheet_1</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_1_ul">
+	<sheet>oe_growth_budsheet_1</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_1_u">
+	<sheet>oe_growth_budsheet_1</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_1_ur">
+	<sheet>oe_growth_budsheet_1</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_1_ulr">
+	<sheet>oe_growth_budsheet_1</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_1_l">
+	<sheet>oe_growth_budsheet_1</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_1_">
+	<sheet>oe_growth_budsheet_1</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_1_r">
+	<sheet>oe_growth_budsheet_1</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_1_lr">
+	<sheet>oe_growth_budsheet_1</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_1_dl">
+	<sheet>oe_growth_budsheet_1</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_1_d">
+	<sheet>oe_growth_budsheet_1</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_1_dr">
+	<sheet>oe_growth_budsheet_1</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_1_dlr">
+	<sheet>oe_growth_budsheet_1</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+
+<animSheet name="oe_growth_budsheet_2" w="140" h="140" fw="35" fh="35">effects/oe_growth_budsheet_2.png</animSheet>
+<anim name="oe_growth_bud_2_udl">
+	<sheet>oe_growth_budsheet_2</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_2_ud">
+	<sheet>oe_growth_budsheet_2</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_2_udr">
+	<sheet>oe_growth_budsheet_2</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_2_udlr">
+	<sheet>oe_growth_budsheet_2</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_2_ul">
+	<sheet>oe_growth_budsheet_2</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_2_u">
+	<sheet>oe_growth_budsheet_2</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_2_ur">
+	<sheet>oe_growth_budsheet_2</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_2_ulr">
+	<sheet>oe_growth_budsheet_2</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_2_l">
+	<sheet>oe_growth_budsheet_2</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_2_">
+	<sheet>oe_growth_budsheet_2</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_2_r">
+	<sheet>oe_growth_budsheet_2</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_2_lr">
+	<sheet>oe_growth_budsheet_2</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_2_dl">
+	<sheet>oe_growth_budsheet_2</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_2_d">
+	<sheet>oe_growth_budsheet_2</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_2_dr">
+	<sheet>oe_growth_budsheet_2</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_2_dlr">
+	<sheet>oe_growth_budsheet_2</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+
+<animSheet name="oe_growth_budsheet_3" w="140" h="140" fw="35" fh="35">effects/oe_growth_budsheet_3.png</animSheet>
+<anim name="oe_growth_bud_3_udl">
+	<sheet>oe_growth_budsheet_3</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_3_ud">
+	<sheet>oe_growth_budsheet_3</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_3_udr">
+	<sheet>oe_growth_budsheet_3</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_3_udlr">
+	<sheet>oe_growth_budsheet_3</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_3_ul">
+	<sheet>oe_growth_budsheet_3</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_3_u">
+	<sheet>oe_growth_budsheet_3</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_3_ur">
+	<sheet>oe_growth_budsheet_3</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_3_ulr">
+	<sheet>oe_growth_budsheet_3</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_3_l">
+	<sheet>oe_growth_budsheet_3</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_3_">
+	<sheet>oe_growth_budsheet_3</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_3_r">
+	<sheet>oe_growth_budsheet_3</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_3_lr">
+	<sheet>oe_growth_budsheet_3</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_3_dl">
+	<sheet>oe_growth_budsheet_3</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_3_d">
+	<sheet>oe_growth_budsheet_3</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_3_dr">
+	<sheet>oe_growth_budsheet_3</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_3_dlr">
+	<sheet>oe_growth_budsheet_3</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+</FTL>
+
+<!--Bud Colour-->
+<FTL>
+<animSheet name="oe_growth_bud_coloursheet_1" w="140" h="140" fw="35" fh="35">effects/oe_growth_bud_coloursheet_1.png</animSheet>
+<anim name="oe_growth_bud_colour_1_udl">
+	<sheet>oe_growth_bud_coloursheet_1</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_1_ud">
+	<sheet>oe_growth_bud_coloursheet_1</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_1_udr">
+	<sheet>oe_growth_bud_coloursheet_1</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_1_udlr">
+	<sheet>oe_growth_bud_coloursheet_1</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_1_ul">
+	<sheet>oe_growth_bud_coloursheet_1</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_1_u">
+	<sheet>oe_growth_bud_coloursheet_1</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_1_ur">
+	<sheet>oe_growth_bud_coloursheet_1</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_1_ulr">
+	<sheet>oe_growth_bud_coloursheet_1</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_1_l">
+	<sheet>oe_growth_bud_coloursheet_1</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_1_">
+	<sheet>oe_growth_bud_coloursheet_1</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_1_r">
+	<sheet>oe_growth_bud_coloursheet_1</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_1_lr">
+	<sheet>oe_growth_bud_coloursheet_1</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_1_dl">
+	<sheet>oe_growth_bud_coloursheet_1</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_1_d">
+	<sheet>oe_growth_bud_coloursheet_1</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_1_dr">
+	<sheet>oe_growth_bud_coloursheet_1</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_1_dlr">
+	<sheet>oe_growth_bud_coloursheet_1</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+
+<animSheet name="oe_growth_bud_coloursheet_2" w="140" h="140" fw="35" fh="35">effects/oe_growth_bud_coloursheet_2.png</animSheet>
+<anim name="oe_growth_bud_colour_2_udl">
+	<sheet>oe_growth_bud_coloursheet_2</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_2_ud">
+	<sheet>oe_growth_bud_coloursheet_2</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_2_udr">
+	<sheet>oe_growth_bud_coloursheet_2</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_2_udlr">
+	<sheet>oe_growth_bud_coloursheet_2</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_2_ul">
+	<sheet>oe_growth_bud_coloursheet_2</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_2_u">
+	<sheet>oe_growth_bud_coloursheet_2</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_2_ur">
+	<sheet>oe_growth_bud_coloursheet_2</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_2_ulr">
+	<sheet>oe_growth_bud_coloursheet_2</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_2_l">
+	<sheet>oe_growth_bud_coloursheet_2</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_2_">
+	<sheet>oe_growth_bud_coloursheet_2</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_2_r">
+	<sheet>oe_growth_bud_coloursheet_2</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_2_lr">
+	<sheet>oe_growth_bud_coloursheet_2</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_2_dl">
+	<sheet>oe_growth_bud_coloursheet_2</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_2_d">
+	<sheet>oe_growth_bud_coloursheet_2</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_2_dr">
+	<sheet>oe_growth_bud_coloursheet_2</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_2_dlr">
+	<sheet>oe_growth_bud_coloursheet_2</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+
+<animSheet name="oe_growth_bud_coloursheet_3" w="140" h="140" fw="35" fh="35">effects/oe_growth_bud_coloursheet_3.png</animSheet>
+<anim name="oe_growth_bud_colour_3_udl">
+	<sheet>oe_growth_bud_coloursheet_3</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_3_ud">
+	<sheet>oe_growth_bud_coloursheet_3</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_3_udr">
+	<sheet>oe_growth_bud_coloursheet_3</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_3_udlr">
+	<sheet>oe_growth_bud_coloursheet_3</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_3_ul">
+	<sheet>oe_growth_bud_coloursheet_3</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_3_u">
+	<sheet>oe_growth_bud_coloursheet_3</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_3_ur">
+	<sheet>oe_growth_bud_coloursheet_3</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_3_ulr">
+	<sheet>oe_growth_bud_coloursheet_3</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_3_l">
+	<sheet>oe_growth_bud_coloursheet_3</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_3_">
+	<sheet>oe_growth_bud_coloursheet_3</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_3_r">
+	<sheet>oe_growth_bud_coloursheet_3</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_3_lr">
+	<sheet>oe_growth_bud_coloursheet_3</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_3_dl">
+	<sheet>oe_growth_bud_coloursheet_3</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_3_d">
+	<sheet>oe_growth_bud_coloursheet_3</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_3_dr">
+	<sheet>oe_growth_bud_coloursheet_3</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_colour_3_dlr">
+	<sheet>oe_growth_bud_coloursheet_3</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+</FTL>
+
+<!--Bud Dark Colour-->
+<FTL>
+<animSheet name="oe_growth_bud_dark_coloursheet_1" w="140" h="140" fw="35" fh="35">effects/oe_growth_bud_dark_coloursheet_1.png</animSheet>
+<anim name="oe_growth_bud_dark_colour_1_udl">
+	<sheet>oe_growth_bud_dark_coloursheet_1</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_1_ud">
+	<sheet>oe_growth_bud_dark_coloursheet_1</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_1_udr">
+	<sheet>oe_growth_bud_dark_coloursheet_1</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_1_udlr">
+	<sheet>oe_growth_bud_dark_coloursheet_1</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_1_ul">
+	<sheet>oe_growth_bud_dark_coloursheet_1</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_1_u">
+	<sheet>oe_growth_bud_dark_coloursheet_1</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_1_ur">
+	<sheet>oe_growth_bud_dark_coloursheet_1</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_1_ulr">
+	<sheet>oe_growth_bud_dark_coloursheet_1</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_1_l">
+	<sheet>oe_growth_bud_dark_coloursheet_1</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_1_">
+	<sheet>oe_growth_bud_dark_coloursheet_1</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_1_r">
+	<sheet>oe_growth_bud_dark_coloursheet_1</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_1_lr">
+	<sheet>oe_growth_bud_dark_coloursheet_1</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_1_dl">
+	<sheet>oe_growth_bud_dark_coloursheet_1</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_1_d">
+	<sheet>oe_growth_bud_dark_coloursheet_1</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_1_dr">
+	<sheet>oe_growth_bud_dark_coloursheet_1</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_1_dlr">
+	<sheet>oe_growth_bud_dark_coloursheet_1</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+
+<animSheet name="oe_growth_bud_dark_coloursheet_2" w="140" h="140" fw="35" fh="35">effects/oe_growth_bud_dark_coloursheet_2.png</animSheet>
+<anim name="oe_growth_bud_dark_colour_2_udl">
+	<sheet>oe_growth_bud_dark_coloursheet_2</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_2_ud">
+	<sheet>oe_growth_bud_dark_coloursheet_2</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_2_udr">
+	<sheet>oe_growth_bud_dark_coloursheet_2</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_2_udlr">
+	<sheet>oe_growth_bud_dark_coloursheet_2</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_2_ul">
+	<sheet>oe_growth_bud_dark_coloursheet_2</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_2_u">
+	<sheet>oe_growth_bud_dark_coloursheet_2</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_2_ur">
+	<sheet>oe_growth_bud_dark_coloursheet_2</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_2_ulr">
+	<sheet>oe_growth_bud_dark_coloursheet_2</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_2_l">
+	<sheet>oe_growth_bud_dark_coloursheet_2</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_2_">
+	<sheet>oe_growth_bud_dark_coloursheet_2</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_2_r">
+	<sheet>oe_growth_bud_dark_coloursheet_2</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_2_lr">
+	<sheet>oe_growth_bud_dark_coloursheet_2</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_2_dl">
+	<sheet>oe_growth_bud_dark_coloursheet_2</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_2_d">
+	<sheet>oe_growth_bud_dark_coloursheet_2</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_2_dr">
+	<sheet>oe_growth_bud_dark_coloursheet_2</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_2_dlr">
+	<sheet>oe_growth_bud_dark_coloursheet_2</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+
+<animSheet name="oe_growth_bud_dark_coloursheet_3" w="140" h="140" fw="35" fh="35">effects/oe_growth_bud_dark_coloursheet_3.png</animSheet>
+<anim name="oe_growth_bud_dark_colour_3_udl">
+	<sheet>oe_growth_bud_dark_coloursheet_3</sheet>
+	<desc length="1" x="0" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_3_ud">
+	<sheet>oe_growth_bud_dark_coloursheet_3</sheet>
+	<desc length="1" x="1" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_3_udr">
+	<sheet>oe_growth_bud_dark_coloursheet_3</sheet>
+	<desc length="1" x="2" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_3_udlr">
+	<sheet>oe_growth_bud_dark_coloursheet_3</sheet>
+	<desc length="1" x="3" y="3" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_3_ul">
+	<sheet>oe_growth_bud_dark_coloursheet_3</sheet>
+	<desc length="1" x="0" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_3_u">
+	<sheet>oe_growth_bud_dark_coloursheet_3</sheet>
+	<desc length="1" x="1" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_3_ur">
+	<sheet>oe_growth_bud_dark_coloursheet_3</sheet>
+	<desc length="1" x="2" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_3_ulr">
+	<sheet>oe_growth_bud_dark_coloursheet_3</sheet>
+	<desc length="1" x="3" y="2" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_3_l">
+	<sheet>oe_growth_bud_dark_coloursheet_3</sheet>
+	<desc length="1" x="0" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_3_">
+	<sheet>oe_growth_bud_dark_coloursheet_3</sheet>
+	<desc length="1" x="1" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_3_r">
+	<sheet>oe_growth_bud_dark_coloursheet_3</sheet>
+	<desc length="1" x="2" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_3_lr">
+	<sheet>oe_growth_bud_dark_coloursheet_3</sheet>
+	<desc length="1" x="3" y="1" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_3_dl">
+	<sheet>oe_growth_bud_dark_coloursheet_3</sheet>
+	<desc length="1" x="0" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_3_d">
+	<sheet>oe_growth_bud_dark_coloursheet_3</sheet>
+	<desc length="1" x="1" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_3_dr">
+	<sheet>oe_growth_bud_dark_coloursheet_3</sheet>
+	<desc length="1" x="2" y="0" />
+	<time>1</time>
+</anim>
+<anim name="oe_growth_bud_dark_colour_3_dlr">
+	<sheet>oe_growth_bud_dark_coloursheet_3</sheet>
+	<desc length="1" x="3" y="0" />
+	<time>1</time>
+</anim>
+</FTL>

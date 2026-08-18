@@ -9,6 +9,10 @@
 	  <text>Weapons Amplifier.</text>
 	  <event load="STORAGE_CHECK_SYSTEM_OE_GREASE" />
 	</mod-append:choice>
+	<mod-append:choice req="oe_growth" blue="false" hidden="true">
+	  <text>Life Bloom.</text>
+	  <event load="STORAGE_CHECK_SYSTEM_OE_GROWTH" />
+	</mod-append:choice>
 </mod:findName>
 </FTL>
 
@@ -671,5 +675,306 @@ It will take a while to scan, giving the fleet time to catch up. Proceed?</text>
 	<variable name="loc_internal_upgrades" op="add" val="1" />
 	<hiddenAug>UPG_OE_GREASE_SWITCH</hiddenAug>
 	<loadEvent>STORAGE_CHECK_SYSTEM</loadEvent>
+</event>
+</FTL>
+
+<!--Life Bloom-->
+<FTL>
+<event name="STORAGE_CHECK_SYSTEM_OE_GROWTH">
+	<text>What upgrade do you want to install?</text>
+	<choice req="UPG_OE_GROWTH_EXTRA_BUD" lvl="1" max_group="2" blue="false" hidden="true">
+		<text>Dual Stemmed. [ALREADY INSTALLED]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="UPG_OE_GROWTH_EXTRA_BUD" lvl="0" max_group="2" blue="false" hidden="true">
+		<text>Dual Stemmed. [Cost: 65~, 3{]</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GROWTH_EXTRA_BUD"/>
+	</choice>
+	<choice req="UPG_OE_GROWTH_ROOT" lvl="1" max_group="3" blue="false" hidden="true">
+		<text>Bare-rooted. [ALREADY INSTALLED]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="UPG_OE_GROWTH_ROOT" lvl="0" max_group="3" blue="false" hidden="true">
+		<text>Bare-rooted. [Cost: 50~, 2|]</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GROWTH_ROOT"/>
+	</choice>
+	<choice req="OE_GROWTH_BUD_PRAETOR" lvl="1" max_group="4" blue="false" hidden="true">
+		<text>Praetor Bud. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GROWTH_REQ_BUD_PRAETOR" lvl="1" max_group="4" blue="true" hidden="true">
+		<text>Praetor Bud.</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_PRAETOR"/>
+	</choice>
+	<choice req="OE_GROWTH_BUD_CULTIVATOR" lvl="1" max_group="5" blue="false" hidden="true">
+		<text>Cultivator Bud. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GROWTH_REQ_BUD_CULTIVATOR" lvl="1" max_group="5" blue="true" hidden="true">
+		<text>Cultivator Bud.</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_CULTIVATOR"/>
+	</choice>
+	<choice req="OE_GROWTH_BUD_ACIDIC" lvl="1" max_group="6" blue="false" hidden="true">
+		<text>Acidic Bud. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GROWTH_REQ_BUD_ACIDIC" lvl="1" max_group="6" blue="true" hidden="true">
+		<text>Acidic Bud.</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_ACIDIC"/>
+	</choice>
+	<choice req="OE_GROWTH_BUD_SUFFOCATING" lvl="1" max_group="7" blue="false" hidden="true">
+		<text>Suffocating Bud. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GROWTH_BUD_SUFFOCATING" lvl="0" max_group="7" blue="true" hidden="true">
+		<text>Suffocating Bud. [Cost: 35~, 3{]</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_SUFFOCATING"/>
+	</choice>
+	<choice req="OE_GROWTH_BUD_ENTANGLING" lvl="1" max_group="8" blue="false" hidden="true">
+		<text>Entangling Bud. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GROWTH_BUD_ENTANGLING" lvl="0" max_group="8" blue="true" hidden="true">
+		<text>Entangling Bud. [Cost: 20~, 5{]</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_ENTANGLING"/>
+	</choice>
+	<choice req="OE_GROWTH_BUD_ELECTRIFIED" lvl="1" max_group="9" blue="false" hidden="true">
+		<text>Electrified Bud. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GROWTH_BUD_ELECTRIFIED" lvl="0" max_group="9" blue="true" hidden="true">
+		<text>Electrified Bud. [Cost: 15~, 3{, 5|]</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_ELECTRIFIED"/>
+	</choice>
+	<choice>
+		<text>Nevermind.</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+	</choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GROWTH_EXTRA_BUD">
+	<text>You are about to install the Dual Stemmed upgrade.
+	[Effects: An extra bud grows in each room, can have the same or a different effect.]</text>
+	<choice req="oe_growth" lvl="3" max_group="0" blue="false" hidden="true">
+		<text>Perform the upgrade. [Cost: 65~, 3{]</text>
+		<event>
+			<text>You install the upgrade.</text>
+			<item_modify>
+				<item type="fuel" min="-3" max="-3"/>
+				<item type="scrap" min="-65" max="-65"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="INSTALL_OE_GROWTH_EXTRA_BUD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice req="oe_growth" lvl="0" max_lvl="2" max_group="0" blue="false" hidden="true">
+		<text>This upgrade is unavailable. You need Life Bloom level 3.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="EX_OE_GROWTH_EXTRA_BUD" max_group="1" blue="false" hidden="true">
+		<text>Install the External Augment internally.</text>
+		<event>
+			<text>You install the upgrade.</text>
+			<remove name="EX_OE_GROWTH_EXTRA_BUD"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="INSTALL_OE_GROWTH_EXTRA_BUD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice req="pilot" lvl="1" max_group="2" blue="false" hidden="true">
+		<text>Nevermind.</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+	</choice>
+</event>
+<event name="INSTALL_OE_GROWTH_EXTRA_BUD">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<hiddenAug>UPG_OE_GROWTH_EXTRA_BUD</hiddenAug>
+	<loadEvent>STORAGE_CHECK_SYSTEM</loadEvent>
+</event>
+
+<event name="STORAGE_CHECK_SYSTEM_OE_GROWTH_ROOT">
+	<text>You are about to install the Bare-rooted upgrade.
+	[Effects: The roots of the Bloom can be placed in a different room, causing the system to grow out from that point rather than the system room.]</text>
+	<choice req="oe_growth" lvl="1" max_group="0" blue="false" hidden="true">
+		<text>Perform the upgrade. [Cost: 50~, 2|]</text>
+		<event>
+			<text>You install the upgrade.</text>
+			<item_modify>
+				<item type="drones" min="-2" max="-2"/>
+				<item type="scrap" min="-50" max="-50"/>
+			</item_modify>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="INSTALL_OE_GROWTH_ROOT"/>
+			</choice>
+		</event>
+	</choice>
+	<!--<choice req="oe_growth" lvl="0" max_lvl="2" max_group="0" blue="false" hidden="true">
+		<text>This upgrade is unavailable. You need Life Bloom level 3.</text>
+		<event load="OPTION_INVALID"/>
+	</choice>-->
+	<choice req="EX_OE_GROWTH_ROOT" max_group="1" blue="false" hidden="true">
+		<text>Install the External Augment internally.</text>
+		<event>
+			<text>You install the upgrade.</text>
+			<remove name="EX_OE_GROWTH_ROOT"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="INSTALL_OE_GROWTH_ROOT"/>
+			</choice>
+		</event>
+	</choice>
+	<choice req="pilot" lvl="1" max_group="2" blue="false" hidden="true">
+		<text>Nevermind.</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+	</choice>
+</event>
+<event name="INSTALL_OE_GROWTH_ROOT">
+	<variable name="loc_internal_upgrades" op="add" val="1"/>
+	<hiddenAug>UPG_OE_GROWTH_ROOT</hiddenAug>
+	<loadEvent>STORAGE_CHECK_SYSTEM</loadEvent>
+</event>
+
+<event name="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_ACIDIC">
+	<text>You have something on your ship which can seed your Life Bloom System to create a new bud type.
+[Releases Acidic Gas into the current room, repairs breaches over 10 seconds.]
+It will take a while to incorporate, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed.</text>
+		<event>
+			<text>Your Life Bloom System adds a new type of bud to it's growth.</text>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GROWTH_BUD_ACIDIC</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_PRAETOR">
+	<text>You have something on your ship which can seed your Life Bloom System to create a new bud type.
+[Max rooms: 1, All allied crew in the same room gain doubled Max Health, repair speed, and power generation.]
+It will take a while to incorporate, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed.</text>
+		<event>
+			<text>Your Life Bloom System adds a new type of bud to it's growth.</text>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GROWTH_BUD_PRAETOR</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_CULTIVATOR">
+	<text>You have something on your ship which can seed your Life Bloom System to create a new bud type.
+[Max rooms: 3, Nearby enemies take 60% increased damage from ANY source and are stunned 50% longer.]
+It will take a while to incorporate, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed.</text>
+		<event>
+			<text>Your Life Bloom System adds a new type of bud to it's growth.</text>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GROWTH_BUD_CULTIVATOR</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+
+<event name="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_SUFFOCATING">
+	<text>You can feed your Life Bloom System with scrap and fuel to encourage it to produce a new kind of bud.
+[Drains the room of oxygen, Enemy crew in the same room take 50% more suffocation damage.]
+It will take a while to incorporate, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed. [Cost: 35~, 3{]</text>
+		<event>
+			<text>Your Life Bloom System adds a new type of bud to it's growth.</text>
+			<item_modify>
+				<item type="fuel" min="-3" max="-3"/>
+				<item type="scrap" min="-35" max="-35"/>
+			</item_modify>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GROWTH_BUD_SUFFOCATING</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_ENTANGLING">
+	<text>You can feed your Life Bloom System with scrap and fuel to encourage it to produce a new kind of bud.
+[Momentarily roots moving enemy crew in place for 1 second, dealing 15 damage, can retrigger after 0.5 seconds.]
+It will take a while to incorporate, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed. [Cost: 20~, 5{]</text>
+		<event>
+			<text>Your Life Bloom System adds a new type of bud to it's growth.</text>
+			<item_modify>
+				<item type="fuel" min="-5" max="-5"/>
+				<item type="scrap" min="-20" max="-20"/>
+			</item_modify>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GROWTH_BUD_ENTANGLING</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_ELECTRIFIED">
+	<text>You can feed your Life Bloom System with scrap and fuel to encourage it to produce a new kind of bud.
+[Max room: 1, Provides 1 bonus power, destroys enemy hacking drones that attach to this room at the end of their effect.]
+It will take a while to incorporate, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed. [Cost: 15~, 3{, 5|]</text>
+		<event>
+			<text>Your Life Bloom System adds a new type of bud to it's growth.</text>
+			<item_modify>
+				<item type="drones" min="-5" max="-5"/>
+				<item type="fuel" min="-3" max="-3"/>
+				<item type="scrap" min="-15" max="-15"/>
+			</item_modify>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GROWTH_BUD_ELECTRIFIED</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
 </event>
 </FTL>

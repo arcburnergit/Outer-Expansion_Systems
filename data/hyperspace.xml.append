@@ -109,6 +109,14 @@
 	</mod-append:aug>
 </mod:findLike>
 
+<mod:findLike type="augments" limit="1" reverse="false">
+	<mod-append:aug name="EX_OE_GROWTH_ROOT">
+    	<function name="UPG_OE_GROWTH_ROOT" value="1" useForReqs="false" />
+	</mod-append:aug>
+	<mod-append:aug name="EX_OE_GROWTH_EXTRA_BUD">
+    	<function name="UPG_OE_GROWTH_EXTRA_BUD" value="1" useForReqs="false" />
+	</mod-append:aug>
+</mod:findLike>
 
 <events>
 	<req name="OE_GREASE_REQ_EFFECT_SHOCK" type="any">
@@ -282,6 +290,34 @@
 	</req>
 	<req name="OE_GREASE_REQ_EFFECT_DD_RADIANT" type="any">
 		<name>BLUELIST_DDLIGHTBORNE_EQUIPMENT</name>
+	</req>
+	<req name="OE_GROWTH_REQ_BUD_PRAETOR" type="any">
+		<name>orchid_praetor</name>
+	</req>
+	<req name="OE_GROWTH_REQ_BUD_CULTIVATOR" type="any">
+		<name>orchid_cultivator</name>
+	</req>
+	<req name="OE_GROWTH_REQ_BUD_ACIDIC" type="any">
+		<name>oe_acid_worker</name>
+		<name>oe_acid_soldier</name>
+		<name>oe_acid_bill</name>
+
+		<name>OE_LASER_ACID_1</name>
+		<name>OE_LASER_ACID_2</name>
+		<name>OE_LASER_ACID_3</name>
+		<name>OE_LASER_ACID_SUPER</name>
+		<name>OE_BEAM_ACID_1</name>
+		<name>OE_ION_ACID_1</name>
+
+		<name>OE_LASER_ACID_1_ELITE</name>
+		<name>OE_LASER_ACID_2_ELITE</name>
+		<name>OE_LASER_ACID_3_ELITE</name>
+		<name>OE_BEAM_ACID_1_ELITE</name>
+		<name>OE_ION_ACID_1_ELITE</name>
+		<name>OE_ION_ACID_1_ELITE</name>
+
+		<name>OE_LASER_ACID_BOSS</name>
+		<name>OE_LASER_ACID_BOSS_CHAOS</name>
 	</req>
 </events>
 

@@ -37,10 +37,23 @@
 <text name="oe_lua_sys_grease_effect_chaos">Causes the last projectile in the volley to trigger a random effect that you have available.</text>
 
 <text name="oe_lua_sys_growth_level">Speed: %g tiles/second</text>
+<text name="oe_lua_sys_growth_button_hover">Manage Life Bloom System.</text>
+<text name="oe_lua_sys_growth_button_disabled_hover">Life Bloom System cannot be changed while in danger.</text>
 
-<text name="oe_growth">Weapons Amplifier</text>
-<text name="oe_growth_installed">Weapons Amplifier System installed</text>
+<text name="oe_growth">Life Bloom</text>
+<text name="oe_growth_installed">Life Bloom System installed</text>
 
-<text name="tooltip_oe_growth">Weapons Amplifier:  Enhances the weapons you fire, can be modified to provide different effects.</text>
-<text name="tooltip_oe_growth_enemy">Weapons Amplifier: Enhances the weapons the enemy fires, depending on the enemy the system will enhance their weapons in different ways.</text>
+<text name="tooltip_oe_growth">Life Bloom: Grows across the ship, budding into rooms to provide oxygen and other effects.</text>
+<text name="tooltip_oe_growth_enemy">Life Bloom: Grows across the enemy ship, budding into rooms to provide oxygen and sometimes other effects.</text>
+
+<text name="oe_lua_sys_growth_effect_oxygen">Generates enough oxygen to sustain 3 rooms</text>
+<text name="oe_lua_sys_growth_effect_floral">Friendly crew in the same room gain 20% Max Health, repair speed, and healing speed</text>
+<text name="oe_lua_sys_growth_effect_vampweed">Enemy crew in the same room lose 15% of their Max Health and move 25% slower</text>
+<text name="oe_lua_sys_growth_effect_praetor">Max rooms: 1\nAll allied crew in the same room gain doubled Max Health, repair speed, and power generation.</text>
+<text name="oe_lua_sys_growth_effect_cultivator">Max rooms: 3\nNearby enemies take 60% increased damage from ANY source and are stunned 50% longer.</text>
+<text name="oe_lua_sys_growth_effect_acidic">Releases Acidic Gas into the current room, repairs breaches over 10 seconds.</text>
+<text name="oe_lua_sys_growth_effect_suffocating">Drains the room of oxygen, Enemy crew in the same room take 50% more suffocation damage.</text>
+<text name="oe_lua_sys_growth_effect_entangling">Momentarily roots moving enemy crew in place for 1 second, dealing 15 damage, can retrigger after 0.5 seconds.</text>
+<text name="oe_lua_sys_growth_effect_electrified">Max room: 1\nProvides 1 bonus power, destroys enemy hacking drones that attach to this room at the end of their effect.</text>
+<text name="oe_lua_sys_growth_effect_root">Place the root of the system, the point in which the plant grows from.</text>
 </FTL>

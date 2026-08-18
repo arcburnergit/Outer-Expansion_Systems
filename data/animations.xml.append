@@ -1,4 +1,13 @@
 <FTL>
+<animSheet name="spores_oe_suffocating_debuff" w="352" h="32" fw="32" fh="32">people/spores_oe_suffocating_debuff.png</animSheet>
+<anim name="spores_oe_suffocating_debuff">
+	<sheet>spores_oe_suffocating_debuff</sheet>
+	<desc length="11" x="0" y="0"/>
+	<time>1.0</time>
+</anim>
+</FTL>
+
+<FTL>
 <animSheet name="oe_growth_tilesheet_1" w="140" h="140" fw="35" fh="35">effects/oe_growth_tilesheet_1.png</animSheet>
 <anim name="oe_growth_tile_1_udl">
 	<sheet>oe_growth_tilesheet_1</sheet>

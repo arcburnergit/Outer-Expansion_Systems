@@ -59,15 +59,16 @@ local function system_ready(shipSystem)
 end
 
 local bud_types = {
-	{name = "Oxygen", colour = "blue", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_oxygen")},
-	{name = "Floral", colour = "green", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_floral")},
-	{name = "Vampweed", colour = "red", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_vampweed")},
-	{name = "Praetor", req="OE_GROWTH_BUD_PRAETOR", colour = "praetor", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_praetor")},
-	{name = "Cultivator", req="OE_GROWTH_BUD_CULTIVATOR", colour = "cultivator", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_cultivator")},
-	{name = "Acidic", req="OE_GROWTH_BUD_ACIDIC", colour = "acidic", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_acidic")},
-	{name = "Suffocating", req="OE_GROWTH_BUD_SUFFOCATING", colour = "grey", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_suffocating")},
-	{name = "Entangling", req="OE_GROWTH_BUD_ENTANGLING", colour = "orange", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_entangling")},
-	{name = "Electrified", req="OE_GROWTH_BUD_ELECTRIFIED", colour = "electric", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_electified")},
+	{name = "Oxygen", colour = "blue", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_oxygen"), count = 0},
+	{name = "Floral", colour = "green", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_floral"), count = 0},
+	{name = "Vampweed", colour = "red", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_vampweed"), count = 0},
+	{name = "Praetor", req="OE_GROWTH_BUD_PRAETOR", colour = "praetor", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_praetor"), count = 0, max_count = 1},
+	{name = "Cultivator", req="OE_GROWTH_BUD_CULTIVATOR", colour = "cultivator", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_cultivator"), count = 0, max_count = 3},
+	{name = "Acidic", req="OE_GROWTH_BUD_ACIDIC", colour = "acidic", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_acidic"), count = 0},
+	{name = "Suffocating", req="OE_GROWTH_BUD_SUFFOCATING", colour = "grey", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_suffocating"), count = 0},
+	{name = "Entangling", req="OE_GROWTH_BUD_ENTANGLING", colour = "orange", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_entangling"), count = 0},
+	{name = "Electrified", req="OE_GROWTH_BUD_ELECTRIFIED", colour = "electric", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_electrified"), count = 0, max_count = 1},
+	{name = "Root", req="UPG_OE_GROWTH_ROOT", colour = "white", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_root")},
 }
 
 --Handles initialization of custom system box
@@ -143,7 +144,9 @@ script.on_internal_event(Defines.InternalEvents.SYSTEM_BOX_MOUSE_CLICK, system_c
 local table_growth = {[0] = {}, [1] = {} }
 local table_map = {[0] = nil, [1] = nil}
 local table_bud = {[0] = {}, [1] = {}}
+local table_bud_2 = {[0] = {}, [1] = {}}
 local table_bud_set = {[0] = {}, [1] = {}}
+local table_bud_set_2 = {[0] = {}, [1] = {}}
 
 local function new_bud(i, j)
 	return {i = i, j = j}
@@ -153,20 +156,37 @@ local growth_variable = "save_oe_growth%d_room%d_i%d_j%d"
 local root_variable = "save_oe_root%d"
 local bud_variable_i = "save_oe_bud%d_room%d_i"
 local bud_variable_j = "save_oe_bud%d_room%d_j"
+local bud_variable_2_i = "save_oe_bud%d_room%d_2_i"
+local bud_variable_2_j = "save_oe_bud%d_room%d_2_j"
 local bud_variable_setting = "save_oe_bud%d_room%d_setting"
+local bud_variable_setting_2 = "save_oe_bud%d_room%d_setting_2"
 
 script.on_internal_event(Defines.InternalEvents.CONSTRUCT_SHIP_MANAGER, function(shipManager)
 	table_growth[shipManager.iShipId] = {}
 	table_bud[shipManager.iShipId] = {}
+	table_bud_2[shipManager.iShipId] = {}
 	table_bud_set[shipManager.iShipId] = {}
+	table_bud_set_2[shipManager.iShipId] = {}
 	table_map[shipManager.iShipId] = nil
+end)
+
+script.on_game_event("START", false, function()
+	table_growth[0] = {}
+	table_bud[0] = {}
+	table_bud_2[0] = {}
+	table_bud_set[0] = {}
+	table_bud_set_2[0] = {}
+	table_map[0] = nil
 end)
 
 local function save_system(shipManager, system)
 	for room in vter(shipManager.ship.vRoomList) do
 		Hyperspace.playerVariables[string.format(bud_variable_i, shipManager.iShipId, room.iRoomId)] = (table_bud[shipManager.iShipId][room.iRoomId] and table_bud[shipManager.iShipId][room.iRoomId].i) or -1
 		Hyperspace.playerVariables[string.format(bud_variable_j, shipManager.iShipId, room.iRoomId)] = (table_bud[shipManager.iShipId][room.iRoomId] and table_bud[shipManager.iShipId][room.iRoomId].j) or -1
-		Hyperspace.playerVariables[string.format(bud_variable_setting, shipManager.iShipId, room.iRoomId)] = table_bud_set[shipManager.iShipId][room.iRoomId] or 1
+		Hyperspace.playerVariables[string.format(bud_variable_2_i, shipManager.iShipId, room.iRoomId)] = (table_bud_2[shipManager.iShipId][room.iRoomId] and table_bud_2[shipManager.iShipId][room.iRoomId].i) or -1
+		Hyperspace.playerVariables[string.format(bud_variable_2_j, shipManager.iShipId, room.iRoomId)] = (table_bud_2[shipManager.iShipId][room.iRoomId] and table_bud_2[shipManager.iShipId][room.iRoomId].j) or -1
+		Hyperspace.playerVariables[string.format(bud_variable_setting, shipManager.iShipId, room.iRoomId)] = (table_bud_set[shipManager.iShipId][room.iRoomId] and table_bud_set[shipManager.iShipId][room.iRoomId].index) or 1
+		Hyperspace.playerVariables[string.format(bud_variable_setting_2, shipManager.iShipId, room.iRoomId)] = (table_bud_set_2[shipManager.iShipId][room.iRoomId] and table_bud_set_2[shipManager.iShipId][room.iRoomId].index) or 1
 		local room_map = table_map[shipManager.iShipId][room.iRoomId]
 		local w = room_map.w
 		local h = room_map.h
@@ -182,14 +202,30 @@ local function load_system(shipManager, system)
 	for room in vter(shipManager.ship.vRoomList) do
 		local bud_i = Hyperspace.playerVariables[string.format(bud_variable_i, shipManager.iShipId, room.iRoomId)]
 		local bud_j = Hyperspace.playerVariables[string.format(bud_variable_j, shipManager.iShipId, room.iRoomId)]
+		local bud_2_i = Hyperspace.playerVariables[string.format(bud_variable_2_i, shipManager.iShipId, room.iRoomId)]
+		local bud_2_j = Hyperspace.playerVariables[string.format(bud_variable_2_j, shipManager.iShipId, room.iRoomId)]
 		local bud_set = Hyperspace.playerVariables[string.format(bud_variable_setting, shipManager.iShipId, room.iRoomId)]
+		local bud_set_2 = Hyperspace.playerVariables[string.format(bud_variable_setting_2, shipManager.iShipId, room.iRoomId)]
 		if bud_i >= 0 and bud_j >= 0 then
 			table_bud[shipManager.iShipId][room.iRoomId] = new_bud(bud_i, bud_j)
 		end
+		if bud_2_i >= 0 and bud_2_j >= 0 then
+			table_bud_2[shipManager.iShipId][room.iRoomId] = new_bud(bud_2_i, bud_2_j)
+		end
+		bud_types[1].count = 0
 		if bud_set > 0 then
-			table_bud_set[shipManager.iShipId][room.iRoomId] = Hyperspace.playerVariables[string.format(bud_variable_setting, shipManager.iShipId, room.iRoomId)]
+			bud_types[bud_set].count = bud_types[bud_set].count + 1
+			table_bud_set[shipManager.iShipId][room.iRoomId].index = bud_set
 		else
-			table_bud_set[shipManager.iShipId][room.iRoomId] = 1
+			bud_types[1].count = bud_types[1].count + 1
+			table_bud_set[shipManager.iShipId][room.iRoomId].index = 1
+		end
+		if bud_set_2 > 0 then
+			bud_types[bud_set_2].count = bud_types[bud_set_2].count + 1
+			table_bud_set_2[shipManager.iShipId][room.iRoomId].index = bud_set_2
+		else
+			bud_types[1].count = bud_types[1].count + 1
+			table_bud_set_2[shipManager.iShipId][room.iRoomId].index = 1
 		end
 		local room_map = table_map[shipManager.iShipId][room.iRoomId]
 		local w = room_map.w
@@ -338,9 +374,10 @@ local flower_colour_list = {
 	magenta = Graphics.GL_Color(223/255, 92/255, 202/255, 1),
 	acidic = Graphics.GL_Color(54/255, 255/255, 53/255, 1),
 	grey = Graphics.GL_Color(149/255, 149/255, 149/255, 1),
+	white = Graphics.GL_Color(255/255, 255/255, 255/255, 1),
 	praetor = Graphics.GL_Color(187/255, 255/255, 253/255, 1),
 	cultivator = Graphics.GL_Color(91/255, 127/255, 0/255, 1),
-	electric = Graphics.GL_Color(58/255, 100/255, 100/255, 1),
+	electric = Graphics.GL_Color(255/255, 247/255, 0/255, 1),
 }
 local flower_dark_colour_list = {
 	red = Graphics.GL_Color(156/255, 57/255, 83/255, 1),
@@ -352,6 +389,7 @@ local flower_dark_colour_list = {
 	magenta = Graphics.GL_Color(119/255, 58/255, 161/255, 1),
 	acidic = Graphics.GL_Color(0/255, 209/255, 4/255, 1),
 	grey = Graphics.GL_Color(105/255, 105/255, 105/255, 1),
+	white = Graphics.GL_Color(200/255, 200/255, 200/255, 1),
 	praetor = Graphics.GL_Color(69/255, 106/255, 123/255, 1),
 	cultivator = Graphics.GL_Color(60/255, 74/255, 0/255, 1),
 	electric = Graphics.GL_Color(169/255, 134/255, 66/255, 1),
@@ -443,14 +481,23 @@ local function generate_slot_anim(shipManager, room, i, j)
 	}
 end
 
+
 script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 	if not table_map[shipManager.iShipId] then
 		table_map[shipManager.iShipId] = {}
 		construct_room_connection_map(shipManager)
 		for room in vter(shipManager.ship.vRoomList) do
 			table_bud[shipManager.iShipId][room.iRoomId] = false
-			table_bud_set[shipManager.iShipId][room.iRoomId] = 1
-			shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, 100)
+			table_bud_2[shipManager.iShipId][room.iRoomId] = false
+			table_bud_set[shipManager.iShipId][room.iRoomId] = {index = 1, active = false}
+			table_bud_set_2[shipManager.iShipId][room.iRoomId] = {index = 1, active = false}
+			if shipManager:HasAugmentation("OE_GROWTH_BUD_ACIDIC") > 0 and shipManager:GetSystemInRoom(room.iRoomId) == 0 then
+				bud_types[6].count = bud_types[6].count + 1
+				table_bud_set[shipManager.iShipId][room.iRoomId].index = 6
+			elseif shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) then
+				bud_types[1].count = bud_types[1].count + 1
+				shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, 100)
+			end
 			table_growth[shipManager.iShipId][room.iRoomId] = {}
 			local room_map = table_map[shipManager.iShipId][room.iRoomId]
 			local w = room_map.w
@@ -460,7 +507,7 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 				for j = 0, h - 1 do
 					local image = generate_slot_anim(shipManager, room, i, j)
 					--print(string.format("setup:%d, %d, %d, %d", shipManager.iShipId, room.iRoomId, i, j))
-					table_growth[shipManager.iShipId][room.iRoomId][i][j] = {val = 0, image = image}
+					table_growth[shipManager.iShipId][room.iRoomId][i][j] = {val = 100, image = image}
 				end
 			end
 		end
@@ -475,6 +522,7 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 
 	if shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) then
 		local system = shipManager:GetSystem(Hyperspace.ShipSystem.NameToSystemId(systemName))
+		if not system.table.growth_root then system.table.growth_root = system.roomId end
 		local system_room_id = (shipManager:HasAugmentation("UPG_OE_GROWTH_ROOT") > 0 and system.table.growth_root) or system.roomId
 		local power = system:GetEffectivePower()
 
@@ -537,28 +585,63 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 					for j = 0, h - 1 do
 						local slot_map = room_map.slots[i][j]
 						local connected = visited[room.iRoomId] and visited[room.iRoomId][i] and visited[room.iRoomId][i][j]
-						local active_bud_index = table_bud_set[shipManager.iShipId][room.iRoomId]
+						local active_bud_index = table_bud_set[shipManager.iShipId][room.iRoomId].index
+						local active_bud_index_2 = table_bud_set_2[shipManager.iShipId][room.iRoomId].index
 						--local active_bud = bud_types[active_bud_index]
 						local current_energy = table_growth[shipManager.iShipId][room.iRoomId][i][j].val
 						local decay = 0
 						if current_energy > 0 then
 							if not (table_bud[shipManager.iShipId][room.iRoomId] and table_bud[shipManager.iShipId][room.iRoomId].i and table_bud[shipManager.iShipId][room.iRoomId].j) then
-								if current_energy > 50 then
+								if current_energy > 50 and not (table_bud_2[shipManager.iShipId][room.iRoomId] and table_bud_2[shipManager.iShipId][room.iRoomId].i == i and table_bud_2[shipManager.iShipId][room.iRoomId].j == j) then
 									table_bud[shipManager.iShipId][room.iRoomId] = new_bud(i, j)
 								end
 							elseif table_bud[shipManager.iShipId][room.iRoomId].i == i and table_bud[shipManager.iShipId][room.iRoomId].j == j then
 								if not connected then
 									decay = decay + decay_bud_mult * energy_base
+									table_bud_set[shipManager.iShipId][room.iRoomId].active = false
 								end
 								if current_energy > 50 then
+									table_bud_set[shipManager.iShipId][room.iRoomId].active = true
 									if active_bud_index == 1 then
 										shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, 5 * update_timer[shipManager.iShipId])
 									elseif active_bud_index == 6 then
+										mods.oe.acid.setAcid(shipManager.iShipId, room.iRoomId, 0.5)
+									elseif active_bud_index == 7 then
 										shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, -5 * update_timer[shipManager.iShipId])
 									end
 								elseif connected then
+									table_bud_set[shipManager.iShipId][room.iRoomId].active = false
 									table_bud[shipManager.iShipId][room.iRoomId] = false
 								end
+							end
+
+							if shipManager:HasAugmentation("UPG_OE_GROWTH_EXTRA_BUD") > 0 then
+								if not (table_bud_2[shipManager.iShipId][room.iRoomId] and table_bud_2[shipManager.iShipId][room.iRoomId].i and table_bud_2[shipManager.iShipId][room.iRoomId].j) then
+									if current_energy > 50 and not (table_bud[shipManager.iShipId][room.iRoomId] and table_bud[shipManager.iShipId][room.iRoomId].i == i and table_bud[shipManager.iShipId][room.iRoomId].j == j) then
+										table_bud_2[shipManager.iShipId][room.iRoomId] = new_bud(i, j)
+									end
+								elseif table_bud_2[shipManager.iShipId][room.iRoomId].i == i and table_bud_2[shipManager.iShipId][room.iRoomId].j == j then
+									if not connected then
+										decay = decay + decay_bud_mult * energy_base
+										table_bud_set_2[shipManager.iShipId][room.iRoomId].active = false
+									end
+									if current_energy > 50 then
+										table_bud_set_2[shipManager.iShipId][room.iRoomId].active = true
+										if active_bud_index_2 == 1 then
+											shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, 5 * update_timer[shipManager.iShipId])
+										elseif active_bud_index_2 == 6 then
+											mods.oe.acid.setAcid(shipManager.iShipId, room.iRoomId, 0.5)
+										elseif active_bud_index_2 == 7 then
+											shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, -5 * update_timer[shipManager.iShipId])
+										end
+									elseif connected then
+										table_bud_set_2[shipManager.iShipId][room.iRoomId].active = false
+										table_bud_2[shipManager.iShipId][room.iRoomId] = false
+									end
+								end
+							else
+								table_bud_2[shipManager.iShipId][room.iRoomId] = false
+								table_bud_set_2[shipManager.iShipId][room.iRoomId].active = false
 							end
 
 							if not connected then
@@ -587,12 +670,40 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 
 							table_growth[shipManager.iShipId][room.iRoomId][i][j].val = math.max(0, current_energy - decay * update_timer[shipManager.iShipId])
 							if table_growth[shipManager.iShipId][room.iRoomId][i][j].val <= 0 and table_bud[shipManager.iShipId][room.iRoomId] and
-								table_bud[shipManager.iShipId][room.iRoomId].i == i and table_bud[shipManager.iShipId][room.iRoomId].j == j then
+									table_bud[shipManager.iShipId][room.iRoomId].i == i and table_bud[shipManager.iShipId][room.iRoomId].j == j then
 								table_bud[shipManager.iShipId][room.iRoomId] = false
+								table_bud_set[shipManager.iShipId][room.iRoomId].active = false
+							end
+							if table_growth[shipManager.iShipId][room.iRoomId][i][j].val <= 0 and table_bud_2[shipManager.iShipId][room.iRoomId] and
+									table_bud_2[shipManager.iShipId][room.iRoomId].i == i and table_bud_2[shipManager.iShipId][room.iRoomId].j == j then
+								table_bud_2[shipManager.iShipId][room.iRoomId] = false
+								table_bud_set_2[shipManager.iShipId][room.iRoomId].active = false
+							end
+							if table_bud[shipManager.iShipId][room.iRoomId] and table_bud_2[shipManager.iShipId][room.iRoomId] and 
+									table_bud[shipManager.iShipId][room.iRoomId].i == table_bud_2[shipManager.iShipId][room.iRoomId].i and 
+									table_bud[shipManager.iShipId][room.iRoomId].j == table_bud_2[shipManager.iShipId][room.iRoomId].j then
+								table_bud_2[shipManager.iShipId][room.iRoomId] = false
+								table_bud_set_2[shipManager.iShipId][room.iRoomId].active = false
 							end
 						end
 					end
 				end
+			end
+			for breach in vter(shipManager.ship:GetHullBreaches(true)) do
+				if table_bud_set[shipManager.iShipId] and table_bud_set[shipManager.iShipId][breach.roomId] and table_bud_set[shipManager.iShipId][breach.roomId].active then
+					local active_bud_index = table_bud_set[shipManager.iShipId][breach.roomId].index
+					local active_bud = bud_types[active_bud_index]
+					if active_bud.name == "Acidic" then
+						breach.fDamage = breach.fDamage - 10 * update_timer[shipManager.iShipId]
+					end
+				end	
+				if table_bud_set_2[shipManager.iShipId] and table_bud_set_2[shipManager.iShipId][breach.roomId] and table_bud_set_2[shipManager.iShipId][breach.roomId].active then
+					local active_bud_index = table_bud_set_2[shipManager.iShipId][breach.roomId].index
+					local active_bud = bud_types[active_bud_index]
+					if active_bud.name == "Acidic" then
+						breach.fDamage = breach.fDamage - 10 * update_timer[shipManager.iShipId]
+					end
+				end	
 			end
 			update_timer[shipManager.iShipId] = 0
 		end
@@ -609,7 +720,7 @@ end)
 local COLOUR_WHITE = Graphics.GL_Color(1, 1, 1, 1)
 local COLOUR_BLACK = Graphics.GL_Color(0, 0, 0, 1)
 local COLOUR_GREEN = Graphics.GL_Color(0, 0.5, 0, 1)
-local IMAGE_ROOT = Hyperspace.Resources:CreateImagePrimitiveString( "effects/oe_growth_roots.png", 0, 0, 0, COLOUR_WHITE, 1.0, false)
+local IMAGE_ROOT = Hyperspace.Resources:CreateImagePrimitiveString( "effects/oe_growth_roots.png", 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 0.75, false)
 script.on_render_event(Defines.RenderEvents.SHIP_SPARKS, function(ship, experimental) return Defines.Chain.CONTINUE end, function(ship, experimental) 
 	local shipManager = Hyperspace.ships(ship.iShipId)
 	if shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) then
@@ -617,8 +728,10 @@ script.on_render_event(Defines.RenderEvents.SHIP_SPARKS, function(ship, experime
 		local map = table_map[shipManager.iShipId]
 		for room in vter(ship.vRoomList) do
 			local room_map = map[room.iRoomId]
-			local active_bud_index = table_bud_set[shipManager.iShipId][room.iRoomId]
+			local active_bud_index = table_bud_set[shipManager.iShipId][room.iRoomId].index
+			local active_bud_index_2 = table_bud_set_2[shipManager.iShipId][room.iRoomId].index
 			local active_bud = bud_types[active_bud_index]
+			local active_bud_2 = bud_types[active_bud_index_2]
 			local w = room_map.w
 			local h = room_map.h
 			for i = 0, w - 1 do
@@ -653,10 +766,25 @@ script.on_render_event(Defines.RenderEvents.SHIP_SPARKS, function(ship, experime
 							image_table.bud_c[1]:OnRender(1, flower_colour_list[active_bud.colour], false)
 						end
 					end
+					if table_bud_2[shipManager.iShipId][room.iRoomId] and table_bud_2[shipManager.iShipId][room.iRoomId].i == i and table_bud_2[shipManager.iShipId][room.iRoomId].j == j then
+						if current > 90 then
+							image_table.bud[3]:OnRender(1, COLOUR_WHITE, false)
+							image_table.bud_d_c[3]:OnRender(1, flower_dark_colour_list[active_bud_2.colour], false)
+							image_table.bud_c[3]:OnRender(1, flower_colour_list[active_bud_2.colour], false)
+						elseif current > 70 then
+							image_table.bud[2]:OnRender(1, COLOUR_WHITE, false)
+							image_table.bud_d_c[2]:OnRender(1, flower_dark_colour_list[active_bud_2.colour], false)
+							image_table.bud_c[2]:OnRender(1, flower_colour_list[active_bud_2.colour], false)
+						elseif current > 50 then
+							image_table.bud[1]:OnRender(1, COLOUR_WHITE, false)
+							image_table.bud_d_c[1]:OnRender(1, flower_dark_colour_list[active_bud_2.colour], false)
+							image_table.bud_c[1]:OnRender(1, flower_colour_list[active_bud_2.colour], false)
+						end
+					end
 				end
 			end
 
-			if displayOptions then
+			if shipManager.iShipId == 0 and displayOptions then
 				if active_target_bud and Hyperspace.App.gui.combatControl.selectedSelfRoom == room.iRoomId then
 					Graphics.CSurface.GL_RenderPrimitive(room.highlightPrimitive)
 					Graphics.CSurface.GL_RenderPrimitive(room.highlightPrimitive2)
@@ -668,18 +796,47 @@ script.on_render_event(Defines.RenderEvents.SHIP_SPARKS, function(ship, experime
 					Graphics.CSurface.GL_RenderPrimitive(room.highlightPrimitive)
 					Graphics.CSurface.GL_RenderPrimitive(room.highlightPrimitive2)
 					Graphics.CSurface.GL_SetStencilMode(2,1,1)
-					Graphics.CSurface.GL_DrawRect(
-						room.rect.x, 
-						room.rect.y,
-						room.rect.w, 
-						room.rect.h, 
-						colour_outline)
-					Graphics.CSurface.GL_DrawRect(
-						room.rect.x+5, 
-						room.rect.y+5,
-						room.rect.w-10, 
-						room.rect.h-10, 
-						colour_outline_dark)
+					if shipManager:HasAugmentation("UPG_OE_GROWTH_EXTRA_BUD") > 0 then
+						local colour_outline_2 = flower_colour_list[active_bud_2.colour]
+						local colour_outline_dark_2 = flower_dark_colour_list[active_bud_2.colour]
+						Graphics.CSurface.GL_DrawRect(
+							room.rect.x, 
+							room.rect.y,
+							room.rect.w, 
+							room.rect.h/2, 
+							colour_outline)
+						Graphics.CSurface.GL_DrawRect(
+							room.rect.x+5, 
+							room.rect.y+5,
+							room.rect.w-10, 
+							(room.rect.h/2)-5, 
+							colour_outline_dark)
+						Graphics.CSurface.GL_DrawRect(
+							room.rect.x, 
+							room.rect.y+(room.rect.h/2),
+							room.rect.w, 
+							(room.rect.h/2), 
+							colour_outline_2)
+						Graphics.CSurface.GL_DrawRect(
+							room.rect.x+5, 
+							room.rect.y+(room.rect.h/2),
+							room.rect.w-10, 
+							(room.rect.h/2)-5, 
+							colour_outline_dark_2)
+					else
+						Graphics.CSurface.GL_DrawRect(
+							room.rect.x, 
+							room.rect.y,
+							room.rect.w, 
+							room.rect.h, 
+							colour_outline)
+						Graphics.CSurface.GL_DrawRect(
+							room.rect.x+5, 
+							room.rect.y+5,
+							room.rect.w-10, 
+							room.rect.h-10, 
+							colour_outline_dark)
+					end
 					Graphics.CSurface.GL_SetStencilMode(0,1,1)
 					Graphics.CSurface.GL_PopStencilMode()
 				end
@@ -717,6 +874,7 @@ script.on_render_event(Defines.RenderEvents.SHIP_FLOOR, function(ship, experimen
 end)
 
 local baseImage = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/button_oe_growth_base.png", buttonOffset_x, buttonOffset_y, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
+local rootIcon = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_growth_root_icon.png", 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
 local buttonIcon = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_growth_button_icon.png", 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
 local boxImages = {
 	arrow = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_arrow.png" , -7, 3, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
@@ -731,7 +889,7 @@ local boxImages = {
 	middle = Hyperspace.Resources:CreateImagePrimitiveString( "systemUI/oe_grease_box_middle.png" , 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false),
 }
 
-local maxButtonWidth = 4
+local maxButtonWidth = 3
 local boxButton_w = 22
 local boxButton_h = 22
 local function renderOptions(originPos_x, originPos_y, effectButtonTable)
@@ -744,7 +902,7 @@ local function renderOptions(originPos_x, originPos_y, effectButtonTable)
 		if (currentEffect.req and Hyperspace.ships.player:HasEquipment(currentEffect.req) > 0) or not currentEffect.req then
 			table.insert(activeEffectButtons, effectButton)
 			effectButton.index = i
-			if active_target_bud == i then
+			if active_target_bud == i or (currentEffect.count and currentEffect.count >= (currentEffect.max_count or 9999)) then
 				effectButton.b.bActive = false
 			else
 				effectButton.b.bActive = true
@@ -826,12 +984,16 @@ local function renderOptions(originPos_x, originPos_y, effectButtonTable)
 			Graphics.CSurface.GL_Translate(effectButton.position.x, effectButton.position.y, 0)
 			effectButton.b:OnRender()
 			local effect = bud_types[effectButton.index]
-			local effectColour = flower_colour_list[effect.colour]
-			Graphics.CSurface.GL_RenderPrimitiveWithColor(buttonIcon, effectColour)
+			if effect.name == "Root" then
+				Graphics.CSurface.GL_RenderPrimitive(rootIcon)
+			else
+				local effectColour = flower_colour_list[effect.colour]
+				Graphics.CSurface.GL_RenderPrimitiveWithColor(buttonIcon, effectColour)
+			end
 			Graphics.CSurface.GL_PopMatrix()
 			if effectButton.b.bHover then
 				Hyperspace.Mouse.bForceTooltip = true
-				Hyperspace.Mouse:SetTooltip(effect.name.." "..effect.desc)
+				Hyperspace.Mouse:SetTooltip(effect.name.."\n"..effect.desc)
 			end
 		end
 	end
@@ -874,8 +1036,31 @@ end, system_render)
 
 script.on_internal_event(Defines.InternalEvents.ON_MOUSE_L_BUTTON_DOWN, function(x,y) 
 	if active_target_bud and Hyperspace.App.gui.combatControl.selectedSelfRoom >= 0 then
-		table_bud_set[0][Hyperspace.App.gui.combatControl.selectedSelfRoom] = active_target_bud
-	elseif active_bud_index then
+		if bud_types[active_target_bud].name == "Root" then
+			local system = Hyperspace.ships.player:GetSystem(Hyperspace.ShipSystem.NameToSystemId(systemName))
+			system.table.growth_root = Hyperspace.App.gui.combatControl.selectedSelfRoom
+			active_target_bud = false
+		else
+			if Hyperspace.ships.player:HasAugmentation("UPG_OE_GROWTH_EXTRA_BUD") > 0 then
+				local current_index = table_bud_set_2[0][Hyperspace.App.gui.combatControl.selectedSelfRoom].index
+				bud_types[current_index].count = bud_types[current_index].count - 1
+				table_bud_set_2[0][Hyperspace.App.gui.combatControl.selectedSelfRoom].index = table_bud_set[0][Hyperspace.App.gui.combatControl.selectedSelfRoom].index
+				table_bud_set[0][Hyperspace.App.gui.combatControl.selectedSelfRoom].index = active_target_bud
+				bud_types[active_target_bud].count = bud_types[active_target_bud].count + 1
+				if bud_types[active_target_bud].count and bud_types[active_target_bud].count >= (bud_types[active_target_bud].max_count or 9999) then
+					active_target_bud = false
+				end
+			else
+				local current_index = table_bud_set[0][Hyperspace.App.gui.combatControl.selectedSelfRoom].index
+				bud_types[current_index].count = bud_types[current_index].count - 1
+				table_bud_set[0][Hyperspace.App.gui.combatControl.selectedSelfRoom].index = active_target_bud
+				bud_types[active_target_bud].count = bud_types[active_target_bud].count + 1
+				if bud_types[active_target_bud].count and bud_types[active_target_bud].count >= (bud_types[active_target_bud].max_count or 9999) then
+					active_target_bud = false
+				end
+			end
+		end
+	elseif active_target_bud then
 		active_target_bud = false
 	end
 	return Defines.Chain.CONTINUE
@@ -886,3 +1071,241 @@ script.on_internal_event(Defines.InternalEvents.ON_MOUSE_R_BUTTON_DOWN, function
 	end
 	return Defines.Chain.CONTINUE
 end)
+
+local floral_buff = Hyperspace.Animations:GetAnimation("spores_buff")
+floral_buff.position.x = -floral_buff.info.frameWidth/2
+floral_buff.position.y = -floral_buff.info.frameHeight/2
+floral_buff.tracker.loop = true
+floral_buff:Start(true)
+local vampweed_buff = Hyperspace.Animations:GetAnimation("spores_debuff")
+vampweed_buff.position.x = -vampweed_buff.info.frameWidth/2
+vampweed_buff.position.y = -vampweed_buff.info.frameHeight/2
+vampweed_buff.tracker.loop = true
+vampweed_buff:Start(true)
+local praetor_buff = Hyperspace.Animations:GetAnimation("spores_buff_elite")
+praetor_buff.position.x = -praetor_buff.info.frameWidth/2
+praetor_buff.position.y = -praetor_buff.info.frameHeight/2
+praetor_buff.tracker.loop = true
+praetor_buff:Start(true)
+local cultivator = Hyperspace.Animations:GetAnimation("spores_debuff_elite")
+cultivator.position.x = -cultivator.info.frameWidth/2
+cultivator.position.y = -cultivator.info.frameHeight/2
+cultivator.tracker.loop = true
+cultivator:Start(true)
+local suffocating = Hyperspace.Animations:GetAnimation("spores_oe_suffocating_debuff")
+suffocating.position.x = -suffocating.info.frameWidth/2
+suffocating.position.y = -suffocating.info.frameHeight/2
+suffocating.tracker.loop = true
+suffocating:Start(true)
+
+script.on_render_event(Defines.RenderEvents.CREW_MEMBER_HEALTH, function(crewmem)
+	local shipManager = Hyperspace.ships(crewmem.currentShipId)
+	if shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) and table_bud_set[shipManager.iShipId][crewmem.iRoomId].active then
+		local active_bud_index = table_bud_set[shipManager.iShipId][crewmem.iRoomId].index
+		local active_bud = bud_types[active_bud_index]
+		local position = crewmem:GetPosition()
+		local boarder = crewmem.iShipId ~= crewmem.currentShipId
+		Graphics.CSurface.GL_PushMatrix()
+		Graphics.CSurface.GL_Translate(position.x, position.y, 0)
+		if active_bud.name == "Floral" and not boarder then
+			floral_buff:OnRender(1, COLOUR_WHITE, false)
+		elseif active_bud.name == "Vampweed" and boarder then
+			vampweed_buff:OnRender(1, COLOUR_WHITE, false)
+		elseif active_bud.name == "Praetor" and not boarder then
+			praetor_buff:OnRender(1, COLOUR_WHITE, false)
+		elseif active_bud.name == "Cultivator" and boarder then
+			cultivator:OnRender(1, COLOUR_WHITE, false)
+		elseif active_bud.name == "Suffocating" and boarder then
+			suffocating:OnRender(1, COLOUR_WHITE, false)
+		end
+		Graphics.CSurface.GL_PopMatrix()
+	end
+	if shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId].active then
+		local active_bud_index = table_bud_set_2[shipManager.iShipId][crewmem.iRoomId].index
+		local active_bud = bud_types[active_bud_index]
+		local position = crewmem:GetPosition()
+		local boarder = crewmem.iShipId ~= crewmem.currentShipId
+		Graphics.CSurface.GL_PushMatrix()
+		Graphics.CSurface.GL_Translate(position.x, position.y, 0)
+		if active_bud.name == "Floral" and not boarder then
+			floral_buff:OnRender(1, COLOUR_WHITE, false)
+		elseif active_bud.name == "Vampweed" and boarder then
+			vampweed_buff:OnRender(1, COLOUR_WHITE, false)
+		elseif active_bud.name == "Praetor" and not boarder then
+			praetor_buff:OnRender(1, COLOUR_WHITE, false)
+		elseif active_bud.name == "Cultivator" and boarder then
+			cultivator:OnRender(1, COLOUR_WHITE, false)
+		elseif active_bud.name == "Suffocating" and boarder then
+			suffocating:OnRender(1, COLOUR_WHITE, false)
+		end
+		Graphics.CSurface.GL_PopMatrix()
+	end
+	return Defines.Chain.CONTINUE
+end, function() return Defines.Chain.CONTINUE end)
+
+script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
+	if shipManager.iShipId == 0 then
+		floral_buff:Update()
+		vampweed_buff:Update()
+		praetor_buff:Update()
+		cultivator:Update()
+		suffocating:Update()
+	end
+end)
+
+local crewTarget = {
+	ALLIES = 1,
+	ENEMIES = -1,
+	ALL = 0,
+}
+
+local stat_effect_table = {}
+stat_effect_table["Floral"] = {
+	[Hyperspace.CrewStat.MAX_HEALTH] = {type = crewTarget.ALLIES, mult = 1.2},
+	[Hyperspace.CrewStat.REPAIR_SPEED_MULTIPLIER] = {type = crewTarget.ALLIES, mult = 1.2},
+	[Hyperspace.CrewStat.HEAL_SPEED_MULTIPLIER] = {type = crewTarget.ALLIES, mult = 1.2},
+}
+stat_effect_table["Vampweed"] = {
+	[Hyperspace.CrewStat.MAX_HEALTH] = {type = crewTarget.ENEMIES, mult = 0.85}, 
+	[Hyperspace.CrewStat.MOVE_SPEED_MULTIPLIER] = {type = crewTarget.ENEMIES, mult = 0.75},
+}
+stat_effect_table["Praetor"] = {
+	[Hyperspace.CrewStat.MAX_HEALTH] = {type = crewTarget.ALLIES, mult = 2},
+	[Hyperspace.CrewStat.REPAIR_SPEED_MULTIPLIER] = {type = crewTarget.ALLIES, mult = 2},
+	[Hyperspace.CrewStat.BONUS_POWER] = {type = crewTarget.ALLIES, mult = 2},
+}
+stat_effect_table["Cultivator"] = {
+	[Hyperspace.CrewStat.ALL_DAMAGE_TAKEN_MULTIPLIER] = {type = crewTarget.ENEMIES, mult = 1.6}, 
+	[Hyperspace.CrewStat.STUN_MULTIPLIER] = {type = crewTarget.ENEMIES, mult = 1.5},
+	[Hyperspace.CrewStat.HEAL_SPEED_MULTIPLIER] = {type = crewTarget.ENEMIES, mult = 0.75},
+}
+stat_effect_table["Suffocating"] = {
+	[Hyperspace.CrewStat.SUFFOCATION_MODIFIER] = {type = crewTarget.ENEMIES, mult = 1.5}, 
+}
+
+script.on_internal_event(Defines.InternalEvents.CALCULATE_STAT_POST, function(crewmem, stat, def, amount, value)
+	if not (crewmem and crewmem.currentShipId and crewmem.currentShipId >= 0 and crewmem.iRoomId) then return Defines.Chain.CONTINUE, amount, value end
+	local shipManager = Hyperspace.ships(crewmem.currentShipId)
+	if shipManager and shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) and table_bud_set[shipManager.iShipId] and table_bud_set[shipManager.iShipId][crewmem.iRoomId] and table_bud_set[shipManager.iShipId][crewmem.iRoomId].active then
+		local active_bud_index = table_bud_set[shipManager.iShipId][crewmem.iRoomId].index
+		local active_bud = bud_types[active_bud_index]
+		local stat_table = stat_effect_table[active_bud.name] and stat_effect_table[active_bud.name][stat]
+		if stat_table and ((stat_table.type >= crewTarget.ALL and crewmem.iShipId == crewmem.currentShipId) or
+						(stat_table.type <= crewTarget.ALL and crewmem.iShipId ~= crewmem.currentShipId)) then
+			if stat_table.mult then
+				amount = amount * stat_table.mult
+			elseif stat_table.add then
+				amount = amount + stat_table.add
+			end
+		end
+	end	
+	if shipManager and shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) and table_bud_set_2[shipManager.iShipId] and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId] and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId].active then
+		local active_bud_index = table_bud_set_2[shipManager.iShipId][crewmem.iRoomId].index
+		local active_bud = bud_types[active_bud_index]
+		local stat_table = stat_effect_table[active_bud.name] and stat_effect_table[active_bud.name][stat]
+		if stat_table and ((stat_table.type >= crewTarget.ALL and crewmem.iShipId == crewmem.currentShipId) or
+						(stat_table.type <= crewTarget.ALL and crewmem.iShipId ~= crewmem.currentShipId)) then
+			if stat_table.mult then
+				amount = amount * stat_table.mult
+			elseif stat_table.add then
+				amount = amount + stat_table.add
+			end
+		end
+	end	
+	return Defines.Chain.CONTINUE, amount, value
+end)
+
+local defNOMOVE = Hyperspace.StatBoostDefinition()
+defNOMOVE.stat = Hyperspace.CrewStat.CAN_MOVE
+defNOMOVE.value = false
+defNOMOVE.boostType = Hyperspace.StatBoostDefinition.BoostType.SET
+defNOMOVE.boostSource = Hyperspace.StatBoostDefinition.BoostSource.AUGMENT
+defNOMOVE.shipTarget = Hyperspace.StatBoostDefinition.ShipTarget.ALL
+defNOMOVE.crewTarget = Hyperspace.StatBoostDefinition.CrewTarget.ALL
+defNOMOVE.duration = 1
+defNOMOVE.boostAnim = "blood_effect"
+defNOMOVE.priority = 9999
+defNOMOVE.realBoostId = Hyperspace.StatBoostDefinition.statBoostDefs:size()
+Hyperspace.StatBoostDefinition.statBoostDefs:push_back(defNOMOVE)
+
+local defROOTDAMAGE = Hyperspace.StatBoostDefinition()
+defROOTDAMAGE.stat = Hyperspace.CrewStat.TRUE_HEAL_AMOUNT 
+defROOTDAMAGE.amount = -15
+defROOTDAMAGE.boostType = Hyperspace.StatBoostDefinition.BoostType.SET
+defROOTDAMAGE.boostSource = Hyperspace.StatBoostDefinition.BoostSource.AUGMENT
+defROOTDAMAGE.shipTarget = Hyperspace.StatBoostDefinition.ShipTarget.ALL
+defROOTDAMAGE.crewTarget = Hyperspace.StatBoostDefinition.CrewTarget.ALL
+defROOTDAMAGE.duration = 1
+defROOTDAMAGE.priority = 9999
+defROOTDAMAGE.realBoostId = Hyperspace.StatBoostDefinition.statBoostDefs:size()
+Hyperspace.StatBoostDefinition.statBoostDefs:push_back(defROOTDAMAGE)
+
+script.on_internal_event(Defines.InternalEvents.CREW_LOOP, function(crewmem)
+	if not (crewmem and crewmem.currentShipId and crewmem.currentShipId >= 0 and crewmem.iRoomId) then return  end
+	local shipManager = Hyperspace.ships(crewmem.currentShipId)
+	if shipManager and shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) then
+		local bud_1_exists = table_bud_set[shipManager.iShipId] and table_bud_set[shipManager.iShipId][crewmem.iRoomId] and table_bud_set[shipManager.iShipId][crewmem.iRoomId].active and table_bud_set[shipManager.iShipId][crewmem.iRoomId].index == 8
+		local bud_2_exists = table_bud_set_2[shipManager.iShipId] and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId] and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId].active and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId].index == 8
+		if (not crewmem:AtFinalGoal()) and (bud_1_exists or bud_2_exists) and crewmem.iShipId ~= crewmem.currentShipId then
+			if not crewmem.table.oe_growth_root_timer then
+				crewmem.table.oe_growth_root_timer = 0
+			end
+			crewmem.table.oe_growth_root_timer = crewmem.table.oe_growth_root_timer - time_increment(true)
+			if crewmem.table.oe_growth_root_timer <= 0 then
+				crewmem.table.oe_growth_root_timer = 1.5
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(defNOMOVE), crewmem)
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(defROOTDAMAGE), crewmem)
+			end
+		elseif crewmem.table.oe_growth_root_timer then
+			crewmem.table.oe_growth_root_timer = nil
+		end	
+	end
+end)
+
+script.on_internal_event(Defines.InternalEvents.SET_BONUS_POWER, function(system, amount)
+	local shipManager = Hyperspace.ships(system._shipObj.iShipId)
+	if shipManager and shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) then
+		local bud_1_exists = table_bud_set[shipManager.iShipId] and table_bud_set[shipManager.iShipId][system.roomId] and table_bud_set[shipManager.iShipId][system.roomId].active and table_bud_set[shipManager.iShipId][system.roomId].index == 9
+		local bud_2_exists = table_bud_set_2[shipManager.iShipId] and table_bud_set_2[shipManager.iShipId][system.roomId] and table_bud_set_2[shipManager.iShipId][system.roomId].active and table_bud_set_2[shipManager.iShipId][system.roomId].index == 9
+		if bud_1_exists then
+			amount = amount + 1 
+		elseif bud_2_exists then
+			amount = amount + 1
+		end	
+	end
+	return Defines.Chain.CONTINUE, amount
+end)
+
+script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
+	local otherManager = Hyperspace.ships(1 - shipManager.iShipId)
+	if otherManager and otherManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) and shipManager:HasSystem(15) then
+		local system = shipManager.hackingSystem.currentSystem
+		if system and shipManager.hackingSystem.effectTimer.first >= shipManager.hackingSystem.effectTimer.second then
+			local bud_1_exists = table_bud_set[shipManager.iShipId] and table_bud_set[shipManager.iShipId][system.roomId] and table_bud_set[shipManager.iShipId][system.roomId].active and table_bud_set[shipManager.iShipId][system.roomId].index == 9
+			local bud_2_exists = table_bud_set_2[shipManager.iShipId] and table_bud_set_2[shipManager.iShipId][system.roomId] and table_bud_set_2[shipManager.iShipId][system.roomId].active and table_bud_set_2[shipManager.iShipId][system.roomId].index == 9
+			if bud_1_exists or bud_2_exists then
+				shipManager.hackingSystem:BlowUpHackingDrone()
+			end
+		end
+	end
+end)
+
+local acidic_ships = {
+	"PLAYER_SHIP_OE_ACID_ARTY",
+	"PLAYER_SHIP_OE_ACID_ARTY_2",
+	"PLAYER_SHIP_OE_ACID_LONG",
+	"PLAYER_SHIP_OE_ACID_LONG_2",
+	"PLAYER_SHIP_OE_ACID_LONG_3",
+	"PLAYER_SHIP_OE_ACID_CREW1",
+}
+
+for _, blueprintName in ipairs(acidic_ships) do
+	local blueprint = Hyperspace.Blueprints:GetShipBlueprint(blueprintName, 0)
+	local i = -1
+	for systemId in vter(blueprint.systems) do
+		i = i + 1
+		if systemId == 2 then
+			blueprint.systems[i] = Hyperspace.ShipSystem.NameToSystemId(systemName)
+		end
+	end
+end

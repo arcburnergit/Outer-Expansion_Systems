@@ -700,7 +700,7 @@
 <systemBlueprint name="oe_growth">
 	<type>oe_growth</type>
 	<title>Life Bloom</title>
-	<desc>An organic system which grows across the ship, budding into rooms to provide oxygen and other effects.</desc>
+	<desc>An organic System which grows across the ship, budding into rooms to provide oxygen and other effects.</desc>
 	<startPower>1</startPower>
 	<maxPower>3</maxPower>
 	<rarity>0</rarity>
@@ -730,24 +730,24 @@
 	<stackable>true</stackable>
 	<value>1</value>
 </augBlueprint>
-<augBlueprint name="UPG_OE_GREASE_SWITCH">
-	<title>Fluid Recycler</title>
+<augBlueprint name="UPG_OE_GROWTH_EXTRA_BUD">
+	<title>Dual Stemmed</title>
 	<desc>YOU SHOULD NEVER SEE THIS</desc>
 	<cost>0</cost>
 	<rarity>0</rarity>
 	<stackable>false</stackable>
 </augBlueprint>
-<augBlueprint name="EX_OE_GREASE_SWITCH">
-	<title>Fluid Recycler [X]</title>
-	<desc>Switching enhancements no longer resets system charges.
+<augBlueprint name="EX_OE_GROWTH_EXTRA_BUD">
+	<title>Dual Stemmed [X]</title>
+	<desc>An extra bud grows in each room, can have the same or a different effect.
     
 	[X] - As an external system upgrade, this augment will provide its normal effect but take up an augment slot. Can be converted for free to the internal version under the internal upgrade menu if you have the Modified Clone Bay system.</desc>
 	<cost>40</cost>
 	<rarity>0</rarity>
 	<stackable>false</stackable>
 </augBlueprint>
-<augBlueprint name="BOON_OE_GREASE">
-	<title>Weapons Amplifier</title>
+<augBlueprint name="BOON_OE_GROWTH">
+	<title>Life Bloom</title>
 	<desc>YOU SHOULD NEVER SEE THIS</desc>
 	<cost>0</cost>
 	<rarity>0</rarity>

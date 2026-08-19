@@ -79,7 +79,7 @@ systemsToAppend[2] = {id_name = "oe_grease", attributes = {power = 1, start = "f
         {room_image = "room_oe_grease_20", w = 1, h = 2, top = "1", bottom = "1", left="00", right="00"}
     }
 }
-systemsToAppend[2] = {id_name = "oe_growth", attributes = {power = 1, start = "false"}, manning = false, replace_sys = "oxygen"}
+systemsToAppend[3] = {id_name = "oe_growth", attributes = {power = 1, start = "false"}, manning = false, replace_sys = "oxygen"}
 
 local function noDoorOverlap(rT, rB, rL, rR, iT, iB, iL, iR, shipName)
 	local room = table.concat({rT,rB,rL,rR},"")

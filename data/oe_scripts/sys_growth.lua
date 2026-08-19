@@ -1,6 +1,7 @@
 local time_increment = mods.multiverse.time_increment
 local vter = mods.multiverse.vter
 local userdata_table = mods.multiverse.userdata_table
+local string_starts = mods.multiverse.string_starts
 
 local node_child_iter = mods.multiverse.node_child_iter
 local node_get_bool_default = mods.multiverse.node_get_bool_default
@@ -130,6 +131,7 @@ end
 script.on_internal_event(Defines.InternalEvents.SYSTEM_BOX_MOUSE_MOVE, mouse_move)
 
 local displayOptions = false
+local buttonHover = false
 local active_target_bud = false
 --Handles click events 
 local function system_click(systemBox, shift)
@@ -758,6 +760,7 @@ end)
 
 
 local COLOUR_WHITE = Graphics.GL_Color(1, 1, 1, 1)
+local COLOUR_RED = Graphics.GL_Color(1, 0, 0, 1)
 local COLOUR_BLACK = Graphics.GL_Color(0, 0, 0, 1)
 local COLOUR_GREEN = Graphics.GL_Color(0, 0.5, 0, 1)
 local IMAGE_ROOT = Hyperspace.Resources:CreateImagePrimitiveString( "effects/oe_growth_roots.png", 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 0.75, false)
@@ -774,57 +777,63 @@ script.on_render_event(Defines.RenderEvents.SHIP_SPARKS, function(ship, experime
 			local active_bud_2 = bud_types[active_bud_index_2]
 			local w = room_map.w
 			local h = room_map.h
-			for i = 0, w - 1 do
-				for j = 0, h - 1 do
-					local current = table_growth[shipManager.iShipId][room.iRoomId][i][j].val
-					local image_table = table_growth[shipManager.iShipId][room.iRoomId][i][j].image
-					Graphics.CSurface.GL_SetColor(COLOUR_WHITE)
-					if current > 10 then
-						local i = math.floor((current - 10)/20) + 1
-						image_table.tile[i]:OnRender(1, COLOUR_WHITE, false)
-						if i >= 4 then
-							image_table.tile_d_p[i]:OnRender(1, flower_dark_colour_list[image_table.colour_p], false)
-							image_table.tile_d_s[i]:OnRender(1, flower_dark_colour_list[image_table.colour_s], false)
-							if i >= 5 then
-								image_table.tile_p[i]:OnRender(1, flower_colour_list[image_table.colour_p], false)
-								image_table.tile_s[i]:OnRender(1, flower_colour_list[image_table.colour_s], false)
+			if (not room.bBlackedOut) or Hyperspace.ships.player:GetAugmentationValue("LIFE_SCANNER") > 0 then
+				for i = 0, w - 1 do
+					for j = 0, h - 1 do
+						local current = table_growth[shipManager.iShipId][room.iRoomId][i][j].val
+						local image_table = table_growth[shipManager.iShipId][room.iRoomId][i][j].image
+						Graphics.CSurface.GL_SetColor(COLOUR_WHITE)
+						local back_colour = COLOUR_WHITE
+						if Hyperspace.ships.player:GetAugmentationValue("LIFE_SCANNER") > 0 and room.bBlackedOut then
+							back_colour = COLOUR_RED
+						end
+						if current > 10 then
+							local i = math.floor((current - 10)/20) + 1
+							image_table.tile[i]:OnRender(1, back_colour, false)
+							if i >= 4 then
+								image_table.tile_d_p[i]:OnRender(1, flower_dark_colour_list[image_table.colour_p], false)
+								image_table.tile_d_s[i]:OnRender(1, flower_dark_colour_list[image_table.colour_s], false)
+								if i >= 5 then
+									image_table.tile_p[i]:OnRender(1, flower_colour_list[image_table.colour_p], false)
+									image_table.tile_s[i]:OnRender(1, flower_colour_list[image_table.colour_s], false)
+								end
 							end
 						end
-					end
-					if table_bud[shipManager.iShipId][room.iRoomId] and table_bud[shipManager.iShipId][room.iRoomId].i == i and table_bud[shipManager.iShipId][room.iRoomId].j == j then
-						if current > 90 then
-							image_table.bud[3]:OnRender(1, COLOUR_WHITE, false)
-							image_table.bud_d_c[3]:OnRender(1, flower_dark_colour_list[active_bud.colour], false)
-							image_table.bud_c[3]:OnRender(1, flower_colour_list[active_bud.colour], false)
-						elseif current > 70 then
-							image_table.bud[2]:OnRender(1, COLOUR_WHITE, false)
-							image_table.bud_d_c[2]:OnRender(1, flower_dark_colour_list[active_bud.colour], false)
-							image_table.bud_c[2]:OnRender(1, flower_colour_list[active_bud.colour], false)
-						elseif current > 50 then
-							image_table.bud[1]:OnRender(1, COLOUR_WHITE, false)
-							image_table.bud_d_c[1]:OnRender(1, flower_dark_colour_list[active_bud.colour], false)
-							image_table.bud_c[1]:OnRender(1, flower_colour_list[active_bud.colour], false)
+						if table_bud[shipManager.iShipId][room.iRoomId] and table_bud[shipManager.iShipId][room.iRoomId].i == i and table_bud[shipManager.iShipId][room.iRoomId].j == j then
+							if current > 90 then
+								image_table.bud[3]:OnRender(1, back_colour, false)
+								image_table.bud_d_c[3]:OnRender(1, flower_dark_colour_list[active_bud.colour], false)
+								image_table.bud_c[3]:OnRender(1, flower_colour_list[active_bud.colour], false)
+							elseif current > 70 then
+								image_table.bud[2]:OnRender(1, back_colour, false)
+								image_table.bud_d_c[2]:OnRender(1, flower_dark_colour_list[active_bud.colour], false)
+								image_table.bud_c[2]:OnRender(1, flower_colour_list[active_bud.colour], false)
+							elseif current > 50 then
+								image_table.bud[1]:OnRender(1, back_colour, false)
+								image_table.bud_d_c[1]:OnRender(1, flower_dark_colour_list[active_bud.colour], false)
+								image_table.bud_c[1]:OnRender(1, flower_colour_list[active_bud.colour], false)
+							end
 						end
-					end
-					if table_bud_2[shipManager.iShipId][room.iRoomId] and table_bud_2[shipManager.iShipId][room.iRoomId].i == i and table_bud_2[shipManager.iShipId][room.iRoomId].j == j then
-						if current > 90 then
-							image_table.bud[3]:OnRender(1, COLOUR_WHITE, false)
-							image_table.bud_d_c[3]:OnRender(1, flower_dark_colour_list[active_bud_2.colour], false)
-							image_table.bud_c[3]:OnRender(1, flower_colour_list[active_bud_2.colour], false)
-						elseif current > 70 then
-							image_table.bud[2]:OnRender(1, COLOUR_WHITE, false)
-							image_table.bud_d_c[2]:OnRender(1, flower_dark_colour_list[active_bud_2.colour], false)
-							image_table.bud_c[2]:OnRender(1, flower_colour_list[active_bud_2.colour], false)
-						elseif current > 50 then
-							image_table.bud[1]:OnRender(1, COLOUR_WHITE, false)
-							image_table.bud_d_c[1]:OnRender(1, flower_dark_colour_list[active_bud_2.colour], false)
-							image_table.bud_c[1]:OnRender(1, flower_colour_list[active_bud_2.colour], false)
+						if table_bud_2[shipManager.iShipId][room.iRoomId] and table_bud_2[shipManager.iShipId][room.iRoomId].i == i and table_bud_2[shipManager.iShipId][room.iRoomId].j == j then
+							if current > 90 then
+								image_table.bud[3]:OnRender(1, back_colour, false)
+								image_table.bud_d_c[3]:OnRender(1, flower_dark_colour_list[active_bud_2.colour], false)
+								image_table.bud_c[3]:OnRender(1, flower_colour_list[active_bud_2.colour], false)
+							elseif current > 70 then
+								image_table.bud[2]:OnRender(1, back_colour, false)
+								image_table.bud_d_c[2]:OnRender(1, flower_dark_colour_list[active_bud_2.colour], false)
+								image_table.bud_c[2]:OnRender(1, flower_colour_list[active_bud_2.colour], false)
+							elseif current > 50 then
+								image_table.bud[1]:OnRender(1, back_colour, false)
+								image_table.bud_d_c[1]:OnRender(1, flower_dark_colour_list[active_bud_2.colour], false)
+								image_table.bud_c[1]:OnRender(1, flower_colour_list[active_bud_2.colour], false)
+							end
 						end
 					end
 				end
 			end
 
-			if shipManager.iShipId == 0 and displayOptions then
+			if shipManager.iShipId == 0 and (displayOptions or buttonHover) then
 				if active_target_bud and Hyperspace.App.gui.combatControl.selectedSelfRoom == room.iRoomId then
 					Graphics.CSurface.GL_RenderPrimitive(room.highlightPrimitive)
 					Graphics.CSurface.GL_RenderPrimitive(room.highlightPrimitive2)
@@ -1053,6 +1062,7 @@ local function system_render(systemBox, ignoreStatus)
 		local button = systemBox.table.button
 		button.bActive = Hyperspace.App.gui.upgradeButton.bActive
 		button:OnRender()
+		buttonHover = button.bHover
 		if button.bHover and button.bActive then
 			Hyperspace.Mouse.bForceTooltip = true
 			Hyperspace.Mouse:SetTooltip(string.format(mouse_tooltip_string_hover))
@@ -1359,6 +1369,11 @@ local acidic_ships = {
 	"PLAYER_SHIP_OE_ACID_LONG_2",
 	"PLAYER_SHIP_OE_ACID_LONG_3",
 	"PLAYER_SHIP_OE_ACID_CREW1",
+	"OET_BOSS_ACID_NORMAL",
+	"OET_BOSS_ACID_CHALLENGE",
+	"OET_BOSS_ACID_EXTREME",
+	"OET_BOSS_ACID_CHAOS",
+	"OE_ACID_CEALAFORMER",
 }
 for name in vter(Hyperspace.Blueprints:GetBlueprintList("LIST_SHIPS_OE_ACID_ALL")) do
 	table.insert(acidic_ships, name) 
@@ -1366,8 +1381,11 @@ end
 for name in vter(Hyperspace.Blueprints:GetBlueprintList("LIST_SHIPS_OE_ACID_ELITE_ALL")) do
 	table.insert(acidic_ships, name)
 end
-
 for _, blueprintName in ipairs(acidic_ships) do
+	acidic_ships_check[blueprintName] = true
+end
+
+--[[for _, blueprintName in ipairs(acidic_ships) do
 	acidic_ships_check[blueprintName] = true
 	local blueprint = Hyperspace.Blueprints:GetShipBlueprint(blueprintName, 0)
 	local i = -1
@@ -1377,7 +1395,18 @@ for _, blueprintName in ipairs(acidic_ships) do
 			blueprint.systems[i] = Hyperspace.ShipSystem.NameToSystemId(systemName)
 		end
 	end
-end
+	--[[if not string_starts(blueprint.blueprintName, "PLAYER_SHIP") then
+		local sysInfo = blueprint.systemInfo
+		if sysInfo:has_key(2) then
+			if sysInfo[2].systemId == 2 then
+				local swapId = Hyperspace.ShipSystem.NameToSystemId(systemName)
+				sysInfo[swapId] = sysInfo[2]
+				sysInfo[swapId].systemId = swapId
+				sysInfo:del(2)
+			end
+		end
+	end]]
+--end]]
 
 local bud_lock = Hyperspace.CustomLockdownDefinition()
 bud_lock.duration = 5

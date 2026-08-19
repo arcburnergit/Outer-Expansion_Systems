@@ -5,6 +5,26 @@
 	<desc length="11" x="0" y="0"/>
 	<time>1.0</time>
 </anim>
+
+<animSheet name="oe_growth_root" w="420" h="35" fw="35" fh="35">people/oe_growth_root.png</animSheet>
+<anim name="oe_growth_root">
+	<sheet>oe_growth_root</sheet>
+	<desc length="12" x="0" y="0"/>
+	<time>1.0</time>
+</anim>
+
+<animSheet name="oe_growth_lockdown1" w="108" h="19" fw="18" fh="19">effects/oe_growth_lockdown1.png</animSheet>
+<anim name="oe_growth_lockdown1">
+	<sheet>oe_growth_lockdown1</sheet>
+	<desc length="6" x="0" y="0"/>
+	<time>1.0</time>
+</anim>
+<animSheet name="oe_growth_lockdown2" w="90" h="19" fw="18" fh="19">effects/oe_growth_lockdown2.png</animSheet>
+<anim name="oe_growth_lockdown2">
+	<sheet>oe_growth_lockdown2</sheet>
+	<desc length="5" x="0" y="0"/>
+	<time>1.0</time>
+</anim>
 </FTL>
 
 <FTL>

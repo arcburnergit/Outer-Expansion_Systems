@@ -738,13 +738,29 @@ It will take a while to scan, giving the fleet time to catch up. Proceed?</text>
 		<text>Entangling Bud. [Cost: 20~, 5{]</text>
 		<event load="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_ENTANGLING"/>
 	</choice>
-	<choice req="OE_GROWTH_BUD_ELECTRIFIED" lvl="1" max_group="9" blue="false" hidden="true">
+	<choice req="OE_GROWTH_BUD_TRAPPING" lvl="1" max_group="9" blue="false" hidden="true">
+		<text>Trapping Bud. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GROWTH_BUD_TRAPPING" lvl="0" max_group="9" blue="true" hidden="true">
+		<text>Trapping Bud. [8{]</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_TRAPPING"/>
+	</choice>
+	<choice req="OE_GROWTH_BUD_ELECTRIFIED" lvl="1" max_group="10" blue="false" hidden="true">
 		<text>Electrified Bud. [ALREADY AVAILABLE]</text>
 		<event load="OPTION_INVALID"/>
 	</choice>
-	<choice req="OE_GROWTH_BUD_ELECTRIFIED" lvl="0" max_group="9" blue="true" hidden="true">
+	<choice req="OE_GROWTH_BUD_ELECTRIFIED" lvl="0" max_group="10" blue="true" hidden="true">
 		<text>Electrified Bud. [Cost: 15~, 3{, 5|]</text>
 		<event load="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_ELECTRIFIED"/>
+	</choice>
+	<choice req="OE_GROWTH_BUD_DD_SOULPLAGUED" lvl="1" max_group="11" blue="false" hidden="true">
+		<text>Soulplagued Bud. [ALREADY AVAILABLE]</text>
+		<event load="OPTION_INVALID"/>
+	</choice>
+	<choice req="OE_GROWTH_REQ_BUD_DD_SOULPLAGUED" lvl="1" max_group="11" blue="true" hidden="true">
+		<text>Soulplagued Bud.</text>
+		<event load="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_DD_SOULPLAGUED"/>
 	</choice>
 	<choice>
 		<text>Nevermind.</text>
@@ -951,6 +967,30 @@ It will take a while to incorporate, giving the fleet time to catch up. Proceed?
 		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
 	</choice>
 </event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_TRAPPING">
+	<text>You can feed your Life Bloom System with scrap and fuel to encourage it to produce a new kind of bud.
+[While fully grown, will spend 50% of it's growth to lock down the room for 10 seconds while enemy crew are inside. This bud grows at 50% speed.]
+It will take a while to incorporate, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed. [8{]</text>
+		<event>
+			<text>Your Life Bloom System adds a new type of bud to it's growth.</text>
+			<item_modify>
+				<item type="fuel" min="-8" max="-8"/>
+			</item_modify>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GROWTH_BUD_TRAPPING</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
 <event name="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_ELECTRIFIED">
 	<text>You can feed your Life Bloom System with scrap and fuel to encourage it to produce a new kind of bud.
 [Max room: 1, Provides 1 bonus power, destroys enemy hacking drones that attach to this room at the end of their effect.]
@@ -966,6 +1006,27 @@ It will take a while to incorporate, giving the fleet time to catch up. Proceed?
 			</item_modify>
 			<modifyPursuit amount="1"/>
 			<hiddenAug>OE_GROWTH_BUD_ELECTRIFIED</hiddenAug>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>
+			</choice>
+		</event>
+	</choice>
+	<choice hidden="true">
+		<text>Nevermind</text>
+		<event load="STORAGE_CHECK_SYSTEM_LOAD" />
+	</choice>
+</event>
+<event name="STORAGE_CHECK_SYSTEM_OE_GROWTH_BUD_DD_SOULPLAGUED">
+	<text>You have something on your ship which can seed your Life Bloom System to create a new bud type.
+[Inflicts the Soulplagued debuff upon enemy crew in the room, lasts 12 seconds but cannot be reapplied by the bud for 15 seconds.]
+It will take a while to incorporate, giving the fleet time to catch up. Proceed?</text>
+	<choice hidden="true">
+		<text>Proceed.</text>
+		<event>
+			<text>Your Life Bloom System adds a new type of bud to it's growth.</text>
+			<modifyPursuit amount="1"/>
+			<hiddenAug>OE_GROWTH_BUD_DD_SOULPLAGUED</hiddenAug>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event load="STORAGE_CHECK_SYSTEM_LOAD"/>

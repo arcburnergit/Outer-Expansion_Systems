@@ -54,6 +54,8 @@
 <text name="oe_lua_sys_growth_effect_acidic">Releases Acidic Gas into the current room, repairs breaches over 10 seconds.</text>
 <text name="oe_lua_sys_growth_effect_suffocating">Drains the room of oxygen, Enemy crew in the same room take 50% more suffocation damage.</text>
 <text name="oe_lua_sys_growth_effect_entangling">Momentarily roots moving enemy crew in place for 1 second, dealing 15 damage, can retrigger after 0.5 seconds.</text>
+<text name="oe_lua_sys_growth_effect_trapping">While fully grown, will spend 50% of it's growth to lock down the room for 10 seconds while enemy crew are inside. This bud grows at 50% speed.</text>
 <text name="oe_lua_sys_growth_effect_electrified">Max room: 1\nProvides 1 bonus power, destroys enemy hacking drones that attach to this room at the end of their effect.</text>
+<text name="oe_lua_sys_growth_effect_dd_soulplagued">Inflicts the soulplagued debuff upon enemy crew in the room, lasts 12 seconds but cannot be reapplied by the bud for 15 seconds.</text>
 <text name="oe_lua_sys_growth_effect_root">Place the root of the system, the point in which the plant grows from.</text>
 </FTL>

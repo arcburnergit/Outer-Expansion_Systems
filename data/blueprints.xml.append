@@ -148,7 +148,7 @@
 	<weaponArt>bomblauncher_small</weaponArt>
 	<iconImage>bomb</iconImage>
 	<roomStatBoosts> <!-- SOULPLAGUE -->
-		<statBoost name="repairSpeed">
+		<statBoost name="repairSpeed" >
 			<boostType>MULT</boostType>
 			<amount>0.5</amount>
 			<shipTarget>ALL</shipTarget>
@@ -164,7 +164,7 @@
 					<wallAnim>ddroom_plagueridden_effect</wallAnim>
 			</roomAnim>
 		</statBoost>
-		<statBoost name="trueHealAmount">
+		<statBoost name="trueHealAmount" >
 			<boostType>FLAT</boostType>
 			<amount>-2.3</amount>
 			<shipTarget>ALL</shipTarget>
@@ -176,7 +176,7 @@
 			<priority>10001</priority>
 			<blackList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_DDNOFEAR"/>
 		</statBoost>
-		<statBoost name="deathEffect">
+		<statBoost name="deathEffect" >
 			<boostType>ADD</boostType>
 			<deathEffect>
 				<event load="DDSOULPLAGUE_SUMMON_BEAM_CRYSTAL"/>
@@ -191,7 +191,7 @@
 			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_CRYSTAL"/>
 			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
 		</statBoost>
-		<statBoost name="deathEffect">
+		<statBoost name="deathEffect" >
 			<boostType>ADD</boostType>
 			<deathEffect>
 				<event load="DDSOULPLAGUE_SUMMON_BEAM_DEEPONE"/>
@@ -206,7 +206,7 @@
 			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_DEEPONES"/>
 			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
 		</statBoost>
-		<statBoost name="deathEffect">
+		<statBoost name="deathEffect" >
 			<boostType>ADD</boostType>
 			<deathEffect>
 				<event load="DDSOULPLAGUE_SUMMON_BEAM_ENGI"/>
@@ -221,7 +221,7 @@
 			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ENGI"/>
 			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
 		</statBoost>
-		<statBoost name="deathEffect">
+		<statBoost name="deathEffect" >
 			<boostType>ADD</boostType>
 			<deathEffect>
 				<event load="DDSOULPLAGUE_SUMMON_BEAM_GHOST"/>
@@ -236,7 +236,7 @@
 			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_GHOST"/>
 			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
 		</statBoost>
-		<statBoost name="deathEffect">
+		<statBoost name="deathEffect" >
 			<boostType>ADD</boostType>
 			<deathEffect>
 				<event load="DDSOULPLAGUE_SUMMON_BEAM_LANIUS"/>
@@ -251,7 +251,7 @@
 			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_LANIUS"/>
 			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
 		</statBoost>
-		<statBoost name="deathEffect">
+		<statBoost name="deathEffect" >
 			<boostType>ADD</boostType>
 			<deathEffect>
 				<event load="DDSOULPLAGUE_SUMMON_BEAM_LEECH"/>
@@ -266,7 +266,7 @@
 			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_LEECH"/>
 			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
 		</statBoost>
-		<statBoost name="deathEffect">
+		<statBoost name="deathEffect" >
 			<boostType>ADD</boostType>
 			<deathEffect>
 				<event load="DDSOULPLAGUE_SUMMON_BEAM_MANTIS"/>
@@ -281,7 +281,7 @@
 			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_MANTIS"/>
 			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
 		</statBoost>
-		<statBoost name="deathEffect">
+		<statBoost name="deathEffect" >
 			<boostType>ADD</boostType>
 			<deathEffect>
 				<event load="DDSOULPLAGUE_SUMMON_BEAM_OBELISK"/>
@@ -296,7 +296,7 @@
 			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ANCIENT"/>
 			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
 		</statBoost>
-		<statBoost name="deathEffect">
+		<statBoost name="deathEffect" >
 			<boostType>ADD</boostType>
 			<deathEffect>
 				<event load="DDSOULPLAGUE_SUMMON_BEAM_ORCHID"/>
@@ -311,7 +311,7 @@
 			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ORCHID"/>
 			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
 		</statBoost>
-		<statBoost name="deathEffect">
+		<statBoost name="deathEffect" >
 			<boostType>ADD</boostType>
 			<deathEffect>
 				<event load="DDSOULPLAGUE_SUMMON_BEAM_ROCKMAN"/>
@@ -326,7 +326,7 @@
 			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ROCK"/>
 			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
 		</statBoost>
-		<statBoost name="deathEffect">
+		<statBoost name="deathEffect" >
 			<boostType>ADD</boostType>
 			<deathEffect>
 				<event load="DDSOULPLAGUE_SUMMON_BEAM_SHELL"/>
@@ -341,7 +341,7 @@
 			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_SHELL"/>
 			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
 		</statBoost>
-		<statBoost name="deathEffect">
+		<statBoost name="deathEffect" >
 			<boostType>ADD</boostType>
 			<deathEffect>
 				<event load="DDSOULPLAGUE_SUMMON_BEAM_SLUG"/>
@@ -356,7 +356,7 @@
 			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_SLUG"/>
 			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
 		</statBoost>
-		<statBoost name="deathEffect">
+		<statBoost name="deathEffect" >
 			<boostType>ADD</boostType>
 			<deathEffect>
 				<event load="DDSOULPLAGUE_SUMMON_BEAM_ZOLTAN"/>
@@ -371,7 +371,7 @@
 			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ZOLTAN"/>
 			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
 		</statBoost>
-		<statBoost name="deathEffect">
+		<statBoost name="deathEffect" >
 			<boostType>ADD</boostType>
 			<deathEffect>
 				<event load="DDSOULPLAGUE_SUMMON_BEAM_HUMAN"/>
@@ -697,10 +697,285 @@
 </FTL>
 
 <FTL>
+<weaponBlueprint name="OE_GROWTH_BUD_BOMB_DD_SOULPLAGUE">
+	<type>LASER</type>
+	<title>Bomb Launcher</title>
+	<short>Bomb</short>
+	<desc>YOU SHOULD NEVER SEE THIS</desc>
+	<damage>0</damage>
+	<sysDamage>0</sysDamage>
+	<persDamage>0</persDamage>
+	<accuracyMod>200</accuracyMod>
+	<missiles>0</missiles>
+	<shots>1</shots>
+	<sp>0</sp>
+	<fireChance>0</fireChance>
+	<breachChance>0</breachChance>
+	<cooldown>11</cooldown>
+	<power>1</power>
+	<cost>45</cost>
+	<rarity>0</rarity>
+	<image>oe_invisible</image>
+	<explosion>oe_invisible</explosion>
+	<weaponArt>bomblauncher_small</weaponArt>
+	<iconImage>bomb</iconImage>
+	<statBoosts> <!-- SOULPLAGUE -->
+		<statBoost name="repairSpeed" save="OE_DD_SOULPLAGUE_REPAIR">
+			<boostType>MULT</boostType>
+			<amount>0.5</amount>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddPlagueriddenRepairDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<blackList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_DDNOFEAR"/>
+		</statBoost>
+		<statBoost name="trueHealAmount" save="OE_DD_SOULPLAGUE_HEAL">
+			<boostType>FLAT</boostType>
+			<amount>-2.3</amount>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddPlagueriddenDOTDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<blackList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_DDNOFEAR"/>
+		</statBoost>
+		<statBoost name="deathEffect" save="OE_DD_SOULPLAGUE_DEATH_1">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_CRYSTAL"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_CRYSTAL"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect" save="OE_DD_SOULPLAGUE_DEATH_2">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_DEEPONE"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_DEEPONES"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect" save="OE_DD_SOULPLAGUE_DEATH_3">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_ENGI"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ENGI"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect" save="OE_DD_SOULPLAGUE_DEATH_4">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_GHOST"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_GHOST"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect" save="OE_DD_SOULPLAGUE_DEATH_5">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_LANIUS"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_LANIUS"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect" save="OE_DD_SOULPLAGUE_DEATH_6">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_LEECH"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_LEECH"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect" save="OE_DD_SOULPLAGUE_DEATH_7">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_MANTIS"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_MANTIS"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect" save="OE_DD_SOULPLAGUE_DEATH_8">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_OBELISK"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ANCIENT"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect" save="OE_DD_SOULPLAGUE_DEATH_9">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_ORCHID"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ORCHID"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect" save="OE_DD_SOULPLAGUE_DEATH_10">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_ROCKMAN"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ROCK"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect" save="OE_DD_SOULPLAGUE_DEATH_11">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_SHELL"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_SHELL"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect" save="OE_DD_SOULPLAGUE_DEATH_12">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_SLUG"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_SLUG"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect" save="OE_DD_SOULPLAGUE_DEATH_13">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_ZOLTAN"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<whiteList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ZOLTAN"/>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+		<statBoost name="deathEffect" save="OE_DD_SOULPLAGUE_DEATH_14">
+			<boostType>ADD</boostType>
+			<deathEffect>
+				<event load="DDSOULPLAGUE_SUMMON_BEAM_HUMAN"/>
+			</deathEffect>
+			<shipTarget>ALL</shipTarget>
+			<crewTarget>ENEMIES</crewTarget>
+			<droneTarget>CREW</droneTarget>
+			<affectsSelf>false</affectsSelf>
+			<duration>12</duration>
+			<maxStacks id="ddSoulplagueInfectionDebuff">1</maxStacks>
+			<priority>10001</priority>
+			<blackList>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_CRYSTAL"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_DEEPONES"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ENGI"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_GHOST"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_LANIUS"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_LEECH"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_MANTIS"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ANCIENT"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ORCHID"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ROCK"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_SHELL"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_SLUG"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_ZOLTAN"/>
+				<blueprintList load="LIST_DDANNOYINGBLUEPRINTSTUFF_CREW_DDNOFEAR"/>
+			</blackList>
+			<boostAnim>ddsoulplague_infected_debuff</boostAnim>
+		</statBoost>
+	</statBoosts>
+	<roomStatBoostChance>10</roomStatBoostChance>
+</weaponBlueprint>
 <systemBlueprint name="oe_growth">
 	<type>oe_growth</type>
 	<title>Life Bloom</title>
-	<desc>An organic System which grows across the ship, budding into rooms to provide oxygen and other effects.</desc>
+	<desc>An organic System which grows across the ship, budding into rooms to provide oxygen and other effects. Grows twice as fast out of combat.</desc>
 	<startPower>1</startPower>
 	<maxPower>3</maxPower>
 	<rarity>0</rarity>

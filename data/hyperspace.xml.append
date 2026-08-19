@@ -319,6 +319,10 @@
 		<name>OE_LASER_ACID_BOSS</name>
 		<name>OE_LASER_ACID_BOSS_CHAOS</name>
 	</req>
+	<req name="OE_GROWTH_REQ_BUD_DD_SOULPLAGUED" type="any">
+		<name>JUDGELIST_ROCK_DDSOULPLAGUE_GEAR</name>
+		<name>LIST_DDSOULPLAGUE_ALIGNED</name>
+	</req>
 </events>
 
 <mod:findLike type="store">

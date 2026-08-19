@@ -23,12 +23,15 @@ local find_closest_slot = mods.oe.find_closest_slot
 local systemName = "oe_growth"
 mods.multiverse.systemIcons[Hyperspace.ShipSystem.NameToSystemId(systemName)] = mods.multiverse.register_system_icon(systemName)
 
-local energy_base = 200
-local energy_scaler = 100
-local decay_mult = 0.1
-local decay_bud_mult = 0.025
+local energy_base = 50
+local energy_scaler = 25
+local decay_base = 20
+local decay_bud_base = 10
 local update_rate = 0.05
 local save_rate = 1
+
+local out_of_combat_mult = 2
+local trapping_mult = 0.5
 
 local fire_death_mult = 0.25
 local fire_start_mult = 1
@@ -67,9 +70,16 @@ local bud_types = {
 	{name = "Acidic", req="OE_GROWTH_BUD_ACIDIC", colour = "acidic", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_acidic"), count = 0},
 	{name = "Suffocating", req="OE_GROWTH_BUD_SUFFOCATING", colour = "grey", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_suffocating"), count = 0},
 	{name = "Entangling", req="OE_GROWTH_BUD_ENTANGLING", colour = "orange", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_entangling"), count = 0},
+	{name = "Trapping", req="OE_GROWTH_BUD_TRAPPING", colour = "brown", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_trapping"), count = 0},
 	{name = "Electrified", req="OE_GROWTH_BUD_ELECTRIFIED", colour = "electric", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_electrified"), count = 0, max_count = 1},
-	{name = "Root", req="UPG_OE_GROWTH_ROOT", colour = "white", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_root")},
+	{name = "Soulplagued", req="OE_GROWTH_BUD_DD_SOULPLAGUED", colour = "soulplagued", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_dd_soulplagued"), count = 0},
 }
+table.insert(bud_types, {name = "Root", req="UPG_OE_GROWTH_ROOT", colour = "brown", desc = Hyperspace.Text:GetText("oe_lua_sys_growth_effect_root")})
+
+local bud_types_indexed = {}
+for i, bud in ipairs(bud_types) do
+	bud_types_indexed[bud.name] = i
+end
 
 --Handles initialization of custom system box
 local buttonOffset_x = 37
@@ -170,7 +180,7 @@ script.on_internal_event(Defines.InternalEvents.CONSTRUCT_SHIP_MANAGER, function
 	table_map[shipManager.iShipId] = nil
 end)
 
-script.on_game_event("START", false, function()
+script.on_game_event("START_BEACON", false, function()
 	table_growth[0] = {}
 	table_bud[0] = {}
 	table_bud_2[0] = {}
@@ -212,7 +222,9 @@ local function load_system(shipManager, system)
 		if bud_2_i >= 0 and bud_2_j >= 0 then
 			table_bud_2[shipManager.iShipId][room.iRoomId] = new_bud(bud_2_i, bud_2_j)
 		end
-		bud_types[1].count = 0
+		for _, bud in ipairs(bud_types) do
+			bud.count = 0
+		end
 		if bud_set > 0 then
 			bud_types[bud_set].count = bud_types[bud_set].count + 1
 			table_bud_set[shipManager.iShipId][room.iRoomId].index = bud_set
@@ -236,6 +248,7 @@ local function load_system(shipManager, system)
 			end
 		end
 		if Hyperspace.playerVariables[string.format(root_variable, shipManager.iShipId)] > -1 then
+			system.table.growth_root = Hyperspace.playerVariables[string.format(root_variable, shipManager.iShipId)]
 		end
 	end
 end
@@ -378,6 +391,8 @@ local flower_colour_list = {
 	praetor = Graphics.GL_Color(187/255, 255/255, 253/255, 1),
 	cultivator = Graphics.GL_Color(91/255, 127/255, 0/255, 1),
 	electric = Graphics.GL_Color(255/255, 247/255, 0/255, 1),
+	brown = Graphics.GL_Color(80/255, 67/255, 59/255, 1),
+	soulplagued = Graphics.GL_Color(34/255, 12/255, 107/255, 1),
 }
 local flower_dark_colour_list = {
 	red = Graphics.GL_Color(156/255, 57/255, 83/255, 1),
@@ -393,6 +408,8 @@ local flower_dark_colour_list = {
 	praetor = Graphics.GL_Color(69/255, 106/255, 123/255, 1),
 	cultivator = Graphics.GL_Color(60/255, 74/255, 0/255, 1),
 	electric = Graphics.GL_Color(169/255, 134/255, 66/255, 1),
+	brown = Graphics.GL_Color(33/255, 28/255, 28/255, 1),
+	soulplagued = Graphics.GL_Color(0, 0, 0, 1),
 }
 
 local function generate_slot_anim(shipManager, room, i, j)
@@ -481,7 +498,7 @@ local function generate_slot_anim(shipManager, room, i, j)
 	}
 end
 
-
+local acidic_ships_check = {}
 script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 	if not table_map[shipManager.iShipId] then
 		table_map[shipManager.iShipId] = {}
@@ -491,12 +508,14 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 			table_bud_2[shipManager.iShipId][room.iRoomId] = false
 			table_bud_set[shipManager.iShipId][room.iRoomId] = {index = 1, active = false}
 			table_bud_set_2[shipManager.iShipId][room.iRoomId] = {index = 1, active = false}
-			if shipManager:HasAugmentation("OE_GROWTH_BUD_ACIDIC") > 0 and shipManager:GetSystemInRoom(room.iRoomId) == 0 then
+			if acidic_ships_check[shipManager.myBlueprint.blueprintName] and not shipManager:GetSystemInRoom(room.iRoomId) then
 				bud_types[6].count = bud_types[6].count + 1
 				table_bud_set[shipManager.iShipId][room.iRoomId].index = 6
 			elseif shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) then
 				bud_types[1].count = bud_types[1].count + 1
-				shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, 100)
+				if not loadSystems[shipManager.iShipId] then
+					shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, 100)
+				end
 			end
 			table_growth[shipManager.iShipId][room.iRoomId] = {}
 			local room_map = table_map[shipManager.iShipId][room.iRoomId]
@@ -522,7 +541,10 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 
 	if shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) then
 		local system = shipManager:GetSystem(Hyperspace.ShipSystem.NameToSystemId(systemName))
-		if not system.table.growth_root then system.table.growth_root = system.roomId end
+		if not system.table.growth_root then 
+			system.table.growth_root = system.roomId 
+			Hyperspace.playerVariables[string.format(root_variable, shipManager.iShipId)] = system.table.growth_root
+		end
 		local system_room_id = (shipManager:HasAugmentation("UPG_OE_GROWTH_ROOT") > 0 and system.table.growth_root) or system.roomId
 		local power = system:GetEffectivePower()
 
@@ -533,12 +555,18 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 			local visited = {}
 			if power > 0 then
 				local current_front = {}
+				local current_front_number = 0
 				local energy = (energy_base + energy_scaler * (power - 1)) * update_timer[shipManager.iShipId]
+				if Hyperspace.App.gui.upgradeButton.bActive then
+					energy = energy * out_of_combat_mult
+				end
 
 				local system_room_map = map[system_room_id]
 				for i = 0, system_room_map.w - 1 do
 					for j = 0, system_room_map.h - 1 do
-						table.insert(current_front, {room = system_room_id, i = i, j = j})
+						local needs_energy = table_growth[shipManager.iShipId][system_room_id][i][j].val <= 99
+						if needs_energy then current_front_number = current_front_number + 1 end
+						table.insert(current_front, {room = system_room_id, i = i, j = j, needs_energy})
 						visited[system_room_id] = visited[system_room_id] or {}
 						visited[system_room_id][i] = visited[system_room_id][i] or {}
 						visited[system_room_id][i][j] = true
@@ -546,13 +574,22 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 				end
 
 				while #current_front > 0 do
-					local energy_per_cell = energy / #current_front
+					if current_front_number <= 0 then current_front_number = 1 end
+					local energy_per_cell = energy / current_front_number
 					local next_front = {}
+					local next_front_number = 0
 					local energy_spent = 0
 					for _, cell in ipairs(current_front) do
 						local current_energy = table_growth[shipManager.iShipId][cell.room][cell.i][cell.j].val
 						local energy_needed = 100 - current_energy
 						local energy_add = math.min(energy_per_cell, energy_needed)
+						if table_bud[shipManager.iShipId][cell.room] and table_bud[shipManager.iShipId][cell.room].i == cell.i and table_bud[shipManager.iShipId][cell.room].j == cell.j and
+								table_bud_set[shipManager.iShipId][cell.room].index == bud_types_indexed["Trapping"] then
+							energy_add = energy_add * trapping_mult
+						elseif table_bud_2[shipManager.iShipId][cell.room] and table_bud_2[shipManager.iShipId][cell.room].i == cell.i and table_bud_2[shipManager.iShipId][cell.room].j == cell.j and
+								table_bud_set_2[shipManager.iShipId][cell.room].index == bud_types_indexed["Trapping"] then
+							energy_add = energy_add * trapping_mult
+						end
 
 						local fire_room_count = shipManager:GetFireCount(cell.room)
 						if fire_room_count <= 0 then
@@ -564,7 +601,9 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 							local slot_map = map[cell.room].slots[cell.i][cell.j]
 							for _, adjacent in ipairs(slot_map) do
 								if not visited[adjacent.room] or not visited[adjacent.room][adjacent.i] or not visited[adjacent.room][adjacent.i][adjacent.j] then
-									table.insert(next_front, {room = adjacent.room, i = adjacent.i, j = adjacent.j})
+									local needs_energy = table_growth[shipManager.iShipId][adjacent.room][adjacent.i][adjacent.j].val <= 99
+									if needs_energy then next_front_number = current_front_number + 1 end
+									table.insert(next_front, {room = adjacent.room, i = adjacent.i, j = adjacent.j, needs_energy = needs_energy})
 									visited[adjacent.room] = visited[adjacent.room] or {}
 									visited[adjacent.room][adjacent.i] = visited[adjacent.room][adjacent.i] or {}
 									visited[adjacent.room][adjacent.i][adjacent.j] = true
@@ -572,8 +611,9 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 							end
 						end
 					end
-					energy = energy - energy_spent
+					energy = math.max(0, energy - energy_spent)
 					current_front = next_front
+					current_front_number = next_front_number
 				end
 			end
 				
@@ -597,16 +637,16 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 								end
 							elseif table_bud[shipManager.iShipId][room.iRoomId].i == i and table_bud[shipManager.iShipId][room.iRoomId].j == j then
 								if not connected then
-									decay = decay + decay_bud_mult * energy_base
+									decay = decay + decay_bud_base
 									table_bud_set[shipManager.iShipId][room.iRoomId].active = false
 								end
 								if current_energy > 50 then
 									table_bud_set[shipManager.iShipId][room.iRoomId].active = true
-									if active_bud_index == 1 then
+									if active_bud_index == bud_types_indexed["Oxygen"] then
 										shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, 5 * update_timer[shipManager.iShipId])
-									elseif active_bud_index == 6 then
+									elseif active_bud_index == bud_types_indexed["Acidic"] then
 										mods.oe.acid.setAcid(shipManager.iShipId, room.iRoomId, 0.5)
-									elseif active_bud_index == 7 then
+									elseif active_bud_index == bud_types_indexed["Suffocating"] then
 										shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, -5 * update_timer[shipManager.iShipId])
 									end
 								elseif connected then
@@ -622,16 +662,16 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 									end
 								elseif table_bud_2[shipManager.iShipId][room.iRoomId].i == i and table_bud_2[shipManager.iShipId][room.iRoomId].j == j then
 									if not connected then
-										decay = decay + decay_bud_mult * energy_base
+										decay = decay + decay_bud_base
 										table_bud_set_2[shipManager.iShipId][room.iRoomId].active = false
 									end
 									if current_energy > 50 then
 										table_bud_set_2[shipManager.iShipId][room.iRoomId].active = true
-										if active_bud_index_2 == 1 then
+										if active_bud_index_2 == bud_types_indexed["Oxygen"] then
 											shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, 5 * update_timer[shipManager.iShipId])
-										elseif active_bud_index_2 == 6 then
+										elseif active_bud_index_2 == bud_types_indexed["Acidic"] then
 											mods.oe.acid.setAcid(shipManager.iShipId, room.iRoomId, 0.5)
-										elseif active_bud_index_2 == 7 then
+										elseif active_bud_index_2 == bud_types_indexed["Suffocating"] then
 											shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, -5 * update_timer[shipManager.iShipId])
 										end
 									elseif connected then
@@ -651,7 +691,7 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 										empty_adjacent = empty_adjacent + 1
 									end
 								end
-								decay = decay + (empty_adjacent/#slot_map) * decay_mult * energy_base
+								decay = decay + (empty_adjacent/#slot_map) * decay_base
 							end
 
 							local fire = shipManager:GetFireAtPoint(room_map.x + i * 35, room_map.y + j * 35)
@@ -984,10 +1024,10 @@ local function renderOptions(originPos_x, originPos_y, effectButtonTable)
 			Graphics.CSurface.GL_Translate(effectButton.position.x, effectButton.position.y, 0)
 			effectButton.b:OnRender()
 			local effect = bud_types[effectButton.index]
+			local effectColour = flower_colour_list[effect.colour]
 			if effect.name == "Root" then
-				Graphics.CSurface.GL_RenderPrimitive(rootIcon)
+				Graphics.CSurface.GL_RenderPrimitiveWithColor(rootIcon, effectColour)
 			else
-				local effectColour = flower_colour_list[effect.colour]
 				Graphics.CSurface.GL_RenderPrimitiveWithColor(buttonIcon, effectColour)
 			end
 			Graphics.CSurface.GL_PopMatrix()
@@ -1034,12 +1074,21 @@ function(systemBox, ignoreStatus)
 	return Defines.Chain.CONTINUE
 end, system_render)
 
+script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
+	if active_target_bud then
+		local gui = Hyperspace.App.gui
+		gui.crewControl.selectedCrew:clear()
+		gui.crewControl.potentialSelectedCrew:clear()
+	end
+end)
+
 script.on_internal_event(Defines.InternalEvents.ON_MOUSE_L_BUTTON_DOWN, function(x,y) 
 	if active_target_bud and Hyperspace.App.gui.combatControl.selectedSelfRoom >= 0 then
 		if bud_types[active_target_bud].name == "Root" then
 			local system = Hyperspace.ships.player:GetSystem(Hyperspace.ShipSystem.NameToSystemId(systemName))
 			system.table.growth_root = Hyperspace.App.gui.combatControl.selectedSelfRoom
 			active_target_bud = false
+			Hyperspace.playerVariables[string.format(root_variable, 0)] = system.table.growth_root
 		else
 			if Hyperspace.ships.player:HasAugmentation("UPG_OE_GROWTH_EXTRA_BUD") > 0 then
 				local current_index = table_bud_set_2[0][Hyperspace.App.gui.combatControl.selectedSelfRoom].index
@@ -1223,15 +1272,27 @@ defNOMOVE.boostSource = Hyperspace.StatBoostDefinition.BoostSource.AUGMENT
 defNOMOVE.shipTarget = Hyperspace.StatBoostDefinition.ShipTarget.ALL
 defNOMOVE.crewTarget = Hyperspace.StatBoostDefinition.CrewTarget.ALL
 defNOMOVE.duration = 1
-defNOMOVE.boostAnim = "blood_effect"
 defNOMOVE.priority = 9999
 defNOMOVE.realBoostId = Hyperspace.StatBoostDefinition.statBoostDefs:size()
 Hyperspace.StatBoostDefinition.statBoostDefs:push_back(defNOMOVE)
 
+local defNOMOVESPEED = Hyperspace.StatBoostDefinition()
+defNOMOVESPEED.stat = Hyperspace.CrewStat.MOVE_SPEED_MULTIPLIER
+defNOMOVESPEED.amount = 0
+defNOMOVESPEED.boostType = Hyperspace.StatBoostDefinition.BoostType.SET
+defNOMOVESPEED.boostSource = Hyperspace.StatBoostDefinition.BoostSource.AUGMENT
+defNOMOVESPEED.shipTarget = Hyperspace.StatBoostDefinition.ShipTarget.ALL
+defNOMOVESPEED.crewTarget = Hyperspace.StatBoostDefinition.CrewTarget.ALL
+defNOMOVESPEED.duration = 1
+defNOMOVESPEED.boostAnim = "oe_growth_root"
+defNOMOVESPEED.priority = 9999
+defNOMOVESPEED.realBoostId = Hyperspace.StatBoostDefinition.statBoostDefs:size()
+Hyperspace.StatBoostDefinition.statBoostDefs:push_back(defNOMOVESPEED)
+
 local defROOTDAMAGE = Hyperspace.StatBoostDefinition()
 defROOTDAMAGE.stat = Hyperspace.CrewStat.TRUE_HEAL_AMOUNT 
 defROOTDAMAGE.amount = -15
-defROOTDAMAGE.boostType = Hyperspace.StatBoostDefinition.BoostType.SET
+defROOTDAMAGE.boostType = Hyperspace.StatBoostDefinition.BoostType.ADD
 defROOTDAMAGE.boostSource = Hyperspace.StatBoostDefinition.BoostSource.AUGMENT
 defROOTDAMAGE.shipTarget = Hyperspace.StatBoostDefinition.ShipTarget.ALL
 defROOTDAMAGE.crewTarget = Hyperspace.StatBoostDefinition.CrewTarget.ALL
@@ -1244,8 +1305,8 @@ script.on_internal_event(Defines.InternalEvents.CREW_LOOP, function(crewmem)
 	if not (crewmem and crewmem.currentShipId and crewmem.currentShipId >= 0 and crewmem.iRoomId) then return  end
 	local shipManager = Hyperspace.ships(crewmem.currentShipId)
 	if shipManager and shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) then
-		local bud_1_exists = table_bud_set[shipManager.iShipId] and table_bud_set[shipManager.iShipId][crewmem.iRoomId] and table_bud_set[shipManager.iShipId][crewmem.iRoomId].active and table_bud_set[shipManager.iShipId][crewmem.iRoomId].index == 8
-		local bud_2_exists = table_bud_set_2[shipManager.iShipId] and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId] and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId].active and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId].index == 8
+		local bud_1_exists = table_bud_set[shipManager.iShipId] and table_bud_set[shipManager.iShipId][crewmem.iRoomId] and table_bud_set[shipManager.iShipId][crewmem.iRoomId].active and table_bud_set[shipManager.iShipId][crewmem.iRoomId].index == bud_types_indexed["Entangling"]
+		local bud_2_exists = table_bud_set_2[shipManager.iShipId] and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId] and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId].active and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId].index == bud_types_indexed["Entangling"]
 		if (not crewmem:AtFinalGoal()) and (bud_1_exists or bud_2_exists) and crewmem.iShipId ~= crewmem.currentShipId then
 			if not crewmem.table.oe_growth_root_timer then
 				crewmem.table.oe_growth_root_timer = 0
@@ -1253,10 +1314,11 @@ script.on_internal_event(Defines.InternalEvents.CREW_LOOP, function(crewmem)
 			crewmem.table.oe_growth_root_timer = crewmem.table.oe_growth_root_timer - time_increment(true)
 			if crewmem.table.oe_growth_root_timer <= 0 then
 				crewmem.table.oe_growth_root_timer = 1.5
-				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(defNOMOVE), crewmem)
+				--Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(defNOMOVE), crewmem)
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(defNOMOVESPEED), crewmem)
 				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(defROOTDAMAGE), crewmem)
 			end
-		elseif crewmem.table.oe_growth_root_timer then
+		elseif crewmem.table.oe_growth_root_timer and not (bud_1_exists or bud_2_exists) then
 			crewmem.table.oe_growth_root_timer = nil
 		end	
 	end
@@ -1265,8 +1327,8 @@ end)
 script.on_internal_event(Defines.InternalEvents.SET_BONUS_POWER, function(system, amount)
 	local shipManager = Hyperspace.ships(system._shipObj.iShipId)
 	if shipManager and shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) then
-		local bud_1_exists = table_bud_set[shipManager.iShipId] and table_bud_set[shipManager.iShipId][system.roomId] and table_bud_set[shipManager.iShipId][system.roomId].active and table_bud_set[shipManager.iShipId][system.roomId].index == 9
-		local bud_2_exists = table_bud_set_2[shipManager.iShipId] and table_bud_set_2[shipManager.iShipId][system.roomId] and table_bud_set_2[shipManager.iShipId][system.roomId].active and table_bud_set_2[shipManager.iShipId][system.roomId].index == 9
+		local bud_1_exists = table_bud_set[shipManager.iShipId] and table_bud_set[shipManager.iShipId][system.roomId] and table_bud_set[shipManager.iShipId][system.roomId].active and table_bud_set[shipManager.iShipId][system.roomId].index == bud_types_indexed["Electrified"]
+		local bud_2_exists = table_bud_set_2[shipManager.iShipId] and table_bud_set_2[shipManager.iShipId][system.roomId] and table_bud_set_2[shipManager.iShipId][system.roomId].active and table_bud_set_2[shipManager.iShipId][system.roomId].index == bud_types_indexed["Electrified"]
 		if bud_1_exists then
 			amount = amount + 1 
 		elseif bud_2_exists then
@@ -1281,10 +1343,10 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 	if otherManager and otherManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) and shipManager:HasSystem(15) then
 		local system = shipManager.hackingSystem.currentSystem
 		if system and shipManager.hackingSystem.effectTimer.first >= shipManager.hackingSystem.effectTimer.second then
-			local bud_1_exists = table_bud_set[shipManager.iShipId] and table_bud_set[shipManager.iShipId][system.roomId] and table_bud_set[shipManager.iShipId][system.roomId].active and table_bud_set[shipManager.iShipId][system.roomId].index == 9
-			local bud_2_exists = table_bud_set_2[shipManager.iShipId] and table_bud_set_2[shipManager.iShipId][system.roomId] and table_bud_set_2[shipManager.iShipId][system.roomId].active and table_bud_set_2[shipManager.iShipId][system.roomId].index == 9
+			local bud_1_exists = table_bud_set[otherManager.iShipId] and table_bud_set[otherManager.iShipId][system.roomId] and table_bud_set[otherManager.iShipId][system.roomId].active and table_bud_set[otherManager.iShipId][system.roomId].index == bud_types_indexed["Electrified"]
+			local bud_2_exists = table_bud_set_2[otherManager.iShipId] and table_bud_set_2[otherManager.iShipId][system.roomId] and table_bud_set_2[otherManager.iShipId][system.roomId].active and table_bud_set_2[otherManager.iShipId][system.roomId].index == bud_types_indexed["Electrified"]
 			if bud_1_exists or bud_2_exists then
-				shipManager.hackingSystem:BlowUpHackingDrone()
+				shipManager.hackingSystem:BlowHackingDrone()
 			end
 		end
 	end
@@ -1298,8 +1360,15 @@ local acidic_ships = {
 	"PLAYER_SHIP_OE_ACID_LONG_3",
 	"PLAYER_SHIP_OE_ACID_CREW1",
 }
+for name in vter(Hyperspace.Blueprints:GetBlueprintList("LIST_SHIPS_OE_ACID_ALL")) do
+	table.insert(acidic_ships, name) 
+end
+for name in vter(Hyperspace.Blueprints:GetBlueprintList("LIST_SHIPS_OE_ACID_ELITE_ALL")) do
+	table.insert(acidic_ships, name)
+end
 
 for _, blueprintName in ipairs(acidic_ships) do
+	acidic_ships_check[blueprintName] = true
 	local blueprint = Hyperspace.Blueprints:GetShipBlueprint(blueprintName, 0)
 	local i = -1
 	for systemId in vter(blueprint.systems) do
@@ -1309,3 +1378,81 @@ for _, blueprintName in ipairs(acidic_ships) do
 		end
 	end
 end
+
+local bud_lock = Hyperspace.CustomLockdownDefinition()
+bud_lock.duration = 5
+bud_lock.health = 4
+bud_lock.anims:clear()
+bud_lock.anims:push_back("oe_growth_lockdown1")
+bud_lock.anims:push_back("oe_growth_lockdown2")
+
+script.on_internal_event(Defines.InternalEvents.CREW_LOOP, function(crewmem)
+	if not (crewmem and crewmem.currentShipId and crewmem.currentShipId >= 0 and crewmem.iRoomId) then return  end
+	local shipManager = Hyperspace.ships(crewmem.currentShipId)
+	if shipManager and shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) then
+		local bud_1_exists = table_bud_set[shipManager.iShipId] and table_bud_set[shipManager.iShipId][crewmem.iRoomId] and table_bud_set[shipManager.iShipId][crewmem.iRoomId].active and table_bud_set[shipManager.iShipId][crewmem.iRoomId].index == bud_types_indexed["Trapping"]
+		local bud_2_exists = table_bud_set_2[shipManager.iShipId] and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId] and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId].active and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId].index == bud_types_indexed["Trapping"]
+		if bud_1_exists and crewmem.iShipId ~= crewmem.currentShipId then
+			local bud = table_bud[shipManager.iShipId][crewmem.iRoomId]
+			if (not shipManager.ship:RoomLocked(crewmem.iRoomId)) and table_growth[shipManager.iShipId][crewmem.iRoomId][bud.i][bud.j].val > 99 then
+				table_growth[shipManager.iShipId][crewmem.iRoomId][bud.i][bud.j].val = 51
+				local point = Hyperspace.Pointf(crewmem:GetPosition().x, crewmem:GetPosition().y)
+				shipManager.ship:LockdownRoom(crewmem.iRoomId, point, bud_lock)
+			end
+		end
+		if bud_2_exists and crewmem.iShipId ~= crewmem.currentShipId then
+			local bud = table_bud_2[shipManager.iShipId][crewmem.iRoomId]
+			if (not shipManager.ship:RoomLocked(crewmem.iRoomId)) and table_growth[shipManager.iShipId][crewmem.iRoomId][bud.i][bud.j].val > 99 then
+				table_growth[shipManager.iShipId][crewmem.iRoomId][bud.i][bud.j].val = 51
+				local point = Hyperspace.Pointf(crewmem:GetPosition().x, crewmem:GetPosition().y)
+				shipManager.ship:LockdownRoom(crewmem.iRoomId, point, bud_lock)
+			end
+		end
+	end
+end)
+
+script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
+	if shipManager.ship.lockdowns:size() > 0 then
+		for shard in vter(shipManager.ship:GetShards()) do
+			if shard.lifeTime < 0 and not shard.bArrived then
+				shard.bArrived = true
+			end
+		end
+	end
+end)
+
+script.on_internal_event(Defines.InternalEvents.CREW_LOOP, function(crewmem)
+	if not (crewmem and crewmem.currentShipId and crewmem.currentShipId >= 0 and crewmem.iRoomId) then return  end
+	local shipManager = Hyperspace.ships(crewmem.currentShipId)
+	if crewmem.table.oe_growth_dd_soulplague_timer then crewmem.table.oe_growth_dd_soulplague_timer = crewmem.table.oe_growth_dd_soulplague_timer - time_increment(true) end
+	if shipManager and shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) then
+		local bud_1_exists = table_bud_set[shipManager.iShipId] and table_bud_set[shipManager.iShipId][crewmem.iRoomId] and table_bud_set[shipManager.iShipId][crewmem.iRoomId].active and table_bud_set[shipManager.iShipId][crewmem.iRoomId].index == bud_types_indexed["Soulplagued"]
+		local bud_2_exists = table_bud_set_2[shipManager.iShipId] and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId] and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId].active and table_bud_set_2[shipManager.iShipId][crewmem.iRoomId].index == bud_types_indexed["Soulplagued"]
+		if (bud_1_exists or bud_2_exists) and crewmem.iShipId ~= crewmem.currentShipId then
+			if not crewmem.table.oe_growth_dd_soulplague_timer then
+				crewmem.table.oe_growth_dd_soulplague_timer = 0
+			end
+			if crewmem.table.oe_growth_dd_soulplague_timer <= 0 then
+				crewmem.table.oe_growth_dd_soulplague_timer = 15
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(Hyperspace.StatBoostDefinition.savedStatBoostDefs["OE_DD_SOULPLAGUE_REPAIR"]), crewmem)
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(Hyperspace.StatBoostDefinition.savedStatBoostDefs["OE_DD_SOULPLAGUE_HEAL"]), crewmem)
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(Hyperspace.StatBoostDefinition.savedStatBoostDefs["OE_DD_SOULPLAGUE_DEATH_1"]), crewmem)
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(Hyperspace.StatBoostDefinition.savedStatBoostDefs["OE_DD_SOULPLAGUE_DEATH_2"]), crewmem)
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(Hyperspace.StatBoostDefinition.savedStatBoostDefs["OE_DD_SOULPLAGUE_DEATH_3"]), crewmem)
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(Hyperspace.StatBoostDefinition.savedStatBoostDefs["OE_DD_SOULPLAGUE_DEATH_4"]), crewmem)
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(Hyperspace.StatBoostDefinition.savedStatBoostDefs["OE_DD_SOULPLAGUE_DEATH_5"]), crewmem)
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(Hyperspace.StatBoostDefinition.savedStatBoostDefs["OE_DD_SOULPLAGUE_DEATH_6"]), crewmem)
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(Hyperspace.StatBoostDefinition.savedStatBoostDefs["OE_DD_SOULPLAGUE_DEATH_7"]), crewmem)
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(Hyperspace.StatBoostDefinition.savedStatBoostDefs["OE_DD_SOULPLAGUE_DEATH_8"]), crewmem)
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(Hyperspace.StatBoostDefinition.savedStatBoostDefs["OE_DD_SOULPLAGUE_DEATH_9"]), crewmem)
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(Hyperspace.StatBoostDefinition.savedStatBoostDefs["OE_DD_SOULPLAGUE_DEATH_10"]), crewmem)
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(Hyperspace.StatBoostDefinition.savedStatBoostDefs["OE_DD_SOULPLAGUE_DEATH_11"]), crewmem)
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(Hyperspace.StatBoostDefinition.savedStatBoostDefs["OE_DD_SOULPLAGUE_DEATH_12"]), crewmem)
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(Hyperspace.StatBoostDefinition.savedStatBoostDefs["OE_DD_SOULPLAGUE_DEATH_13"]), crewmem)
+				Hyperspace.StatBoostManager.GetInstance():CreateTimedAugmentBoost(Hyperspace.StatBoost(Hyperspace.StatBoostDefinition.savedStatBoostDefs["OE_DD_SOULPLAGUE_DEATH_14"]), crewmem)
+			end
+		elseif crewmem.table.oe_growth_dd_soulplague_timer and crewmem.table.oe_growth_dd_soulplague_timer <= 0 then
+			crewmem.table.oe_growth_dd_soulplague_timer = nil
+		end	
+	end
+end)

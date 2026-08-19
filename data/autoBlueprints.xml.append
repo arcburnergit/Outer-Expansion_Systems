@@ -2,6 +2,7 @@
 <mod:findName name="OE_SHOP_ITEM_SYSTEMS_EXTRA" type="blueprintList">
 	<mod-append:name>oe_aux_shields</mod-append:name>
 	<mod-append:name>oe_grease</mod-append:name>
+	<mod-append:name>oe_growth</mod-append:name>
 </mod:findName>
 
 <shipBlueprint name="OE_GREASE_TEMP_SHIP" layout="mu_leech_battleship" img="mu_leech_battleship_elite">

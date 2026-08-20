@@ -699,12 +699,13 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 							local fire = shipManager:GetFireAtPoint(room_map.x + i * 35, room_map.y + j * 35)
 							if fire and fire.bWasOnFire then
 								if fire.fDeathTimer > 0 then
-									fire.fDeathTimer = fire.fDeathTimer + time_increment(true) * fire_death_mult
+									fire.fDeathTimer = fire.fDeathTimer + update_timer[shipManager.iShipId] * fire_death_mult
 								end
 								if current_energy > 0 then 
-									fire.fStartTimer = fire.fStartTimer + time_increment(true) * fire_start_mult
+									fire.fStartTimer = fire.fStartTimer + update_timer[shipManager.iShipId] * fire_start_mult
 								end
 								decay = decay + fire_damage_rate
+								shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, 20 * update_timer[shipManager.iShipId])
 							end
 
 							local fire_room_count = shipManager:GetFireCount(room.iRoomId)
@@ -1089,6 +1090,11 @@ script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
 		local gui = Hyperspace.App.gui
 		gui.crewControl.selectedCrew:clear()
 		gui.crewControl.potentialSelectedCrew:clear()
+		if gui.crewControl.selectedDoor then
+			print(gui.crewControl.selectedDoor._selectable.selectedState)
+			gui.crewControl.selectedDoor._selectable.selectedState = 0
+		end
+		gui.crewControl.selectedDoor = nil
 	end
 end)
 

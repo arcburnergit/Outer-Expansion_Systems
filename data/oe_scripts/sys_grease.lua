@@ -409,7 +409,8 @@ local function renderGreaseOptions(originPos_x, originPos_y, effectButtonTable)
 			Graphics.CSurface.GL_RenderPrimitive(effectImage)
 			Graphics.CSurface.GL_PopMatrix()
 			if effectButton.b.bHover then
-				Hyperspace.Mouse.tooltip = effect.name.." ("..math.floor((1/effect.fill_rate)+0.5).."s): "..effect.desc
+				Hyperspace.Mouse.bForceTooltip = true
+				Hyperspace.Mouse:SetTooltip(effect.name.." ("..math.floor((1/effect.fill_rate)+0.5).."s): "..effect.desc)
 			end
 		end
 	end

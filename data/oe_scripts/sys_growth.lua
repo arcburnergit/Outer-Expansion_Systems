@@ -1091,7 +1091,6 @@ script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
 		gui.crewControl.selectedCrew:clear()
 		gui.crewControl.potentialSelectedCrew:clear()
 		if gui.crewControl.selectedDoor then
-			print(gui.crewControl.selectedDoor._selectable.selectedState)
 			gui.crewControl.selectedDoor._selectable.selectedState = 0
 		end
 		gui.crewControl.selectedDoor = nil

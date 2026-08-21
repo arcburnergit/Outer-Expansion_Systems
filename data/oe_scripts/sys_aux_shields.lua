@@ -103,6 +103,7 @@ local function mouse_click(systemBox, shift)
 end
 script.on_internal_event(Defines.InternalEvents.SYSTEM_BOX_MOUSE_CLICK, mouse_click)
 
+
 local function key_down(systemBox, key, shift)
 	if key == Hyperspace.Settings:GetHotkey("activate_cloak") and is_system(systemBox) then
 		local button = systemBox.table.button_list[systemBox.pSystem:GetEffectivePower()]
@@ -156,9 +157,9 @@ local function system_render(systemBox, ignoreStatus)
 			local button = systemBox.table.button_list[systemBox.pSystem:GetEffectivePower()]
 			button.bActive = true
 			if button.bHover then
-				local button_keybind = Hyperspace.Settings:GetHotkeyName("activate_cloak")
+				local button_keybind = Hyperspace.Settings:GetHotkeyName("activate_cloak") or "None"
 				Hyperspace.Mouse.bForceTooltip = true
-				Hyperspace.Mouse:SetTooltip(string.format(boost_string, (boost_cooldown * 5)), button_keybind)
+				Hyperspace.Mouse:SetTooltip(string.format(boost_string, (boost_cooldown * 5), button_keybind))
 			end
 			button:OnRender()
 		elseif system_ready(systemBox.pSystem) and systemBox.pSystem.iLockCount == -1 then
@@ -186,7 +187,6 @@ script.on_render_event(Defines.RenderEvents.SYSTEM_BOX,
 function(systemBox, ignoreStatus) 
 	return Defines.Chain.CONTINUE
 end, system_render)
-
 
 local shield_ui = Hyperspace.Resources:CreateImagePrimitiveString("systemUI/top_oe_aux_on.png", 25, 86, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
 local shield_ui_off = Hyperspace.Resources:CreateImagePrimitiveString("systemUI/top_oe_aux_off.png", 25, 86, 0, Graphics.GL_Color(1, 1, 1, 1), 1.0, false)
@@ -225,6 +225,9 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 			manningCrew = nil
 		end
 
+		if system:GetLocked() and Hyperspace.App.gui.upgradeButton.bActive then
+			system:LockSystem(0)
+		end
 
 		local power = system:GetEffectivePower()
 		local charge_time = charge_time_base + charge_time_scaler * (power - 1)

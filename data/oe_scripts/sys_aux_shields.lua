@@ -107,7 +107,7 @@ script.on_internal_event(Defines.InternalEvents.SYSTEM_BOX_MOUSE_CLICK, mouse_cl
 local function key_down(systemBox, key, shift)
 	if key == Hyperspace.Settings:GetHotkey("activate_cloak") and is_system(systemBox) then
 		local button = systemBox.table.button_list[systemBox.pSystem:GetEffectivePower()]
-		if button.bHover and button.bActive then
+		if button.bActive then
 			system_activate(systemBox.pSystem)
 		end
 	end
@@ -225,7 +225,7 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 			manningCrew = nil
 		end
 
-		if system:GetLocked() and Hyperspace.App.gui.upgradeButton.bActive then
+		if system:GetLocked() and system.iLockCount ~= -1 and Hyperspace.App.gui.upgradeButton.bActive then
 			system:LockSystem(0)
 		end
 

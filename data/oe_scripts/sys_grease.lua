@@ -197,7 +197,7 @@ local function grease_mouse_move(systemBox, x, y)
 	end
 	if is_artillery(systemBox) and Hyperspace.ships.player:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemIdName)) then
 		local w_x = enable_size.arty_x_off
-		local w_y = enable_size.arty_y_off - enable_size.arty_y_off_power * (systemBox.pSystem:GetMaxPower() - 1)
+		local w_y = enable_size.arty_y_off - enable_size.arty_y_off_power * (systemBox.pSystem.healthState.second - 1)
 		if Hyperspace.ships.player:HasAugmentation("ARTILLERY_ORDER") > 0 then w_y = w_y - enable_size.arty_y_off_targeting end
 		local weapon = systemBox.pSystem
 		if not weapon then 
@@ -433,7 +433,7 @@ local function grease_render(systemBox, ignoreStatus)
 	if is_grease(systemBox) then
 		local system = systemBox.pSystem
 		local effectivePower = system:GetEffectivePower()
-		local maxPower = system:GetMaxPower()
+		local maxPower = system.healthState.second
 		local mousePos = Hyperspace.Mouse.position
 		local effect = greaseEffects[Hyperspace.playerVariables[systemTypeVariable]]
 
@@ -441,7 +441,7 @@ local function grease_render(systemBox, ignoreStatus)
 		Graphics.CSurface.GL_Translate(greaseButtonOffset_x, greaseButtonOffset_y, 0)
 		Graphics.CSurface.GL_RenderPrimitive(greaseImages[maxPower])
 
-		local systemReady = grease_ready(system)
+		--local systemReady = grease_ready(system)
 		local x = 10
 		local y = 55 - 21
 		for i = 1, maxPower do
@@ -511,7 +511,7 @@ local function grease_render(systemBox, ignoreStatus)
 	end
 	if is_artillery(systemBox) and Hyperspace.ships.player:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemIdName)) then
 		local w_x = enable_size.arty_x_off
-		local w_y = enable_size.arty_y_off - enable_size.arty_y_off_power * (systemBox.pSystem:GetMaxPower() - 1)
+		local w_y = enable_size.arty_y_off - enable_size.arty_y_off_power * (systemBox.pSystem.healthState.second - 1)
 		if Hyperspace.ships.player:HasAugmentation("ARTILLERY_ORDER") > 0 then w_y = w_y - enable_size.arty_y_off_targeting end
 		local weapon = systemBox.pSystem
 
@@ -544,7 +544,7 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 		if Hyperspace.playerVariables[typeVar] == 0 then Hyperspace.playerVariables[typeVar] = 1 end
 
 		local effectivePower = system:GetEffectivePower()
-		local maxPower = system:GetMaxPower()
+		--local maxPower = system.healthState.second
 
 		local currentType = greaseEffects[Hyperspace.playerVariables[typeVar]]
 

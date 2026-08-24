@@ -25,7 +25,7 @@ local systemName = "oe_growth"
 local systemId = Hyperspace.ShipSystem.NameToSystemId(systemName)
 mods.multiverse.systemIcons[systemId] = mods.multiverse.register_system_icon(systemName)
 
-local profile_running_average = 1
+--[[local profile_running_average = 1
 local profile_running_table = {}
 local profile_running_average_count = 0
 
@@ -67,7 +67,7 @@ local function profile(start_p, end_p, f_name)
 	profile_code_accumulator = profile_code_accumulator + elapsed
 	profile_code_table[f_name] = profile_code_table[f_name] + elapsed
 	--log(string.format("[%s] took %.30f ms, Accumulated Time: %.30f ms", f_name, elapsed, profile_code_accumulator))
-end
+end]]
 
 local energy_base = 50
 local energy_scaler = 25

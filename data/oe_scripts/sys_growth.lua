@@ -161,8 +161,8 @@ local function construct_system_box(systemBox)
 	elseif is_system_enemy(systemBox) then
 		systemBox.pSystem.bBoostable = false
 	end
-	local end_p = os.clock()
-	profile(start_p, end_p, "construct_system_box")
+	--local end_p = os.clock()
+	--profile(start_p, end_p, "construct_system_box")
 end
 
 script.on_internal_event(Defines.InternalEvents.CONSTRUCT_SYSTEM_BOX, construct_system_box)
@@ -177,8 +177,8 @@ local function mouse_move(systemBox, x, y)
 			effectButton.b:MouseMove(x - effectButton.position.x, y - effectButton.position.y, false)
 		end
 	end
-	local end_p = os.clock()
-	profile(start_p, end_p, "mouse_move")
+	--local end_p = os.clock()
+	--profile(start_p, end_p, "mouse_move")
 	return Defines.Chain.CONTINUE
 end
 script.on_internal_event(Defines.InternalEvents.SYSTEM_BOX_MOUSE_MOVE, mouse_move)
@@ -203,8 +203,8 @@ local function system_click(systemBox, shift)
 			end
 		end
 	end
-	local end_p = os.clock()
-	profile(start_p, end_p, "system_click")
+	--local end_p = os.clock()
+	--profile(start_p, end_p, "system_click")
 	return Defines.Chain.CONTINUE
 end
 script.on_internal_event(Defines.InternalEvents.SYSTEM_BOX_MOUSE_CLICK, system_click)
@@ -846,8 +846,8 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 			save_timer[shipManager.iShipId] = 0
 		end
 	end
-	local end_p = os.clock()
-	profile(start_p, end_p, "SHIP_LOOP")
+	--local end_p = os.clock()
+	--profile(start_p, end_p, "SHIP_LOOP")
 end)
 
 local COLOUR_WHITE = Graphics.GL_Color(1, 1, 1, 1)
@@ -952,8 +952,8 @@ script.on_render_event(Defines.RenderEvents.SHIP_SPARKS, function(ship, experime
 			end
 		end
 	end
-	local end_p = os.clock()
-	profile(start_p, end_p, "SHIP_SPARKS")
+	--local end_p = os.clock()
+	--profile(start_p, end_p, "SHIP_SPARKS")
 	return Defines.Chain.CONTINUE 
 end)
 script.on_render_event(Defines.RenderEvents.SHIP_FLOOR, function(ship, experimental) return Defines.Chain.CONTINUE end, function(ship, experimental) 
@@ -1158,8 +1158,8 @@ script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
 		end
 		gui.crewControl.selectedDoor = nil
 	end
-	local end_p = os.clock()
-	profile(start_p, end_p, "ON_TICK, active_target_bud")
+	--local end_p = os.clock()
+	--profile(start_p, end_p, "ON_TICK, active_target_bud")
 end)
 
 script.on_internal_event(Defines.InternalEvents.ON_MOUSE_L_BUTTON_DOWN, function(x,y) 
@@ -1279,8 +1279,8 @@ script.on_render_event(Defines.RenderEvents.CREW_MEMBER_HEALTH, function(crewmem
 			end
 		end
 	end
-	local end_p = os.clock()
-	profile(start_p, end_p, "CREW_MEMBER_HEALTH")
+	--local end_p = os.clock()
+	--profile(start_p, end_p, "CREW_MEMBER_HEALTH")
 	return Defines.Chain.CONTINUE
 end, function() return Defines.Chain.CONTINUE end)
 
@@ -1293,8 +1293,8 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 		cultivator_buff:Update()
 		suffocating:Update()
 	end
-	local end_p = os.clock()
-	profile(start_p, end_p, "SHIP_LOOP anim_update")
+	--local end_p = os.clock()
+	--profile(start_p, end_p, "SHIP_LOOP anim_update")
 end)
 
 
@@ -1369,8 +1369,8 @@ script.on_internal_event(Defines.InternalEvents.CALCULATE_STAT_POST, function(cr
 			end
 		end
 	end
-	local end_p = os.clock()
-	profile(start_p, end_p, "CALCULATE_STAT_POST")
+	--local end_p = os.clock()
+	--profile(start_p, end_p, "CALCULATE_STAT_POST")
 	return Defines.Chain.CONTINUE, amount, value
 end)
 
@@ -1502,8 +1502,8 @@ script.on_internal_event(Defines.InternalEvents.CREW_LOOP, function(crewmem)
 			end
 		end
 	end
-	local end_p = os.clock()
-	profile(start_p, end_p, "CREW_LOOP")
+	--local end_p = os.clock()
+	--profile(start_p, end_p, "CREW_LOOP")
 end)
 
 script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
@@ -1515,8 +1515,8 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 			end
 		end
 	end
-	local end_p = os.clock()
-	profile(start_p, end_p, "SHIP_LOOP, clear lockdown")
+	--local end_p = os.clock()
+	--profile(start_p, end_p, "SHIP_LOOP, clear lockdown")
 end)
 
 script.on_internal_event(Defines.InternalEvents.SET_BONUS_POWER, function(system, amount)
@@ -1531,8 +1531,8 @@ script.on_internal_event(Defines.InternalEvents.SET_BONUS_POWER, function(system
 			amount = amount + 1
 		end	
 	end
-	local end_p = os.clock()
-	profile(start_p, end_p, "SET_BONUS_POWER")
+	--local end_p = os.clock()
+	--profile(start_p, end_p, "SET_BONUS_POWER")
 	return Defines.Chain.CONTINUE, amount
 end)
 
@@ -1549,8 +1549,8 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 			end
 		end
 	end
-	local end_p = os.clock()
-	profile(start_p, end_p, "SHIP_LOOP hacking blow")
+	--local end_p = os.clock()
+	--profile(start_p, end_p, "SHIP_LOOP hacking blow")
 end)
 
 local acidic_ships = {

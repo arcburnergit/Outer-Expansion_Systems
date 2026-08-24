@@ -73,7 +73,7 @@ local energy_base = 50
 local energy_scaler = 25
 local decay_base = 20
 local decay_bud_base = 10
-local update_rate = 0.05
+local update_rate = 0.1
 local save_rate = 1
 
 local out_of_combat_mult = 2
@@ -133,7 +133,7 @@ end
 local buttonOffset_x = 37
 local buttonOffset_y = -50
 local function construct_system_box(systemBox)
-	local start_p = os.clock()
+	--local start_p = os.clock()
 	if is_system(systemBox) then
 		systemBox.extend.xOffset = 54
 
@@ -168,7 +168,7 @@ end
 script.on_internal_event(Defines.InternalEvents.CONSTRUCT_SYSTEM_BOX, construct_system_box)
 
 local function mouse_move(systemBox, x, y)
-	local start_p = os.clock()
+	--local start_p = os.clock()
 	if is_system(systemBox) then
 		local button = systemBox.table.button
 		button:MouseMove(x - buttonOffset_x, y - buttonOffset_y, false)
@@ -188,7 +188,7 @@ local buttonHover = false
 local active_target_bud = false
 --Handles click events 
 local function system_click(systemBox, shift)
-	local start_p = os.clock()
+	--local start_p = os.clock()
 	if is_system(systemBox) then
 		local button = systemBox.table.button
 		if button.bHover and button.bActive then
@@ -215,6 +215,7 @@ local table_bud = {[0] = {}, [1] = {}}
 local table_bud_2 = {[0] = {}, [1] = {}}
 local table_bud_set = {[0] = {}, [1] = {}}
 local table_bud_set_2 = {[0] = {}, [1] = {}}
+local table_room_render_info = {[0] = {}, [1] = {}}
 local enable_bud_2 = false
 
 local function new_bud(i, j)
@@ -236,6 +237,7 @@ script.on_internal_event(Defines.InternalEvents.CONSTRUCT_SHIP_MANAGER, function
 	table_bud_2[shipManager.iShipId] = {}
 	table_bud_set[shipManager.iShipId] = {}
 	table_bud_set_2[shipManager.iShipId] = {}
+	table_room_render_info[shipManager.iShipId] = {}
 	table_map[shipManager.iShipId] = nil
 end)
 
@@ -245,6 +247,7 @@ script.on_game_event("START_BEACON", false, function()
 	table_bud_2[0] = {}
 	table_bud_set[0] = {}
 	table_bud_set_2[0] = {}
+	table_room_render_info[0] = {}
 	table_map[0] = nil
 end)
 
@@ -559,7 +562,7 @@ end
 
 local acidic_ships_check = {}
 script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
-	local start_p = os.clock()
+	--local start_p = os.clock()
 	if not table_map[shipManager.iShipId] then
 		table_map[shipManager.iShipId] = {}
 		construct_room_connection_map(shipManager)
@@ -578,15 +581,18 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 				end
 			end
 			table_growth[shipManager.iShipId][room.iRoomId] = {}
+			table_room_render_info[shipManager.iShipId][room.iRoomId] = {}
 			local room_map = table_map[shipManager.iShipId][room.iRoomId]
 			local w = room_map.w
 			local h = room_map.h
 			for i = 0, w - 1 do
 				table_growth[shipManager.iShipId][room.iRoomId][i] = {}
+				table_room_render_info[shipManager.iShipId][room.iRoomId][i] = {}
 				for j = 0, h - 1 do
 					local image = generate_slot_anim(shipManager, room, i, j)
 					--print(string.format("setup:%d, %d, %d, %d", shipManager.iShipId, room.iRoomId, i, j))
 					table_growth[shipManager.iShipId][room.iRoomId][i][j] = {val = 100, image = image}
+					table_room_render_info[shipManager.iShipId][room.iRoomId][i][j] = {index = 0, bud_index = 0, c = 1}
 				end
 			end
 		end
@@ -690,6 +696,7 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 						--local active_bud = bud_types[active_bud_index]
 						local current_energy = table_growth[shipManager.iShipId][room.iRoomId][i][j].val
 						local decay = 0
+						table_room_render_info[shipManager.iShipId][room.iRoomId][i][j].bud_index = 0
 						if current_energy > 0 then
 							if not (table_bud[shipManager.iShipId][room.iRoomId] and table_bud[shipManager.iShipId][room.iRoomId].i and table_bud[shipManager.iShipId][room.iRoomId].j) then
 								if current_energy > 50 and not (table_bud_2[shipManager.iShipId][room.iRoomId] and table_bud_2[shipManager.iShipId][room.iRoomId].i == i and table_bud_2[shipManager.iShipId][room.iRoomId].j == j) then
@@ -709,6 +716,14 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 									elseif active_bud_index == bud_types_indexed["Suffocating"] then
 										shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, -5 * update_timer[shipManager.iShipId])
 									end
+									if current_energy > 90 then
+										table_room_render_info[shipManager.iShipId][room.iRoomId][i][j].bud_index = 3
+									elseif current_energy > 70 then
+										table_room_render_info[shipManager.iShipId][room.iRoomId][i][j].bud_index = 2
+									else
+										table_room_render_info[shipManager.iShipId][room.iRoomId][i][j].bud_index = 1
+									end
+									table_room_render_info[shipManager.iShipId][room.iRoomId][i][j].c = bud_types[active_bud_index].colour
 								elseif connected then
 									table_bud_set[shipManager.iShipId][room.iRoomId].active = false
 									table_bud[shipManager.iShipId][room.iRoomId] = false
@@ -735,6 +750,14 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 										elseif active_bud_index_2 == bud_types_indexed["Suffocating"] then
 											shipManager.oxygenSystem:ModifyRoomOxygen(room.iRoomId, -5 * update_timer[shipManager.iShipId])
 										end
+										if current_energy > 90 then
+											table_room_render_info[shipManager.iShipId][room.iRoomId][i][j].bud_index = 3
+										elseif current_energy > 70 then
+											table_room_render_info[shipManager.iShipId][room.iRoomId][i][j].bud_index = 2
+										else
+											table_room_render_info[shipManager.iShipId][room.iRoomId][i][j].bud_index = 1
+										end
+										table_room_render_info[shipManager.iShipId][room.iRoomId][i][j].c = bud_types[active_bud_index_2].colour
 									elseif connected then
 										table_bud_set_2[shipManager.iShipId][room.iRoomId].active = false
 										table_bud_2[shipManager.iShipId][room.iRoomId] = false
@@ -788,6 +811,12 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 								table_bud_2[shipManager.iShipId][room.iRoomId] = false
 								table_bud_set_2[shipManager.iShipId][room.iRoomId].active = false
 							end
+
+							local render_index = 0
+							if table_growth[shipManager.iShipId][room.iRoomId][i][j].val > 10 then
+								render_index = math.floor((table_growth[shipManager.iShipId][room.iRoomId][i][j].val - 10)/20) + 1
+							end
+							table_room_render_info[shipManager.iShipId][room.iRoomId][i][j].index = render_index
 						end
 					end
 				end
@@ -821,47 +850,135 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 	profile(start_p, end_p, "SHIP_LOOP")
 end)
 
-
 local COLOUR_WHITE = Graphics.GL_Color(1, 1, 1, 1)
 local COLOUR_RED = Graphics.GL_Color(1, 0, 0, 1)
 local COLOUR_BLACK = Graphics.GL_Color(0, 0, 0, 1)
 local COLOUR_GREEN = Graphics.GL_Color(0, 0.5, 0, 1)
 local IMAGE_ROOT = Hyperspace.Resources:CreateImagePrimitiveString( "effects/oe_growth_roots.png", 0, 0, 0, Graphics.GL_Color(1, 1, 1, 1), 0.75, false)
 script.on_render_event(Defines.RenderEvents.SHIP_SPARKS, function(ship, experimental) return Defines.Chain.CONTINUE end, function(ship, experimental) 
-	local start_p = os.clock()
-	
+	--local start_p = os.clock()
+	local shipManager = Hyperspace.ships(ship.iShipId)
+	if shipManager:HasSystem(systemId) then
+		local system = shipManager:GetSystem(systemId)
+		local map = table_map[shipManager.iShipId]
+		local has_life_scanner = Hyperspace.ships.player:GetAugmentationValue("LIFE_SCANNER") > 0
+		for room in vter(ship.vRoomList) do
+			local room_map = map[room.iRoomId]
+			local w = room_map.w
+			local h = room_map.h
+			if has_life_scanner or (not room.bBlackedOut) then
+				local back_colour = COLOUR_WHITE
+				if has_life_scanner and room.bBlackedOut then
+					back_colour = COLOUR_RED
+				end
+				for i = 0, w - 1 do
+					for j = 0, h - 1 do
+						local render_info = table_room_render_info[shipManager.iShipId][room.iRoomId][i][j]
+						local image_table = table_growth[shipManager.iShipId][room.iRoomId][i][j].image
+						if render_info.index > 0 then
+							image_table.tile[render_info.index]:OnRender(1, back_colour, false)
+							if render_info.bud_index > 0 then
+								image_table.bud[render_info.bud_index]:OnRender(1, back_colour, false)
+								image_table.bud_d_c[render_info.bud_index]:OnRender(1, flower_dark_colour_list[render_info.c], false)
+								image_table.bud_c[render_info.bud_index]:OnRender(1, flower_colour_list[render_info.c], false)
+							end
+						end
+					end
+				end
+			end
+		end
+
+		if shipManager.iShipId == 0 and (displayOptions or buttonHover) then
+			for room in vter(ship.vRoomList) do
+				if active_target_bud and Hyperspace.App.gui.combatControl.selectedSelfRoom == room.iRoomId then
+					Graphics.CSurface.GL_RenderPrimitive(room.highlightPrimitive)
+					Graphics.CSurface.GL_RenderPrimitive(room.highlightPrimitive2)
+				else
+					local active_bud_index = table_bud_set[shipManager.iShipId][room.iRoomId].index
+					local active_bud = bud_types[active_bud_index]
+					local colour_outline = flower_colour_list[active_bud.colour]
+					local colour_outline_dark = flower_dark_colour_list[active_bud.colour]
+					Graphics.CSurface.GL_PushStencilMode()
+					Graphics.CSurface.GL_SetStencilMode(1,1,1)
+					Graphics.CSurface.GL_RenderPrimitive(room.highlightPrimitive)
+					Graphics.CSurface.GL_RenderPrimitive(room.highlightPrimitive2)
+					Graphics.CSurface.GL_SetStencilMode(2,1,1)
+					if shipManager:HasAugmentation("UPG_OE_GROWTH_EXTRA_BUD") > 0 then
+						local active_bud_index_2 = table_bud_set_2[shipManager.iShipId][room.iRoomId].index
+						local active_bud_2 = bud_types[active_bud_index_2]
+						local colour_outline_2 = flower_colour_list[active_bud_2.colour]
+						local colour_outline_dark_2 = flower_dark_colour_list[active_bud_2.colour]
+						Graphics.CSurface.GL_DrawRect(
+							room.rect.x, 
+							room.rect.y,
+							room.rect.w, 
+							room.rect.h/2, 
+							colour_outline)
+						Graphics.CSurface.GL_DrawRect(
+							room.rect.x+5, 
+							room.rect.y+5,
+							room.rect.w-10, 
+							(room.rect.h/2)-5, 
+							colour_outline_dark)
+						Graphics.CSurface.GL_DrawRect(
+							room.rect.x, 
+							room.rect.y+(room.rect.h/2),
+							room.rect.w, 
+							(room.rect.h/2), 
+							colour_outline_2)
+						Graphics.CSurface.GL_DrawRect(
+							room.rect.x+5, 
+							room.rect.y+(room.rect.h/2),
+							room.rect.w-10, 
+							(room.rect.h/2)-5, 
+							colour_outline_dark_2)
+					else
+						Graphics.CSurface.GL_DrawRect(
+							room.rect.x, 
+							room.rect.y,
+							room.rect.w, 
+							room.rect.h, 
+							colour_outline)
+						Graphics.CSurface.GL_DrawRect(
+							room.rect.x+5, 
+							room.rect.y+5,
+							room.rect.w-10, 
+							room.rect.h-10, 
+							colour_outline_dark)
+					end
+					Graphics.CSurface.GL_SetStencilMode(0,1,1)
+					Graphics.CSurface.GL_PopStencilMode()
+				end
+			end
+		end
+	end
 	local end_p = os.clock()
 	profile(start_p, end_p, "SHIP_SPARKS")
 	return Defines.Chain.CONTINUE 
 end)
 script.on_render_event(Defines.RenderEvents.SHIP_FLOOR, function(ship, experimental) return Defines.Chain.CONTINUE end, function(ship, experimental) 
-	local start_p = os.clock()
+	--local start_p = os.clock()
 	local shipManager = Hyperspace.ships(ship.iShipId)
 	if shipManager:HasSystem(systemId) then
 		local system = shipManager:GetSystem(systemId)
 		local root_room = (shipManager:HasAugmentation("UPG_OE_GROWTH_ROOT") > 0 and system.table.growth_root) or system.roomId
 		local map = table_map[shipManager.iShipId]
-		for room in vter(ship.vRoomList) do
-			local room_map = map[room.iRoomId]
-			local w = room_map.w
-			local h = room_map.h
-			if room.iRoomId == root_room then
-				for i = 0, w - 1 do
-					for j = 0, h - 1 do
-						local x = room.rect.x + i * 35
-						local y = room.rect.y + j * 35
-						Graphics.CSurface.GL_PushMatrix()
-						Graphics.CSurface.GL_Translate(x, y, 0)
-						Graphics.CSurface.GL_RenderPrimitiveWithColor(IMAGE_ROOT, COLOUR_WHITE)
-						Graphics.CSurface.GL_PopMatrix()
-					end
-				end
-				break
+		local room_map = map[root_room]
+		local w = room_map.w
+		local h = room_map.h
+		for i = 0, w - 1 do
+			for j = 0, h - 1 do
+				local x = room_map.x + i * 35
+				local y = room_map.y + j * 35
+				Graphics.CSurface.GL_PushMatrix()
+				Graphics.CSurface.GL_Translate(x, y, 0)
+				Graphics.CSurface.GL_RenderPrimitiveWithColor(IMAGE_ROOT, COLOUR_WHITE)
+				Graphics.CSurface.GL_PopMatrix()
 			end
 		end
 	end
-	local end_p = os.clock()
-	profile(start_p, end_p, "SHIP_FLOOR")
+	--local end_p = os.clock()
+	--profile(start_p, end_p, "SHIP_FLOOR")
 	return Defines.Chain.CONTINUE 
 end)
 
@@ -994,7 +1111,7 @@ end
 local mouse_tooltip_string_hover = Hyperspace.Text:GetText("oe_lua_sys_growth_button_hover")
 local mouse_tooltip_string_disabled_hover = Hyperspace.Text:GetText("oe_lua_sys_growth_button_disabled_hover")
 local function system_render(systemBox, ignoreStatus)
-	local start_p = os.clock()
+	--local start_p = os.clock()
 	if is_system(systemBox) then
 		local system = systemBox.pSystem
 		local effectivePower = system:GetEffectivePower()
@@ -1022,8 +1139,8 @@ local function system_render(systemBox, ignoreStatus)
 			active_target_bud = false
 		end
 	end
-	local end_p = os.clock()
-	profile(start_p, end_p, "SHIP_FLOOR")
+	--local end_p = os.clock()
+	--profile(start_p, end_p, "SHIP_FLOOR")
 end
 script.on_render_event(Defines.RenderEvents.SYSTEM_BOX, 
 function(systemBox, ignoreStatus) 
@@ -1031,7 +1148,7 @@ function(systemBox, ignoreStatus)
 end, system_render)
 
 script.on_internal_event(Defines.InternalEvents.ON_TICK, function()
-	local start_p = os.clock()
+	--local start_p = os.clock()
 	if active_target_bud then
 		local gui = Hyperspace.App.gui
 		gui.crewControl.selectedCrew:clear()
@@ -1126,7 +1243,7 @@ local stat_render_table = {
 
 
 script.on_render_event(Defines.RenderEvents.CREW_MEMBER_HEALTH, function(crewmem)
-	local start_p = os.clock()
+	--local start_p = os.clock()
 	if not (crewmem and crewmem.currentShipId and crewmem.currentShipId >= 0 and crewmem.iRoomId) then
 		return Defines.Chain.CONTINUE, amount, value 
 	end
@@ -1168,7 +1285,7 @@ script.on_render_event(Defines.RenderEvents.CREW_MEMBER_HEALTH, function(crewmem
 end, function() return Defines.Chain.CONTINUE end)
 
 script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
-	local start_p = os.clock()
+	--local start_p = os.clock()
 	if shipManager.iShipId == 0 then
 		floral_buff:Update()
 		vampweed_buff:Update()
@@ -1213,7 +1330,7 @@ stat_bud_table[Hyperspace.CrewStat.SUFFOCATION_MODIFIER] = {
 
 
 script.on_internal_event(Defines.InternalEvents.CALCULATE_STAT_POST, function(crewmem, stat, def, amount, value)
-	local start_p = os.clock()
+	--local start_p = os.clock()
 	if not (crewmem and crewmem.currentShipId and crewmem.currentShipId >= 0 and crewmem.iRoomId) then
 		return Defines.Chain.CONTINUE, amount, value 
 	end
@@ -1322,7 +1439,7 @@ local soulplague_stat_boosts = {
 }
 
 script.on_internal_event(Defines.InternalEvents.CREW_LOOP, function(crewmem)
-	local start_p = os.clock()
+	--local start_p = os.clock()
 	if not (crewmem and crewmem.currentShipId and crewmem.currentShipId >= 0 and crewmem.iRoomId) then
 		return
 	end
@@ -1390,7 +1507,7 @@ script.on_internal_event(Defines.InternalEvents.CREW_LOOP, function(crewmem)
 end)
 
 script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
-	local start_p = os.clock()
+	--local start_p = os.clock()
 	if shipManager.ship.lockdowns:size() > 0 then
 		for shard in vter(shipManager.ship:GetShards()) do
 			if shard.lifeTime < 0 and not shard.bArrived then
@@ -1403,7 +1520,7 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 end)
 
 script.on_internal_event(Defines.InternalEvents.SET_BONUS_POWER, function(system, amount)
-	local start_p = os.clock()
+	--local start_p = os.clock()
 	local shipManager = Hyperspace.ships(system._shipObj.iShipId)
 	if shipManager and shipManager:HasSystem(systemId) then
 		local bud_1_exists = table_bud_set[shipManager.iShipId] and table_bud_set[shipManager.iShipId][system.roomId] and table_bud_set[shipManager.iShipId][system.roomId].active and table_bud_set[shipManager.iShipId][system.roomId].index == bud_types_indexed["Electrified"]
@@ -1420,7 +1537,7 @@ script.on_internal_event(Defines.InternalEvents.SET_BONUS_POWER, function(system
 end)
 
 script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
-	local start_p = os.clock()
+	--local start_p = os.clock()
 	local otherManager = Hyperspace.ships(1 - shipManager.iShipId)
 	if otherManager and otherManager:HasSystem(systemId) and shipManager:HasSystem(15) then
 		local system = shipManager.hackingSystem.currentSystem
@@ -1458,4 +1575,3 @@ end
 for _, blueprintName in ipairs(acidic_ships) do
 	acidic_ships_check[blueprintName] = true
 end
-

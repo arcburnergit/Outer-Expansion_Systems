@@ -3,6 +3,8 @@
 <mod:findName type="event" name="BOON_SELECT">
 	<mod:findLike type="loadEventList">
 		<mod-append:event name="BOON_SELECT_OE_AUX_SHIELDS" req="prof_r_boon_oe_aux_shields" />
+		<mod-append:event name="BOON_SELECT_OE_GREASE" req="prof_r_boon_oe_grease" />
+		<mod-append:event name="BOON_SELECT_OE_GROWTH" req="prof_r_boon_oe_growth" />
 	</mod:findLike>
 </mod:findName>
 </FTL>

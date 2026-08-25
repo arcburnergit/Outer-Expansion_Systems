@@ -107,9 +107,29 @@
 			<shieldImage>ship/oe_shield_base_bubble_white.png</shieldImage>
 		</superShield>
 	</mod-append:aug>
-</mod:findLike>
-
-<mod:findLike type="augments" limit="1" reverse="false">
+	<mod-append:aug name="BOON_OE_GROWTH">
+		<statBoosts>
+			<statBoost name="maxHealth">
+				<boostType>MULT</boostType>
+				<shipTarget>ALL</shipTarget>
+				<crewTarget>ALLIES</crewTarget>
+				<droneTarget>CREW</droneTarget>
+				<amount>1.1</amount>
+				<priority>0</priority>
+				<systemPowerDependency>
+					<oe_growth/>
+				</systemPowerDependency>
+				<systemPowerScaling>
+					<noSys>0</noSys>
+					<noPwr>0</noPwr>
+					<onePwr>1</onePwr>
+					<twoPwr>2</twoPwr>
+					<threePwr>3</threePwr>
+					<fourPwr>4</fourPwr>
+				</systemPowerScaling>
+			</statBoost>
+		</statBoosts>
+	</mod-append:aug>
 	<mod-append:aug name="EX_OE_GROWTH_ROOT">
     	<function name="UPG_OE_GROWTH_ROOT" value="1" useForReqs="false" />
 	</mod-append:aug>
@@ -119,6 +139,12 @@
 </mod:findLike>
 
 <events>
+	<variable name="ach_boon_oe_aux_shields" op="set" val="1"/>
+	<variable name="ach_boon_oe_grease" op="set" val="1"/>
+	<variable name="ach_boon_oe_growth" op="set" val="1"/>
+	<metaVariable name="prof_r_boon_oe_aux_shields" op="set" val="0"/>
+	<metaVariable name="prof_r_boon_oe_grease" op="set" val="0"/>
+	<metaVariable name="prof_r_boon_oe_growth" op="set" val="0"/>
 	<req name="OE_GREASE_REQ_EFFECT_SHOCK" type="any">
 		<name>oe_old_1</name>
 		<name>oe_old_unique_1</name>
@@ -382,7 +408,7 @@
 				<name>Grant of Weapons Amplifier</name>
 				<secretDescription>Receive the Grant of Weapons Amplifier from Corby.</secretDescription>
 				<description>Show an upgraded Weapons Amplifier System to Corby. 
-				While in effect; Add 1 energy shield layer after jump.</description>
+				While in effect; Enables a random locked amplification.</description>
 				<header>Grant Received</header>
 				<icon>ach_boon_oe_grease</icon>
 				<multiDifficulty>false</multiDifficulty>
@@ -391,7 +417,7 @@
 				<name>Grant of Life Bloom</name>
 				<secretDescription>Receive the Grant of Life Bloom from Corby.</secretDescription>
 				<description>Show an upgraded Life Bloom System to Corby. 
-				While in effect; Add 1 energy shield layer after jump.</description>
+				While in effect; All crew gain 10% health for each power in the Life Bloom system.</description>
 				<header>Grant Received</header>
 				<icon>ach_boon_oe_growth</icon>
 				<multiDifficulty>false</multiDifficulty>
@@ -476,9 +502,13 @@
 	</mod:findName>
 	<mod:findName type="req" name="ANY_BOON">
 		<mod-append:name>prof_r_boon_oe_aux_shields</mod-append:name>
+		<mod-append:name>prof_r_boon_oe_grease</mod-append:name>
+		<mod-append:name>prof_r_boon_oe_growth</mod-append:name>
 	</mod:findName>
 	<mod:findName type="req" name="ALL_BOON">
 		<mod-append:name>prof_r_boon_oe_aux_shields</mod-append:name>
+		<mod-append:name>prof_r_boon_oe_grease</mod-append:name>
+		<mod-append:name>prof_r_boon_oe_growth</mod-append:name>
 	</mod:findName>
 </mod:findLike>
 </FTL>

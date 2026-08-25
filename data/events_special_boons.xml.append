@@ -9,4 +9,24 @@
 		</event>
 	</choice>
 </event>
+<event name="BOON_SELECT_OE_GREASE">
+	<text>From nowhere, you hear a voice speaking to you. "Grant of [Weapons Amplifier] i-i-installed. Installed! Grant provides: A r-r-random amplification has been enabled for you. If -you- witness p-p-previous challenger; provide thanks. I advise you -visit- me as well."</text>
+	<hiddenAug>BOON_OE_GREASE</hiddenAug>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<loadEvent>BOON_SELECT_CONTINUE</loadEvent>
+		</event>
+	</choice>
+</event>
+<event name="BOON_SELECT_OE_GROWTH">
+	<text>From nowhere, you hear a voice speaking to you. "Grant of [Auxiliary Shielding] i-i-installed. Installed! Grant provides: All c-c-crew gain 10% health for each power in the Life Bloom system. If -you- witness p-p-previous challenger; provide thanks. I advise you -visit- me as well."</text>
+	<hiddenAug>BOON_OE_GROWTH</hiddenAug>
+	<choice hidden="true">
+		<text>Continue...</text>
+		<event>
+			<loadEvent>BOON_SELECT_CONTINUE</loadEvent>
+		</event>
+	</choice>
+</event>
 </FTL>

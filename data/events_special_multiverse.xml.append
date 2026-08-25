@@ -2,6 +2,8 @@
 <FTL>
 <mod:findName type="event" name="THE_JUDGES_VARIABLE_CLEAR">
 	<mod-append:metaVariable name="prof_r_boon_oe_aux_shields" op="set" val="0" />
+	<mod-append:metaVariable name="prof_r_boon_oe_grease" op="set" val="0" />
+	<mod-append:metaVariable name="prof_r_boon_oe_growth" op="set" val="0" />
 </mod:findName>
 
 <mod:findName type="event" name="THE_JUDGES_ENGI_REAL">
@@ -12,6 +14,32 @@
 			<achievement>ACH_BOON_OE_AUX_SHIELDS</achievement>
 			<metaVariable name="prof_r_boon_oe_aux_shields" op="set" val="1"/>
 			<variable name="ach_boon_oe_aux_shields" op="set" val="1"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="THE_JUDGES_ENGI_ADVICE"/>
+			</choice>
+		</event>
+	</mod-append:choice>
+	<mod-append:choice req="oe_grease" lvl="2" blue="false">
+		<text>Present your Weapons Amplifier system.</text>
+		<event>
+			<text>"Weapons Amplifier - defensive p-p-p-procedures they ensure! You pilot a: well protected vessel! Well protected vessel! For well protected vessel: I provide Grant of Au-Au-auxiliary shielding! Grant of Auxiliary Shielding! Save it - for the future!"</text>
+			<achievement>ACH_BOON_OE_GREASE</achievement>
+			<metaVariable name="prof_r_boon_oe_grease" op="set" val="1"/>
+			<variable name="ach_boon_oe_grease" op="set" val="1"/>
+			<choice hidden="true">
+				<text>Continue...</text>
+				<event load="THE_JUDGES_ENGI_ADVICE"/>
+			</choice>
+		</event>
+	</mod-append:choice>
+	<mod-append:choice req="oe_growth" lvl="3" blue="false">
+		<text>Present your Life Bloom system.</text>
+		<event>
+			<text>"Life Bloom - defensive p-p-p-procedures they ensure! You pilot a: well protected vessel! Well protected vessel! For well protected vessel: I provide Grant of Au-Au-auxiliary shielding! Grant of Auxiliary Shielding! Save it - for the future!"</text>
+			<achievement>ACH_BOON_OE_GROWTH</achievement>
+			<metaVariable name="prof_r_boon_oe_growth" op="set" val="1"/>
+			<variable name="ach_boon_oe_growth" op="set" val="1"/>
 			<choice hidden="true">
 				<text>Continue...</text>
 				<event load="THE_JUDGES_ENGI_ADVICE"/>

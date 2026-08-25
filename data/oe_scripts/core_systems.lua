@@ -47,3 +47,18 @@ script.on_render_event(Defines.RenderEvents.MAIN_MENU, function() end, function(
     Graphics.freetype.easy_print(10, 20, 590, "This will enable The Outer Expansion to \ngive it's custom systems to ships.")
     Graphics.freetype.easy_print(10, 20, 635, "FTLman can be found here: \nhttps://github.com/afishhh/ftlman/releases/latest\nThis is completely optional, if you're not \ncomfortable switching, ignore this message.")
 end)
+
+local grease_boon_augs = {
+	"OE_GREASE_EFFECT_SHOCK",
+	"OE_GREASE_EFFECT_SHATTER",
+	"OE_GREASE_EFFECT_ACID",
+	"OE_GREASE_EFFECT_SHLEG",
+	"OE_GREASE_EFFECT_BIRD",
+	"OE_GREASE_EFFECT_NECRO",
+	"OE_GREASE_EFFECT_CASCADE",
+}
+
+script.on_game_event("BOON_SELECT_OE_GREASE", false, function()
+	local r = math.random(#grease_boon_augs)
+	Hyperspace.ships.player:AddAugmentation("HIDDEN "..grease_boon_augs[r])
+end)

@@ -64,14 +64,17 @@ local function construct_system_box(systemBox)
 			local image = string.format("systemUI/button_cloaking%i", i)
 			button:OnInit(image, Hyperspace.Point(buttonOffset_x, buttonOffset_y))
 			button.hitbox.x = 10
-			button.hitbox.y = 11 + 12 * (i - 1)
+			button.hitbox.y = 47 - 12 * (i - 1)
 			button.hitbox.w = 20
-			button.hitbox.h = 55 - 12 * (i - 1)
+			button.hitbox.h = 19 + 12 * (i - 1)
 			button_list[i] = button
 		end
 		systemBox.table.button_list = button_list
 		systemBox.table.button_list[0] = systemBox.table.button_list[1]
 
+		systemBox.pSystem.table.charge_time = 0
+		systemBox.pSystem.table.boost_active = false
+	elseif is_system_enemy(systemBox) then
 		systemBox.pSystem.table.charge_time = 0
 		systemBox.pSystem.table.boost_active = false
 	end
@@ -144,6 +147,19 @@ local function system_ready(shipSystem)
 	return ((not shipSystem:GetLocked()) or shipSystem.iLockCount == -1) and shipSystem:Functioning() and shipSystem.iHackEffect <= 1
 end
 
+script.on_internal_event(Defines.InternalEvents.JUMP_ARRIVE, function(shipManager)
+	if shipManager:HasSystem(Hyperspace.ShipSystem.NameToSystemId(systemName)) then
+		local system = shipManager:GetSystem(Hyperspace.ShipSystem.NameToSystemId(systemName))
+		system.table.charge_time = 0
+		local hasAug = shipManager:HasAugmentation("UPG_OE_AUX_SHIELD_OVERCHARGER") > 0 or shipManager:HasAugmentation("EX_OE_AUX_SHIELD_OVERCHARGER") > 0
+		local maxLayers = 3
+		if hasAug and shipManager.shieldSystem.shields.power.super.first < maxLayers then
+			for i = 1, (maxLayers - shipManager.shieldSystem.shields.power.super.first )do
+				shipManager.shieldSystem:AddSuperShield(shipManager.shieldSystem.superUpLoc)
+			end
+		end
+	end
+end)
 
 local boost_string = Hyperspace.Text:GetText("oe_lua_sys_aux_shields_boost")
 local function system_render(systemBox, ignoreStatus)

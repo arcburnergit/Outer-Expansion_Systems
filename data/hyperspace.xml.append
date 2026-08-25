@@ -394,7 +394,7 @@
 			<mod:selector text="Music (OE)"/>
 		</mod:findLike>
 		<mod:findLike type="section">
-			<mod:selector text="Thest's Boons (OE)"/>
+			<mod:selector text="Corby's Grants (OE)"/>
 			<mod-append:achievement name="ACH_BOON_OE_AUX_SHIELDS">
 				<name>Grant of Auxiliary Shields</name>
 				<secretDescription>Receive the Grant of Auxiliary Shields from Corby.</secretDescription>

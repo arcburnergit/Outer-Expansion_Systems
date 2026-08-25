@@ -23,7 +23,7 @@
 	<mod-append:choice req="oe_grease" lvl="2" blue="false">
 		<text>Present your Weapons Amplifier system.</text>
 		<event>
-			<text>"Weapons Amplifier - defensive p-p-p-procedures they ensure! You pilot a: well protected vessel! Well protected vessel! For well protected vessel: I provide Grant of Au-Au-auxiliary shielding! Grant of Auxiliary Shielding! Save it - for the future!"</text>
+			<text>"Weapons Amplifier - truly a -curious- s-s-system! Learn, -adapt- and: overcome! Smart, for you: s-s-strike where enemy is weakest! Weakest! For the smart captain: I provide Grant of W-W-Weapons Amplifier! Grant of Weapons Amplifier! Save it - for the future!"</text>
 			<achievement>ACH_BOON_OE_GREASE</achievement>
 			<metaVariable name="prof_r_boon_oe_grease" op="set" val="1"/>
 			<variable name="ach_boon_oe_grease" op="set" val="1"/>
@@ -36,7 +36,7 @@
 	<mod-append:choice req="oe_growth" lvl="3" blue="false">
 		<text>Present your Life Bloom system.</text>
 		<event>
-			<text>"Life Bloom - defensive p-p-p-procedures they ensure! You pilot a: well protected vessel! Well protected vessel! For well protected vessel: I provide Grant of Au-Au-auxiliary shielding! Grant of Auxiliary Shielding! Save it - for the future!"</text>
+			<text>"Life Bloom - a -marvel- of bioengineering! I don't know m-m-much about -organics-, but you must show -care- to those flowers! Do you think they can understand you? Do you tell them s-s-stories? Even if y-y-you don't, I'm sure they -appreciate- your care! For the caring captain: I provide Grant of Life Bloom! Grant of Life Bloom! Save it - for the future!"</text>
 			<achievement>ACH_BOON_OE_GROWTH</achievement>
 			<metaVariable name="prof_r_boon_oe_growth" op="set" val="1"/>
 			<variable name="ach_boon_oe_growth" op="set" val="1"/>

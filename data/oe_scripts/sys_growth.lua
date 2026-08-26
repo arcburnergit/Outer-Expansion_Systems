@@ -1457,7 +1457,7 @@ script.on_internal_event(Defines.InternalEvents.CREW_LOOP, function(crewmem)
 	local shipId = shipManager.iShipId
 	local roomId = crewmem.iRoomId
 	local isAlly = (crewmem.iShipId == crewmem.currentShipId)
-	if not isAlly then
+	if isAlly then
 		return
 	end
 	

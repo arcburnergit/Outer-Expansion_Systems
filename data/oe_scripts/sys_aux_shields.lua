@@ -152,8 +152,10 @@ script.on_internal_event(Defines.InternalEvents.JUMP_ARRIVE, function(shipManage
 		local system = shipManager:GetSystem(Hyperspace.ShipSystem.NameToSystemId(systemName))
 		system.table.charge_time = 0
 		local hasAug = shipManager:HasAugmentation("UPG_OE_AUX_SHIELD_OVERCHARGER") > 0 or shipManager:HasAugmentation("EX_OE_AUX_SHIELD_OVERCHARGER") > 0
-		local maxLayers = 3
-		if hasAug and shipManager.shieldSystem.shields.power.super.first < maxLayers then
+		local maxLayers = layers_base
+		if shipManager:HasAugmentation("UPG_OE_AUX_SHIELD_CAPACITY") > 0 then maxLayers = false end
+
+		if hasAug and shipManager.shieldSystem.shields.power.super.first < (maxLayers or math.max(shipManager.shieldSystem.shields.power.super.second, 5)) then
 			for i = 1, (maxLayers - shipManager.shieldSystem.shields.power.super.first )do
 				shipManager.shieldSystem:AddSuperShield(shipManager.shieldSystem.superUpLoc)
 			end
@@ -226,7 +228,6 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 			if not manningCrew then
 				for crew in vter(shipManager.vCrewList) do
 					if crew.bActiveManning and tostring(crew.currentSystem) == tostring(system) then
-						system.iActiveManned = crew:GetSkillLevel(2)
 						manningCrew = crew
 						system.table.manningCrew = crew
 						break
@@ -235,6 +236,9 @@ script.on_internal_event(Defines.InternalEvents.SHIP_LOOP, function(shipManager)
 			elseif not (manningCrew.bActiveManning and tostring(manningCrew.currentSystem) == tostring(system)) then
 				system.table.manningCrew = nil
 				manningCrew = nil
+			end
+			if manningCrew then
+				system.iActiveManned = manningCrew:GetSkillLevel(2)
 			end
 		elseif manningCrew then
 			system.table.manningCrew = nil

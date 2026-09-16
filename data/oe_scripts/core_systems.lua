@@ -1,8 +1,11 @@
 local mod_name = "Outer Expansion: Systems"
 if not mods.oe then
 	error("Outer Expansion: Core not detected, please ensure it is present in the mod list and patched before "..mod_name.."!")
+elseif mods.oe.core_version.major < 1 and mods.oe.core_version.minor < 1 then
+	error("Outer Expansion: Core incorrect version, please update it for "..mod_name.."!")
 else
 	mods.oe.systems = {}
+	mods.oe.systems.version = {major = 1, minor = 1}
 end
 
 local time_increment = mods.multiverse.time_increment

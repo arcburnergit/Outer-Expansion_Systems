@@ -20,7 +20,7 @@
 	</choice>
 </event>
 <event name="BOON_SELECT_OE_GROWTH">
-	<text>From nowhere, you hear a voice speaking to you. "Grant of [Auxiliary Shielding] i-i-installed. Installed! Grant provides: All c-c-crew gain 10% health for each power in the Life Bloom system. If -you- witness p-p-previous challenger; provide thanks. I advise you -visit- me as well."</text>
+	<text>From nowhere, you hear a voice speaking to you. "Grant of [Life Bloom] i-i-installed. Installed! Grant provides: All c-c-crew gain 10% health for each power in the Life Bloom system. If -you- witness p-p-previous challenger; provide thanks. I advise you -visit- me as well."</text>
 	<hiddenAug>BOON_OE_GROWTH</hiddenAug>
 	<choice hidden="true">
 		<text>Continue...</text>

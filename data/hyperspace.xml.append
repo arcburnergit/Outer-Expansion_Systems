@@ -213,9 +213,9 @@
 		<name>OE_SHLEG_MISSILES_LOOT</name>
 	</req>
 	<req name="OE_GREASE_REQ_EFFECT_BIRD" type="any">
-		<name>oe_bird_avali</name>
-		<name>oe_bird_illuminant</name>
-		<name>oe_bird_unique</name>
+		<name>oe_bird</name>
+		<name>oe_bird_tech</name>
+		<name>unique_oe_jay</name>
 
 		<name>OE_COMBAT_BIRD_BURST_1</name>
 		<name>OE_COMBAT_BIRD_BURST_2</name>
@@ -230,6 +230,9 @@
 		<name>OE_COMBAT_BIRD_MULTI_2_LASER</name>
 		<name>OE_COMBAT_BIRD_MULTI_2_BEAM</name>
 
+		<name>OE_COMBAT_BIRD_MULTI_2_LOOT_LASER</name>
+		<name>OE_COMBAT_BIRD_MULTI_2_LOOT_BEAM</name>
+
 		<name>OE_COMBAT_BIRD_SMART_1</name>
 		<name>OE_COMBAT_BIRD_SMART_2</name>
 
@@ -239,7 +242,7 @@
 	<req name="OE_GREASE_REQ_EFFECT_NECRO" type="any">
 		<name>oe_necro_engi</name>
 		<name>oe_necro_lich</name>
-		<name>oe_necro_king</name>
+		<name>unique_oe_lich</name>
 		
 		<name>OE_LASER_NECRO_1</name>
 		<name>OE_LASER_NECRO_2</name>
@@ -251,8 +254,10 @@
 		<name>OE_DEFENSE_NECRO_1_MISSILE</name>
 		<name>OE_DEFENSE_NECRO_2_DRONE</name>
 		<name>OE_DEFENSE_NECRO_2_MISSILE</name>
+
 		<name>OE_DEFENSE_NECRO_1</name>
 		<name>OE_DEFENSE_NECRO_2</name>
+		
 		<name>OE_COMBAT_NECRO_1_LASER</name>
 		<name>OE_COMBAT_NECRO_1_BEAM</name>
 		<name>OE_COMBAT_NECRO_2_LASER</name>
